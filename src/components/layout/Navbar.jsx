@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import p1 from '../../../public/svg/Ellipse 439.svg'
+import p1 from "../../../public/svg/Ellipse 439.svg";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { CiUser } from "react-icons/ci";
 import { PiClipboardTextThin } from "react-icons/pi";
@@ -28,7 +28,7 @@ const navItems = [
     label: "User",
     icon: CiUser,
     href: "/user",
-  },
+  }
 ];
 
 export const Navbar = () => {
@@ -43,7 +43,7 @@ export const Navbar = () => {
     <>
       {/* Desktop Sidebar */}
       <div className="hidden md:block bg-white shadow md:min-h-screen pt-6">
-          <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center text-center">
           <Image
             src={p1}
             alt="Dr. Eleanor Hughes"
@@ -82,7 +82,7 @@ export const Navbar = () => {
 
       {/* Mobile Bottom Nav */}
       <div className="fixed bottom-0 md:hidden bg-white border-t w-full flex justify-around items-center p-2 shadow">
-        {navItems.map((item) => {
+        {navItems?.map((item) => {
           const active = isActive(item.href);
           const Icon = item.icon;
           return (
@@ -90,11 +90,21 @@ export const Navbar = () => {
               key={item.label}
               href={item.href}
               className={`flex flex-col items-center ${
-                active ? "text-[#114654]" : "text-[#3B3B3B]"
+                active
+                  ? "bg-[#114654] text-white rounded-2xl p-1.5"
+                  : "text-[#3B3B3B]"
               }`}
             >
-              <Icon className={`text-xl ${active ? "text-[#114654]" : "text-[#6C6C6C]"}`} />
-              <span className="text-xs">{item.label}</span>
+              <div className="flex  flex-row gap-1 items-center">
+                <Icon
+                  className={`text-lg ${
+                    active ? "text-white " : "text-[#6C6C6C]"
+                  }`}
+                />
+                {active && (
+                  <span className="text-xs font-medium">{item.label}</span>
+                )}
+              </div>
             </Link>
           );
         })}

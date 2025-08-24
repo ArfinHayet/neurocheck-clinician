@@ -1,0 +1,124 @@
+"use client";
+
+import Image from "next/image";
+import React, { useState, useRef, useEffect } from "react";
+import { FiMoreVertical } from "react-icons/fi";
+import p1 from "../../../public/svg/user-img.svg";
+import Link from "next/link";
+
+const AssessmentCard = ({
+  name,
+  age,
+  timeAgo,
+  status,
+  childCondition,
+  description,
+  onViewFullAssessment,
+  onAcceptCase,
+}) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const colors = {
+    accepted: "bg-[#EBF6EC] text-[#4CAF50]",
+    pending: "bg-yellow-100 text-yellow-800",
+    rejected: "bg-red-100 text-red-800",
+  };
+  const statusKey = (status || "").toLowerCase();
+  const statusClass = colors[statusKey] || "bg-gray-100 text-gray-700";
+
+  return (
+    <div className="bg-[#FFFFFF] rounded-lg p-4 shadow-sm">
+     
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex gap-4">
+          <Image
+            src={p1}
+            alt={name || "User"}
+            height={40}
+            width={40}
+            className="w-10 h-10 rounded-full"
+            priority
+          />
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="font-semibold">{name}</h2>
+              <span className={`px-2 py-0.5 md:block hidden rounded-md text-xs ${statusClass}`}>
+                {(status || "").toUpperCase()}
+              </span>
+            </div>
+            <p className="text-xs text-gray-500">
+              {age} years • {timeAgo}
+            </p>
+          </div>
+        </div>
+
+        {/* Three-dot menu */}
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            className="p-1 rounded hover:bg-gray-100"
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            aria-label="More options"
+          >
+            <FiMoreVertical size={20} />
+          </button>
+
+          {menuOpen && (
+            <div
+              role="menu"
+              className="absolute right-0 mt-2 w-44 bg-white rounded shadow-md z-10"
+            >  
+              <Link className="no-underline" href="/assessment">
+               <button
+                onClick={() => {
+                  // onViewFullAssessment?.();
+                  setMenuOpen(false);
+                }}
+                className="w-full cursor-pointer text-left px-4 py-2 text-sm border-b-2 border-[#F2F2F2] text-[#114654]"
+                role="menuitem"
+              >
+                View full assessment
+              </button></Link>  
+             
+              <button
+                onClick={() => {
+                  onAcceptCase?.();
+                  setMenuOpen(false);
+                }}
+                className="w-full text-left px-4 py-2 text-sm text-[#114654]"
+                role="menuitem"
+              >
+                Accept this case
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 mt-5">
+        <div className="flex flex-row gap-2">
+          <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">{childCondition}</p>
+          <p className={`px-2 py-0.5 mt-[10px] md:hidden rounded-md text-xs ${statusClass}`}>
+            {(status || "").toUpperCase()}
+          </p>
+        </div>
+        <p className="text-[#3C3C4399] text-xs mt-1">{description}</p>
+      </div>
+     </div>
+  );
+};
+
+export default AssessmentCard;
