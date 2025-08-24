@@ -1,73 +1,27 @@
-import Dashboard from '@/pages/Dashboard';
-import React from 'react';
+// "use client";
+// import Header from '@/components/ui-reusable/Header';
+// import React from 'react';
 
-const page = () => {
-  return (
-    <div>
-      <Dashboard />
-    </div>
-  );
-};
-
-export default page;
-
-
-
-
-
-// export default function Home() {
-//   return (
-//     <div className="min-h-screen bg-gray-50 text-gray-800">
-//       {/* Top nav for tablet/mobile */}
-//       <div className="md:hidden bg-primary text-white px-4 py-3 flex items-center justify-between">
-//         <div className="text-2xl font-bold">N</div>
+// const Dashboard = () => {
+//     return (
+//       <div className=''>
+        
+//       {/* <div className="md:hidden bg-primary text-white px-4 py-3 flex items-center justify-between">
+//         <div className="text-2xl font-bold text-black">N</div>
 //         <div className="flex space-x-4">
 //           <span>🔔</span>
 //           <span>💬</span>
 //         </div>
-//       </div>
+//       </div> */}
+//             <main className="flex-1 p-4 md:p-8">
+      //       <Header
+      //   title="Dashboard"
+      //   description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"
+      //   // onMessageClick={handleMessageClick}
+      //   // onNotificationClick={handleNotificationClick}
+      // />
 
-//       <div className="flex flex-col md:flex-row">
-//         {/* Sidebar for desktop */}
-//         <aside className="hidden md:block w-64 bg-white shadow md:min-h-screen p-6">
-//           <div className="flex flex-col items-center text-center">
-//             <img
-//               src="/avatar.png"
-//               alt="Dr. Eleanor Hughes"
-//               className="w-24 h-24 rounded-full mb-4"
-//             />
-//             <h2 className="text-lg font-semibold">Dr. Eleanor Hughes</h2>
-//             <p className="text-sm text-gray-500">Consultant Neurodevelopmental Specialist</p>
-//             <p className="mt-4 text-xl font-bold">25 Apr</p>
-//           </div>
-//           <nav className="mt-8 space-y-4">
-//             <a href="#" className="flex items-center text-blue-600 font-semibold">
-//               <span className="mr-2">🏠</span> Dashboard
-//             </a>
-//             <a href="#" className="flex items-center hover:text-blue-600">
-//               <span className="mr-2">📅</span> Appointments
-//             </a>
-//             <a href="#" className="flex items-center hover:text-blue-600">
-//               <span className="mr-2">📄</span> Assessments
-//             </a>
-//             <a href="#" className="flex items-center hover:text-blue-600">
-//               <span className="mr-2">👤</span> User
-//             </a>
-//           </nav>
-//         </aside>
-
-//         {/* Main Content */}
-//         <main className="flex-1 p-4 md:p-8">
-//           <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-//             <h1 className="text-2xl font-bold">DASHBOARD</h1>
-//             <p className="text-sm text-gray-500 mt-2 md:mt-0">8:43 AM</p>
-//           </div>
-
-//           <p className="mt-2 text-sm text-gray-500">
-//             Your central hub for tracking assessments, reviewing patient insights, and managing your schedule
-//           </p>
-
-//           <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+//           {/* <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
 //             <div className="bg-white p-4 rounded shadow">
 //               <p className="text-xs text-orange-500 font-bold">PENDING</p>
 //               <p className="text-2xl font-bold">04</p>
@@ -144,29 +98,30 @@ export default page;
 //                 </div>
 //               ))}
 //             </div>
-//           </div>
+//           </div> */}
 //         </main>
-//       </div>
+//         </div>
+//     );
+// };
 
-//       {/* Bottom nav for mobile/tablet */}
-//       <div className="fixed bottom-0 md:hidden bg-white border-t w-full flex justify-around items-center p-2 shadow">
-//         <button className="flex flex-col items-center text-blue-600">
-//           <span>🏠</span>
-//           <span className="text-xs">Dashboard</span>
-//         </button>
-//         <button className="flex flex-col items-center">
-//           <span>📅</span>
-//           <span className="text-xs">Appointments</span>
-//         </button>
-//         <button className="flex flex-col items-center">
-//           <span>📄</span>
-//           <span className="text-xs">Assessments</span>
-//         </button>
-//         <button className="flex flex-col items-center">
-//           <span>👤</span>
-//           <span className="text-xs">User</span>
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
+// export default Dashboard;
+
+
+"use client";
+import Header from '@/components/ui-reusable/Header';
+import React from 'react';
+
+const Dashboard = () => {
+  return (
+    <div>
+     <Header
+        title="Dashboard"
+        description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"
+        // onMessageClick={handleMessageClick}
+        // onNotificationClick={handleNotificationClick}
+      />  
+    </div>
+  );
+};
+
+export default Dashboard;
