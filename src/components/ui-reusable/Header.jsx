@@ -29,7 +29,7 @@ const Header = ({
   }, []);
 
   return (
-    <div className="flex-1 p-4 md:p-8">
+    <div className="flex-1 mb-8">
       {/* Top row */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center">
         <h1 className="text-2xl font-bold">{title}</h1>

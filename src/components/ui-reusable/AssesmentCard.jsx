@@ -14,7 +14,9 @@ const AssessmentCard = ({
   childCondition,
   description,
   onViewFullAssessment,
-  onAcceptCase,
+  onRateSummary,
+  onBookVideo,
+  onAcceptCase
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -39,7 +41,7 @@ const AssessmentCard = ({
 
   return (
     <div className="bg-[#FFFFFF] rounded-lg p-4 shadow-sm">
-     
+   
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-4">
           <Image
@@ -67,7 +69,7 @@ const AssessmentCard = ({
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="p-1 rounded hover:bg-gray-100"
+            className="p-1 rounded hover:bg-gray-100 cursor-pointer"
             aria-haspopup="menu"
             aria-expanded={menuOpen}
             aria-label="More options"
@@ -78,19 +80,40 @@ const AssessmentCard = ({
           {menuOpen && (
             <div
               role="menu"
-              className="absolute right-0 mt-2 w-44 bg-white rounded shadow-md z-10"
+              className="absolute right-0 mt-2 w-48 bg-white rounded shadow-md z-10"
             >  
-              <Link className="no-underline" href="/assessment">
+            
                <button
                 onClick={() => {
-                  // onViewFullAssessment?.();
+                  onViewFullAssessment?.();
                   setMenuOpen(false);
                 }}
                 className="w-full cursor-pointer text-left px-4 py-2 text-sm border-b-2 border-[#F2F2F2] text-[#114654]"
                 role="menuitem"
               >
                 View full assessment
-              </button></Link>  
+              </button> 
+               <button
+                onClick={() => {
+                  onRateSummary?.();
+                  setMenuOpen(false);
+                }}
+                className="w-full cursor-pointer text-left px-4 py-2 text-sm border-b-2 border-[#F2F2F2] text-[#114654]"
+                role="menuitem"
+              >
+                Rate this summary
+              </button> 
+
+               <button
+                onClick={() => {
+                  onBookVideo?.();
+                  setMenuOpen(false);
+                }}
+                className="w-full cursor-pointer text-left px-4 py-2 text-sm border-b-2 border-[#F2F2F2] text-[#114654]"
+                role="menuitem"
+              >
+                Book video consultancy
+              </button> 
              
               <button
                 onClick={() => {
@@ -108,6 +131,7 @@ const AssessmentCard = ({
       </div>
 
       {/* Content */}
+       <Link className="no-underline" href="/assessment"> 
       <div className="flex-1 mt-5">
         <div className="flex flex-row gap-2">
           <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">{childCondition}</p>
@@ -116,7 +140,7 @@ const AssessmentCard = ({
           </p>
         </div>
         <p className="text-[#3C3C4399] text-xs mt-1">{description}</p>
-      </div>
+      </div></Link>
      </div>
   );
 };

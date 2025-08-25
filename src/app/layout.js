@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
             <div className="w-[16%] fixed left-0 h-full">
               <Navbar />
             </div>
-            <div className="lg:flex-1 lg:ml-[16%] bg-[#F6F7F9] min-h-screen w-full lg:w-0">
+            <div className="lg:flex-1 lg:ml-[16%] bg-[#F6F7F9]  lg:p-8 min-h-screen w-full lg:w-0">
               <Topbar/>
               {children}
             </div>
