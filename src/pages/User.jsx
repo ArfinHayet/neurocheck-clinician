@@ -1,6 +1,9 @@
 "use client";
 import UserTab from "@/components/ui-reusable/UserTab";
 import { useState, useMemo } from "react";
+import Availability from "./Availability";
+import Leave from "./Leave";
+import Invoice from "./Invoice";
 
 const User = () => {
   const tabs = ["Personal Info", "Availability", "Leave", "Invoices"];
@@ -46,9 +49,9 @@ const User = () => {
             <p>…content…</p>
           </div>
         )}
-        {selectedTab === "Availability" && <div>…content…</div>}
-        {selectedTab === "Leave" && <div>…content…</div>}
-        {selectedTab === "Invoices" && <div>…content…</div>}
+        {selectedTab === "Availability" && <Availability/>}
+        {selectedTab === "Leave" && <Leave/>}
+        {selectedTab === "Invoices" && <Invoice/>}
       </div>
     </div>
   );

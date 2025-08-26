@@ -13,7 +13,7 @@ const UserTab = ({ tabs, selected, setSelected, title, description }) => {
           <button
             key={tab}
             onClick={() => setSelected(tab)}
-            className={`pb-2 text-xs font-medium transition-colors duration-200 ${
+            className={`pb-2 text-xs cursor-pointer font-medium transition-colors duration-200 ${
               selected === tab
                 ? "text-[#0A6876] cursor-pointer border-b-2 border-[#0A6876]"
                 : "text-gray-500"

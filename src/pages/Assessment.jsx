@@ -11,8 +11,7 @@ import { RatingModal } from "./RatingModal";
 const Assessment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRateModalOpen, setIsRateModalOpen] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [last, setLast] = useState(null);
+
 
   const handleView = () => {
     setIsModalOpen(true);
@@ -102,7 +101,7 @@ const Assessment = () => {
         onClose={() => setIsRateModalOpen(false)}
         onSubmit={(data) => {
           console.log("feedback:", data);
-          setOpen(false);
+          setIsRateModalOpen(false);
         }}
         maxStars={5}
         initialRating={0}
