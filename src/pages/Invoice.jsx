@@ -1,5 +1,5 @@
 
-import InvoiceCard from "@/components/ui-reusable/InvoiceCard";
+import InvoiceCard from "@/components/Invoice/InvoiceCard";
 import { FaCalendarAlt } from "react-icons/fa";
 
 const Invoice = () => {
