@@ -2,7 +2,7 @@
 import Signup from "@/components/Authentication/Signup";
 import Image from "next/image";
 import { useState } from "react";
-import p1 from "../../public/svg/web_logo.svg";
+import p1 from "../../../public/svg/web_logo.svg";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -42,7 +42,12 @@ const SignUp = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="w-full max-w-md lg:bg-white p-8 rounded-lg lg:shadow-md">
           <div className="flex items-start justify-start">
-            <Image src={p1} width={80} height={80} className="w-11 h-11" />
+            <Image
+              src={p1}
+              alt="Logo"
+              width={80}
+              height={80}
+              className="w-11 h-11" />
           </div>
           <h2 className="text-2xl font-semibold text-[#000000] text-start my-4">
             Sign Up

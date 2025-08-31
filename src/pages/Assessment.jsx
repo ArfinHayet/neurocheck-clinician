@@ -7,8 +7,10 @@ import Modal from "@/components/ui-reusable/Modal";
 import p1 from "../../public/svg/user-img.svg";
 import Image from "next/image";
 import TextAns from "@/components/ui-reusable/TextAns";
-import { RatingModal } from "./RatingModal";
+import RatingModal from "./RatingModal";
+
 const Assessment = () => {
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRateModalOpen, setIsRateModalOpen] = useState(false);
 
@@ -50,6 +52,7 @@ const Assessment = () => {
           onAcceptCase={handleAccept}
         />
       </div>
+
       <Modal
         classname="w-[30vw] h-auto"
         isOpen={isModalOpen}

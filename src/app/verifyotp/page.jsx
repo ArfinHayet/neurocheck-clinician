@@ -1,9 +1,9 @@
-import SignUp from "@/pages/Signup/SignUp";
+import VerifyOtp from "@/pages/Signup/VerifyOtp";
 
 const page = () => {
     return (
         <div>
-            <SignUp/>
+            <VerifyOtp/>
         </div>
     );
 };

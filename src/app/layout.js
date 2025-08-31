@@ -23,7 +23,7 @@ const metadata = {
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith("/signup") || pathname.startsWith("/signin");
+  const isAuthPage = pathname.startsWith("/signup") || pathname.startsWith("/signin") || pathname.startsWith("/sendotp") || pathname.startsWith("/verifyotp");
 
   return (
     <html lang="en">

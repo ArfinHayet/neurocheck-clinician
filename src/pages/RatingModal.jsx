@@ -1,8 +1,7 @@
 import Modal from "@/components/ui-reusable/Modal";
 import { RatingInput } from "@/components/ui-reusable/RatingInput";
 import { useEffect, useState } from "react";
-
-export const RatingModal = ({
+ const RatingModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -65,3 +64,5 @@ export const RatingModal = ({
     </Modal>
   );
 };
+
+export default RatingModal;
