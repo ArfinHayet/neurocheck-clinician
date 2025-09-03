@@ -1,22 +1,20 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState } from "react";
 import p1 from "../../../public/svg/web_logo.svg";
+import { verift_otp } from "@/api/signup";
 
-const VerifyOtp = () => {
-  const [otp, setOtp] = useState(new Array(4).fill(""));
-  const inputsRef = useRef([]);
+const VerifyOtp = ({otp,setOtp ,inputsRef,setStep,identifier}) => {
 
   const handleChange = (e, index) => {
-    const { value } = e.target;
-    if (!/^\d*$/.test(value)) return; // allow only digits
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    if (!value) return;
 
     let newOtp = [...otp];
-    newOtp[index] = value.slice(-1); // keep only last digit
+    newOtp[index] = value;
     setOtp(newOtp);
 
-    // Auto move to next input if not last
-    if (value && index < otp.length - 1) {
+  
+    if (index < otp.length - 1 && value) {
       inputsRef.current[index + 1].focus();
     }
   };
@@ -27,9 +25,23 @@ const VerifyOtp = () => {
     }
   };
 
-  const handleVerify = () => {
-    alert("OTP entered: " + otp.join(""));
+
+  const verifyOtp = async () => {
+
+    const payload = {
+           identifier,
+          otp: otp.join(""),
+    }
+    
+    const result = await verift_otp(payload)
+    if (result) {
+      setStep(3)
+    }
+    console.log("📩 OTP sent:", result);
+    
   };
+
+
   return (
     <div>
       <div className="bg-[#114654] w-full py-7 block lg:hidden"></div>
@@ -79,8 +91,8 @@ const VerifyOtp = () => {
 
           {/* Verify Button */}
           <button
-            onClick={handleVerify}
-            className="mt-6 w-full bg-[#0A4863] text-white py-3 rounded-full font-semibold hover:bg-teal-900 transition"
+            onClick={verifyOtp}
+            className="mt-6 w-full bg-[#0A4863] cursor-pointer text-white py-3 rounded-full font-semibold"
           >
             Verify
           </button>
@@ -91,3 +103,5 @@ const VerifyOtp = () => {
 };
 
 export default VerifyOtp;
+
+

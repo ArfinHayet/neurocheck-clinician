@@ -1,21 +1,28 @@
 "use client";
 
-import p1 from "../../../public/svg/web_logo.svg";
 import Image from "next/image";
-import Input from "@/components/ui-reusable/Input";
+import p1 from "../../../public/svg/web_logo.svg";
 import { sendOtp } from "@/api/signup";
+import Link from "next/link";
 
-const SendOtp = () => {
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const identifier = form.phone.value;
+const SendOtp = ({ identifier, setIdentifier, setStep }) => {
 
-     const payload = { identifier }; 
-      const result = await sendOtp(payload);
-      console.log("OTP sent:", result);
-      
-   
+  const handleSubmitOtp = async () => {
+
+    const payload = {
+      identifier: identifier
+    };
+    console.log(payload);
+
+    const result = await sendOtp(payload);
+    console.log("OTP sent:", result);
+    
+    if (result) {
+      alert(result?.message);
+      setStep(2);
+    } else {
+      alert(result?.message);
+    }
   };
 
   return (
@@ -41,21 +48,27 @@ const SendOtp = () => {
             guidance. It only takes a minute!
           </p>
 
-          {/* Wrap input and button inside a form */}
-          <form onSubmit={handleSubmit}>
-            <Input
-              name="phone"
-              placeholder="Enter Phone Number"
-              className="w-full px-4 py-1 placeholder:text-xs border bg-[#FFFFFF] lg:bg-none border-[#E2E2E2] rounded-3xl outline-none"
-            />
+          <input
+            type="text"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            placeholder="Enter Phone Number"
+            className="w-full px-4 py-2 placeholder:text-xs border bg-[#FFFFFF] border-[#E2E2E2] rounded-3xl outline-none"
+          />
 
-            <button
-              type="submit"
-              className="w-full bg-[#0A4863] cursor-pointer text-white py-2 mt-2.5 rounded-2xl font-normal"
-            >
-              Sign up With Phone Number
-            </button>
-          </form>
+          <button
+            onClick={handleSubmitOtp}
+            className="w-full bg-[#0A4863] cursor-pointer text-white py-2 mt-3 rounded-2xl font-normal"
+          >
+            Send OTP
+          </button>
+          <div className="flex justify-center items-center mt-2">
+              <Link className="text-xs font-normal text-center" href="/signin">
+            <span className=" text-[#3C3C4399] ">Do you have account?</span>
+            <span className="text-[#114654]">Sign In</span>
+          </Link>
+          </div>
+        
         </div>
       </div>
     </div>

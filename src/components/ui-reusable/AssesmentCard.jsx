@@ -5,6 +5,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import p1 from "../../../public/svg/user-img.svg";
 import Link from "next/link";
+import { getAge } from "../utils/ageConverter";
+import { timeConverter } from "../utils/timeconverter";
+// import  { getAge,timeConverter } from "../utils/ageConverter";
 
 const AssessmentCard = ({
   name,
@@ -60,7 +63,7 @@ const AssessmentCard = ({
               </span>
             </div>
             <p className="text-xs text-gray-500">
-              {age} years • {timeAgo}
+             {getAge(age)} years • {timeConverter(timeAgo)}
             </p>
           </div>
         </div>

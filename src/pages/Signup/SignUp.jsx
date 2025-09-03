@@ -1,10 +1,13 @@
 "use client";
 import Signup from "@/components/Authentication/Signup";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import p1 from "../../../public/svg/web_logo.svg";
+import { signupuser } from "@/api/signup";
+import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { useRouter } from "next/navigation";
 
-const SignUp = () => {
+const SignUp = ({otp, identifier}) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,7 +24,8 @@ const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const { setUserData } = useContext(AuthContext);
+  const router = useRouter()
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "certifications") {
@@ -31,10 +35,38 @@ const SignUp = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-  };
+ const handleSubmit = async(e) => {
+  e.preventDefault();
+
+  const payload = {
+    name: formData?.name,
+    email: formData?.email,
+    phone: formData?.phone,
+    password: formData?.password,
+    street: formData?.address,
+    role: "clinician",
+    identifier: identifier,
+    otp: otp.join(""),
+    hcpcTitle: formData?.hcpcTitle,
+    regNo: formData?.regNo,
+    practiceName: formData?.practiceName,
+    bankDetails: formData?.bankDetails,
+    certification: "test"
+   };
+   console.log("pp", payload);
+
+   const result = await signupuser(payload)
+   console.log("qqq", result)
+   if (result && result?.payload?.token?.access_token) {
+     localStorage.setItem("accessToken", result.payload.token.access_token);
+        const userData = result.payload.user;
+     setUserData(userData);
+     router.push("/")
+   }
+   
+
+  
+};
 
   return (
     <>

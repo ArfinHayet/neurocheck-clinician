@@ -1,80 +1,105 @@
-import React, { useState } from 'react';
-import { CiUser } from 'react-icons/ci';
-import { PiEyeLight } from 'react-icons/pi';
+import { loginuser } from "@/api/signup";
+import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
+import { CiUser } from "react-icons/ci";
+import { PiEyeLight } from "react-icons/pi";
 import { RiLockPasswordLine } from "react-icons/ri";
 const LoginForm = () => {
-      const [formData, setFormData] = useState({
+
+  const [showPassword, setShowPassword] = useState(false);
+  const { setUserData } = useContext(AuthContext);
+  const router = useRouter();
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in with:", formData);
-   
+
+    const payload = {
+      identifier: formData?.email,
+      password: formData?.password,
+    };
+
+    console.log("Logging in with:", payload);
+
+    const result = await loginuser(payload);
+    if (result && result?.payload?.token?.access_token) {
+      localStorage.setItem("accessToken", result?.payload?.token?.access_token);
+      const userData = result.payload.filteredUser;
+      setUserData(userData);
+      router?.push("/");
+    }
   };
-    return (
-         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email / Phone */}
-          <div className="relative">
-            <input
-              type="text"
-              name="email"
-              placeholder="Your E-mail or Phone"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-12 py-3 border placeholder:text-xs placeholder:text-[#00000080] border-[#E2E2E2] rounded-full focus:outline-none"
-            />
-            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <CiUser/>
-            </span>
-          </div>
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Email / Phone */}
+      <div className="relative">
+        <input
+          type="text"
+          name="email"
+          placeholder="Your E-mail or Phone"
+          value={formData?.email}
+          onChange={handleChange}
+          className="w-full px-12 py-3 border placeholder:text-xs placeholder:text-[#00000080] border-[#E2E2E2] rounded-full focus:outline-none"
+        />
+        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <CiUser />
+        </span>
+      </div>
 
-          {/* Password */}
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full px-12 py-3 border placeholder:text-xs placeholder:text-[#00000080] border-[#E2E2E2] rounded-full focus:outline-none"
-            />
-            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <RiLockPasswordLine />
-            </span>
-            <button
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600"
-              tabIndex={-1}
-            >
-             <PiEyeLight />
-            </button>
-          </div>
+      {/* Password */}
+      <div className="relative">
+        <input
+          type={showPassword ? "text" : "password"}
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          className="w-full px-12 py-3 border placeholder:text-xs placeholder:text-[#00000080] border-[#E2E2E2] rounded-full focus:outline-none"
+        />
+        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <RiLockPasswordLine />
+        </span>
+        <button
+          type="button"
+          onClick={() => setShowPassword((prev) => !prev)}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600"
+          tabIndex={-1}
+        >
+          <PiEyeLight />
+        </button>
+      </div>
 
-          {/* Forgot Password */}
-          <div className="flex justify-end">
-            <a href="#" className="text-xs text-[#114654] hover:underline">
-              Forgot password?
-            </a>
+      {/* Forgot Password */}
+      <div className="flex justify-end">
+        <a href="#" className="text-xs text-[#114654] hover:underline">
+          Forgot password?
+        </a>
+      </div>
+      <button
+        type="submit"
+        className="w-full bg-[#0A4863] cursor-pointer text-white py-3 rounded-full font-semibold "
+      >
+        Sign In
+      </button>
+        <div className="flex justify-center items-center mt-2">
+              <Link className="text-xs font-normal text-center" href="/signup">
+            <span className=" text-[#3C3C4399] ">Don’t have account?</span>
+            <span className="text-[#114654]">Sign Up</span>
+          </Link>
           </div>
-          <button
-            type="submit"
-            className="w-full bg-[#0A4863] text-white py-3 rounded-full font-semibold "
-          >
-            Sign In
-          </button>
-        </form>
-    );
+    </form>
+  );
 };
 
 export default LoginForm;
-
