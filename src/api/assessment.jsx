@@ -2,11 +2,12 @@ import { token } from "@/components/utils/token";
 import { domain } from "../../secret";
 
 
-const getAllanswers = async () => {
-  const response = await fetch(`${domain}/answers`, {
+const getAllanswers = async ({ assessmentId }) => {
+  const response = await fetch(`${domain}/answers?assessmentId=${assessmentId}`, {
     method: "GET",
     headers: {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      // Authorization: `Bearer ${token}`,
     },
   });
 
@@ -14,11 +15,12 @@ const getAllanswers = async () => {
   return data;
 };
 
+
 const getAllsubmissions = async () => {
   const response = await fetch(`${domain}/submissions`, {
     method: "GET",
     headers: {
-      authorization: `Bearer ${token}`,
+         authorization: `Bearer ${localStorage.getItem("accessToken")}`
     },
   });
 
