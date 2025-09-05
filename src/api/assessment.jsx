@@ -29,5 +29,23 @@ const getAllsubmissions = async () => {
 };
 
 
+const updateStatus = async (id, obj) => {
+ 
+    const response = await fetch(`${domain}/submissions/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      },
+      body: JSON.stringify(obj),
+    });
+  
+    const data = await response.json();
+    console.log("Update response:", data);
+    return data;
 
-export { getAllanswers , getAllsubmissions};
+};
+
+
+
+export { getAllanswers , getAllsubmissions, updateStatus};

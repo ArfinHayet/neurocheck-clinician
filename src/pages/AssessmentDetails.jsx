@@ -74,7 +74,7 @@ const AssessmentDetails = () => {
             </div>
             
 
-           <div className="mt-5">
+           <div className="mt-5 mb-2">
               {meds.length > 0 &&
                 meds.map((med, index) => (
                   <div
@@ -85,14 +85,11 @@ const AssessmentDetails = () => {
                       <p>{`${index+1} . ${med.name}`}</p>
                        <button
                       onClick={() => removeMedication(index)}
-                      className="ml-2 text-red-600 hover:text-gray-700 focus:outline-none"
+                      className="ml-2 text-red-600 cursor-pointer hover:text-gray-700 focus:outline-none"
                     >
                       &times;
                     </button>
-                    </div>
-
-                    
-                   
+                    </div>                                       
                   </div>
                 ))}
               

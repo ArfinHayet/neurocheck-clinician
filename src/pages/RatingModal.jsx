@@ -1,27 +1,34 @@
+import { updateStatus } from "@/api/assessment";
 import Modal from "@/components/ui-reusable/Modal";
 import { RatingInput } from "@/components/ui-reusable/RatingInput";
 import { useEffect, useState } from "react";
  const RatingModal = ({
-  isOpen,
+   isOpen,
   onClose,
   onSubmit,
+  selectedId,           
   maxStars = 5,
   initialRating = 0,
   title = "Share Your Feedback"
 }) => {
   const [rating, setRating] = useState(initialRating);
   const [comment, setComment] = useState("");
-    
+
   useEffect(() => {
     if (isOpen) setRating(initialRating);
   }, [isOpen, initialRating]);
 
   if (!isOpen) return null;
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit?.({ rating, comment });
-  }
+
+    const obj = { ratings:rating };
+    console.log(obj);
+      const result = await updateStatus(selectedId, obj);
+      console.log("Updated submission:", result);
+      onSubmit?.({ rating, comment });
+  };
 
   return (
     <Modal

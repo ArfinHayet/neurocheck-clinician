@@ -19,7 +19,8 @@ const AssessmentCard = ({
   onViewFullAssessment,
   onRateSummary,
   onBookVideo,
-  onAcceptCase
+  onAcceptCase,
+  ratings
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -35,16 +36,17 @@ const AssessmentCard = ({
   }, []);
 
   const colors = {
-    accepted: "bg-[#EBF6EC] text-[#4CAF50]",
+    completed: "bg-[#EBF6EC] text-[#4CAF50]",
     pending: "bg-yellow-100 text-yellow-800",
     rejected: "bg-red-100 text-red-800",
   };
-  const statusKey = (status || "").toLowerCase();
-  const statusClass = colors[statusKey] || "bg-gray-100 text-gray-700";
+
+  const statusKey =
+    status && status.trim() !== "" ? status.toLowerCase() : "pending";
+  const statusClass = colors[statusKey] || colors.pending;
 
   return (
     <div className="bg-[#FFFFFF] rounded-lg p-4 shadow-sm">
-   
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-4">
           <Image
@@ -58,12 +60,17 @@ const AssessmentCard = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="font-semibold">{name}</h2>
-              <span className={`px-2 py-0.5 md:block hidden rounded-md text-xs ${statusClass}`}>
-                {(status || "").toUpperCase()}
+              <span
+                className={`px-2 py-0.5 md:block hidden rounded-md text-xs ${statusClass}`}
+              >
+                {/* {(status || "").toUpperCase()} */}
+                {status && status.trim() !== ""
+                  ? status.toUpperCase()
+                  : "PENDING"}
               </span>
             </div>
             <p className="text-xs text-gray-500">
-             {getAge(age)} years • {timeConverter(timeAgo)}
+              {getAge(age)} years • {timeConverter(timeAgo)}
             </p>
           </div>
         </div>
@@ -84,9 +91,8 @@ const AssessmentCard = ({
             <div
               role="menu"
               className="absolute right-0 mt-2 w-48 bg-white rounded shadow-md z-10"
-            >  
-            
-               <button
+            >
+              <button
                 onClick={() => {
                   onViewFullAssessment?.();
                   setMenuOpen(false);
@@ -95,8 +101,8 @@ const AssessmentCard = ({
                 role="menuitem"
               >
                 View full assessment
-              </button> 
-               <button
+              </button>
+              <button
                 onClick={() => {
                   onRateSummary?.();
                   setMenuOpen(false);
@@ -105,9 +111,9 @@ const AssessmentCard = ({
                 role="menuitem"
               >
                 Rate this summary
-              </button> 
+              </button>
 
-               <button
+              <button
                 onClick={() => {
                   onBookVideo?.();
                   setMenuOpen(false);
@@ -116,35 +122,46 @@ const AssessmentCard = ({
                 role="menuitem"
               >
                 Book video consultancy
-              </button> 
-             
-              <button
-                onClick={() => {
-                  onAcceptCase?.();
-                  setMenuOpen(false);
-                }}
-                className="w-full text-left px-4 py-2 text-sm text-[#114654]"
-                role="menuitem"
-              >
-                Accept this case
               </button>
+              {status !== "completed" && (
+                <button
+                  onClick={() => {
+                    onAcceptCase?.();
+                    setMenuOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2 cursor-pointer text-sm text-[#114654]"
+                  role="menuitem"
+                >
+                  Accept this case
+                </button>
+              )}
             </div>
           )}
         </div>
       </div>
 
       {/* Content */}
-       <Link className="no-underline" href="/assessment"> 
-      <div className="flex-1 mt-5">
-        <div className="flex flex-row gap-2">
-          <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">{childCondition}</p>
-          <p className={`px-2 py-0.5 mt-[10px] md:hidden rounded-md text-xs ${statusClass}`}>
-            {(status || "").toUpperCase()}
-          </p>
+      <Link className="no-underline" href="/assessment">
+        <div className="flex-1 mt-5">
+          <div className="flex flex-row gap-2">
+            <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">
+              {childCondition}
+            </p>
+            <p
+              className={`px-2 py-0.5 mt-[10px] md:hidden rounded-md text-xs ${statusClass}`}
+            >
+              {(status || "").toUpperCase()}
+            </p>
+            <p
+              className={`px-2 py-0.5 mt-[8px]  rounded-md text-xs ${statusClass}`}
+            >
+              rating:{ratings}
+            </p>
+          </div>
+          <p className="text-[#3C3C4399] text-xs mt-1">{description}</p>
         </div>
-        <p className="text-[#3C3C4399] text-xs mt-1">{description}</p>
-      </div></Link>
-     </div>
+      </Link>
+    </div>
   );
 };
 
