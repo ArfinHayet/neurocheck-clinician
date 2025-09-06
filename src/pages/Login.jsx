@@ -9,7 +9,9 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex items-start justify-start">
-          <Image src={p1} width={80} height={80} className="w-11 h-11" />
+          <Image
+            alt="logo"
+            src={p1} width={80} height={80} className="w-11 h-11" />
         </div>
         <h2 className="text-2xl font-semibold text-[#000000] text-start my-4">
           Sign In

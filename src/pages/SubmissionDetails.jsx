@@ -14,7 +14,7 @@ const SubmissionDetails = ({ isModalOpen, closeModal, assessmentId, id, score, t
     try {
       const data = await getAllanswers(assessmentId);
       const rawData = data.payload;
-console.log(rawData)
+      console.log(rawData)
       const grouped = rawData.reduce((acc, curr) => {
         const userId = curr.userId;
 

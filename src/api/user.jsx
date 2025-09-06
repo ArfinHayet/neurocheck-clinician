@@ -1,0 +1,58 @@
+const { domain } = require("../../secret");
+
+const addClinicianAvailabilty = async (obj) => {
+  // //console.log("hello series", obj);
+
+  const response = await fetch(`${domain}/availabilities`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    body: JSON.stringify(obj),
+  });
+
+  const data = await response.json();
+  console.log("data", data);
+
+  return data;
+};
+
+
+const addClinicianLeave = async (obj) => {
+  // //console.log("hello series", obj);
+
+  const response = await fetch(`${domain}/leaves`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    body: JSON.stringify(obj),
+  });
+
+  const data = await response.json();
+  console.log("data", data);
+
+  return data;
+};
+
+
+const getLeavesById = async (userId) => {
+  const response = await fetch(`${domain}/leaves?userId=${userId}`, {
+    method: "GET",
+    headers: {
+         authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+
+export {
+    addClinicianAvailabilty,
+    addClinicianLeave,
+    getLeavesById
+};

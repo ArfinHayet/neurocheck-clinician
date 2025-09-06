@@ -1,19 +1,26 @@
 "use client";
-
-import { getSubmissionByPatientId } from "@/api/assessment";
+import { addPrescription, getSubmissionByPatientId } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
+import { getAge } from "@/components/utils/ageConverter";
+import { formatDate } from "@/components/utils/formateDate";
 import { AuthContext } from "@/Provider.jsx/AuthProvider";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 const Prescription = () => {
+  const [patientDetailsById, setPatientDetailsById] = useState([]);
+  const [notes, setNotes] = useState("");
+  const [medName, setMedName] = useState("");
+  const [dosage, setDosage] = useState("");
+  const [frequency, setFrequency] = useState("");
+  const [duration, setDuration] = useState("");
+  const [meds, setMeds] = useState([]);
   const { userData } = useContext(AuthContext);
-  console.log(userData)
+  // console.log(userData);
   const { id } = useParams();
-  console.log(id)
-  const [patientDetailsById, setPatientDetailsById] = useState([])
+  // console.log(id);
 
-    const getSubmissionDetails = async () => {
+  const getSubmissionDetails = async () => {
     const result = await getSubmissionByPatientId(id);
     console.log(result?.payload);
     setPatientDetailsById(result?.payload);
@@ -22,13 +29,6 @@ const Prescription = () => {
   useEffect(() => {
     getSubmissionDetails();
   }, [id]);
-
-  const [notes, setNotes] = useState("");
-  const [medName, setMedName] = useState("");
-  const [dosage, setDosage] = useState("");
-  const [frequency, setFrequency] = useState("");
-  const [duration, setDuration] = useState("");
-  const [meds, setMeds] = useState([]);
 
   const addMedication = () => {
     if (!medName) return;
@@ -51,12 +51,35 @@ const Prescription = () => {
     setMeds((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = { notes, meds };
+
+    const medicineStr = meds.map((m, i) => `med-${i + 1}:${m.name}`).join(", ");
+    const dosageStr = meds.map((m) => m.dosage).join(", ");
+    const frequencyStr = meds.map((m) => m.frequency).join(", ");
+    const durationStr = meds.map((m) => m.duration).join(", ");
+
+    const payload = {
+      assessmentId: patientDetailsById?.[0]?.assessmentId,
+      userId: userData?.id,
+      patientId: patientDetailsById?.[0]?.patientId,
+      observation: notes,
+      medicine: medicineStr,
+      dosage: dosageStr,
+      frequency: frequencyStr,
+      duration: durationStr,
+      clinicianId: userData?.id,
+    };
+
+    const result = await addPrescription(payload);
+    if (result) {
+      setMeds([]);
+      setNotes("");
+    }
+
     console.log("submit", payload);
-    alert("Submitted — check console");
   };
+
   return (
     <div className="min-h-screen ">
       <Header
@@ -68,24 +91,26 @@ const Prescription = () => {
           <h2 className="text-2xl font-semibold text-[#000000]">
             {userData?.name}
           </h2>
-          <p className="text-sm text-[#534F4F]">
-            {userData?.certification}
-          </p>
+          <p className="text-sm text-[#534F4F]">{userData?.certification}</p>
           <p className="text-sm text-[#534F4F]">{userData?.email}</p>
           <p className="text-sm text-[#534F4F]">{userData?.phone}</p>
         </div>
 
         <div className="w-2/3 border-l md:border-l border-[#DFDFDF]  pl-6 text-sm text-gray-700">
-          <div className="grid grid-cols-2 gap-2">
-            <div>Patient name</div>
-            <div className="font-medium">: Mohammad Abdur Rahman</div>
-            <div>Age</div>
-            <div className="font-medium">: 26 years</div>
-            <div>Sex</div>
-            <div className="font-medium">: Male</div>
-            <div>Date</div>
-            <div className="font-medium">: 26th April, 2024</div>
-          </div>
+          {patientDetailsById?.map((item, i) => (
+            <div key={i} className="grid grid-cols-2 gap-2">
+              <div>Patient name</div>
+              <div className="font-medium">: {item?.patient?.name}</div>
+              <div>Age</div>
+              <div className="font-medium">
+                : {getAge(item?.patient?.dateOfBirth)}
+              </div>
+              <div>Sex</div>
+              <div className="font-medium">: {item?.patient?.gender}</div>
+              <div>Date</div>
+              <div className="font-medium">: {formatDate(item?.createdAt)}</div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -189,7 +214,7 @@ const Prescription = () => {
 
         <div className="mt-8">
           <button
-            className="w-4/6 bg-[#0A4863] text-white rounded-full py-2 shadow"
+            className="w-4/6 cursor-pointer bg-[#0A4863] text-white rounded-full py-2 shadow"
             type="submit"
           >
             Submit

@@ -2,10 +2,11 @@
 
 import Header from "@/components/ui-reusable/Header";
 import AssessmentCard from "@/components/ui-reusable/AssesmentCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RatingModal from "./RatingModal";
 import SubmissionDetails from "./SubmissionDetails";
 import { getAllsubmissions, updateStatus } from "@/api/assessment";
+import { AuthContext } from "@/Provider.jsx/AuthProvider";
 
 const Assessment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,7 +14,7 @@ const Assessment = () => {
   const [submission, setSubmission] = useState([]);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
-
+  const { userData } = useContext(AuthContext)
 
 const handleSubmitRating = () => {
   setIsRateModalOpen(false);
@@ -33,6 +34,8 @@ const handleSubmitRating = () => {
     console.log(id)
     const obj = {
       status: "completed",
+      clinicianId: userData?.id
+      
     }
     const result = await updateStatus(id,obj)
     alert("Accepted")

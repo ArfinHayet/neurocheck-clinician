@@ -1,4 +1,4 @@
-/* eslint-disable import/no-anonymous-default-export */
+
 export const getAge = (dateOfBirth) => {
   const today = new Date();
   const dob = new Date(dateOfBirth);

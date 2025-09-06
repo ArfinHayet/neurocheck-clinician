@@ -1,6 +1,4 @@
-import { token } from "@/components/utils/token";
 import { domain } from "../../secret";
-
 
 const getAllanswers = async ({ assessmentId }) => {
   const response = await fetch(`${domain}/answers?assessmentId=${assessmentId}`, {
@@ -59,5 +57,32 @@ const updateStatus = async (id, obj) => {
 };
 
 
+////// prescription /////////////
 
-export { getAllanswers , getSubmissionByPatientId, getAllsubmissions, updateStatus};
+const addPrescription = async (obj) => {
+  // //console.log("hello series", obj);
+
+  const response = await fetch(`${domain}/prescriptions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    body: JSON.stringify(obj),
+  });
+
+  const data = await response.json();
+  console.log("data", data);
+
+  return data;
+};
+
+
+
+export {
+  getAllanswers,
+  getSubmissionByPatientId,
+  getAllsubmissions,
+  updateStatus,
+  addPrescription
+};

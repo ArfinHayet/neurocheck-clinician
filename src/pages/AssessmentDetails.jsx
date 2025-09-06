@@ -1,15 +1,15 @@
 "use client";
 import { getSubmissionByPatientId } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
-import Modal from "@/components/ui-reusable/Modal";
 import SubmissionDetailsCard from "@/components/ui-reusable/SubmissionDetailsCard";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+// import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AdditionalInfoModal from "./AdditionalInfoModal";
+import { useParams } from "next/navigation";
 
 const AssessmentDetails = () => {
-  const { patientId } = useParams();
+  const { patientId} = useParams();
   const [submission, setSubmission] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const getSubmissionDetails = async () => {

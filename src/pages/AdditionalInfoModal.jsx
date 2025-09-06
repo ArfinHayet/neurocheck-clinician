@@ -1,11 +1,12 @@
 import { updateStatus } from "@/api/assessment";
 import Modal from "@/components/ui-reusable/Modal";
-import React, { useState } from "react";
+import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import React, { useContext, useState } from "react";
 
 const AdditionalInfoModal = ({ isModalOpen, closeModal, patientId, additionalInfo }) => {
   const [medName, setMedName] = useState("");
   const [meds, setMeds] = useState([]);
-
+  const { userData } = useContext(AuthContext)
  
   const addMedication = () => {
     if (!medName.trim()) return;
@@ -38,7 +39,10 @@ const AdditionalInfoModal = ({ isModalOpen, closeModal, patientId, additionalInf
       ? `${prevInfo}, ${newFormattedString}`
       : newFormattedString;
 
-    const obj = { additionalInfo: updatedInfo };
+    const obj = {
+      additionalInfo: updatedInfo,
+      clinicianId: userData?.id
+    };
 
    
       const result = await updateStatus(patientId, obj);

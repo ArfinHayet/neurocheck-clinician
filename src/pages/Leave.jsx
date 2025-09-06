@@ -1,68 +1,71 @@
 "use client";
 
-// import { useMemo, useState } from "react";
-// import Table from "@/components/ui-reusable/Table";
-// import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { useContext, useEffect, useState } from "react";
 import Modal from "@/components/ui-reusable/Modal";
-import { useState } from "react";
+import { addClinicianLeave, getLeavesById } from "@/api/user";
+import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { formatDate } from "@/components/utils/formateDate";
 
 const Leave = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const availabilityTypes = ["Select your leave type", "Personal", "Work"];
+  const availabilityTypes = ["Select", "Multiple day", "Single day"];
   const [timeSlots, setTimeSlots] = useState([{ start: "", end: "" }]);
+  const [leaves, setLeaves] = useState([]);
+  const [leaveType, setLeaveType] = useState("Select");
+  const { userData } = useContext(AuthContext)
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const handleAddSlot = () => {
-    setTimeSlots([...timeSlots, { start: "", end: "" }]);
+
+  const handleSlotChange = (index, field, value) => {
+    const updatedSlots = [...timeSlots];
+    updatedSlots[index][field] = value;
+    setTimeSlots(updatedSlots);
   };
 
-  //   const data = [
-  //     {
-  //       transaction_date: "2025-08-01",
-  //       mode: "Cash",
-  //       transaction_amount: 1200,
-  //     },
-  //     {
-  //       transaction_date: "2025-08-05",
-  //       mode: "Bank Transfer",
-  //       transaction_amount: 2500,
-  //     },
-  //     {
-  //       transaction_date: "2025-08-10",
-  //       mode: "Card",
-  //       transaction_amount: 900,
-  //     },
-  //   ];
+  const handleSubmit = async () => {
+  if (leaveType === "Select") return;
 
-  //   const columns = useMemo(
-  //     () => [
-  //       {
-  //         accessorKey: "transaction_date",
-  //         header: "Leave type"
-  //       },
-  //       {
-  //         accessorKey: "mode",
-  //         header: "Start date",
-  //       },
-  //       {
-  //         accessorKey: "transaction_amount",
-  //         header: "End date"
-  //       },
-  //     //   {
-  //     //     accessorKey: "transaction",
-  //     //     header: "Status"
-  //     //   },
-  //     ],
-  //     []
-  //   );
+  const slot = timeSlots.find((s) => s.start && s.end);
+  if (!slot) return;
 
-  //   const table = useReactTable({
-  //     data,
-  //     columns,
-  //     getCoreRowModel: getCoreRowModel(),
-  //   });
+  const payload = {
+    leaveType:
+      leaveType === "Single day"
+        ? "single_day"
+        : leaveType === "Multiple day"
+        ? "multiple_day"
+        : "unknown",
+    startDate: slot.start,
+    endDate: slot.end,
+    userId: userData?.id,
+    status: "pending", // changed from approved to pending
+  };
+
+  console.log("Payload to submit:", payload);
+
+  const result = await addClinicianLeave(payload);
+  if (result) {
+    setTimeSlots([{ start: "", end: "" }]);
+    setLeaveType("Select");
+    setIsModalOpen(false);
+  }
+};
+
+  
+  ////// fetch leaves ///////
+// const [leaves, setLeaves] = useState([])
+  const ClinicianLeaves = async () => {
+    const result = await getLeavesById(userData?.id);
+    setLeaves(result?.payload)
+
+  };
+
+  useEffect(() => {
+    ClinicianLeaves();
+  },[userData?.id])
+ 
 
   return (
     <div>
@@ -74,7 +77,51 @@ const Leave = () => {
           Add leave
         </button>
       </div>
-      <div>{/* <Table table={table} /> */}</div>
+
+      {/* ✅ Plain table without any package */}
+      <table className="w-full border-collapse border border-gray-300 text-sm">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 px-3 py-2 text-left">
+              Leave type
+            </th>
+            <th className="border border-gray-300 px-3 py-2 text-left">
+              Start time
+            </th>
+            <th className="border border-gray-300 px-3 py-2 text-left">
+              End time
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {leaves?.length > 0 ? (
+            leaves?.map((row, i) => (
+              <tr key={i}>
+                <td className="border border-gray-300 px-3 py-2">
+                  {row.leaveType}
+                </td>
+                <td className="border border-gray-300 px-3 py-2">
+                  {formatDate(row.startDate)}
+                </td>
+                <td className="border border-gray-300 px-3 py-2">
+                  {formatDate(row.endDate)}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan="3"
+                className="border border-gray-300 px-3 py-2 text-center text-gray-500"
+              >
+                No leaves added yet
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+
+      {/* Modal */}
       <Modal
         classname="w-[30vw] h-auto"
         isOpen={isModalOpen}
@@ -85,29 +132,19 @@ const Leave = () => {
           Schedule your time off. Let us know when you’ll be unavailable so we
           can keep things running smoothly.
         </p>
+
         <div className="flex flex-col gap-3">
           <div>
-            <label className="block mb-4 text-[#5A5A5A] font-semibold text-sm ">
+            <label className="block mb-4 text-[#5A5A5A] font-semibold text-sm">
               Leave type
             </label>
             <select
+              value={leaveType}
+              onChange={(e) => setLeaveType(e.target.value)}
               className="w-full border outline-none text-sm text-[#5A5A5A] border-[#E1E1E1] p-3 rounded-xl"
-              placeholder="Account information"
             >
               {availabilityTypes.map((type) => (
-                <option className="text-xs" key={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <select
-              className="w-full border outline-none text-sm text-[#5A5A5A] border-[#E1E1E1] p-3 rounded-xl"
-              placeholder="Account information"
-            >
-              {availabilityTypes.map((type) => (
-                <option className="text-xs" key={type}>
+                <option className="text-xs" key={type} value={type}>
                   {type}
                 </option>
               ))}
@@ -115,24 +152,26 @@ const Leave = () => {
           </div>
         </div>
 
+        {/* Time slot inputs */}
         {timeSlots.map((slot, index) => (
-          <div key={index} className="flex gap-2">
+          <div key={index} className="flex gap-2 mt-2">
             <input
-              type="time"
-              className="flex-1 border text-sm text-[#5A5A5A] outline-none border-[#E1E1E1]  rounded-xl p-2"
+              type="date"
+              className="flex-1 border text-sm text-[#5A5A5A] outline-none border-[#E1E1E1] rounded-xl p-2"
               value={slot.start}
               onChange={(e) => handleSlotChange(index, "start", e.target.value)}
             />
             <input
-              type="time"
-              className="flex-1 border text-sm text-[#5A5A5A] outline-none border-[#E1E1E1]   rounded-xl p-2"
+              type="date"
+              className="flex-1 border text-sm text-[#5A5A5A] outline-none border-[#E1E1E1] rounded-xl p-2"
               value={slot.end}
               onChange={(e) => handleSlotChange(index, "end", e.target.value)}
             />
+
             {/* {index === timeSlots.length - 1 && (
               <button
                 type="button"
-                className="px-4 py-2 border border-[#E1E1E1]  rounded bg-gray-100 hover:bg-gray-200"
+                className="px-4 py-2 border border-[#E1E1E1] rounded bg-gray-100 hover:bg-gray-200"
                 onClick={handleAddSlot}
               >
                 +
@@ -141,7 +180,10 @@ const Leave = () => {
           </div>
         ))}
 
-        <button className="bg-[#0A4863] w-full rounded-2xl text-sm p-1 text-white">
+        <button
+          onClick={handleSubmit}
+          className="bg-[#0A4863] w-full mt-4 rounded-2xl text-sm p-2 text-white"
+        >
           Submit
         </button>
       </Modal>
