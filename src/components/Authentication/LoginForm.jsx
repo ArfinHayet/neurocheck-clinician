@@ -9,7 +9,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 const LoginForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserData } = useContext(AuthContext);
+  const { setUserData, setLoading} = useContext(AuthContext);
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -31,13 +31,14 @@ const LoginForm = () => {
     };
 
     console.log("Logging in with:", payload);
-
+   setLoading(true)
     const result = await loginuser(payload);
     if (result && result?.payload?.token?.access_token) {
       localStorage.setItem("accessToken", result?.payload?.token?.access_token);
       const userData = result.payload.filteredUser;
       setUserData(userData);
-      router?.push("/");
+       setLoading(false)
+     router.replace("/");
     }
   };
   return (

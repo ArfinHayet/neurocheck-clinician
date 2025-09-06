@@ -1,9 +1,28 @@
 "use client";
 
+import { getSubmissionByPatientId } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
-import { useState } from "react";
+import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { useParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 
 const Prescription = () => {
+  const { userData } = useContext(AuthContext);
+  console.log(userData)
+  const { id } = useParams();
+  console.log(id)
+  const [patientDetailsById, setPatientDetailsById] = useState([])
+
+    const getSubmissionDetails = async () => {
+    const result = await getSubmissionByPatientId(id);
+    console.log(result?.payload);
+    setPatientDetailsById(result?.payload);
+  };
+
+  useEffect(() => {
+    getSubmissionDetails();
+  }, [id]);
+
   const [notes, setNotes] = useState("");
   const [medName, setMedName] = useState("");
   const [dosage, setDosage] = useState("");
@@ -39,7 +58,7 @@ const Prescription = () => {
     alert("Submitted — check console");
   };
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen ">
       <Header
         title="Clinician Feedback & Prescription"
         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"
@@ -47,13 +66,13 @@ const Prescription = () => {
       <div className="w-full lg:w-4/6 border border-[#DFDFDF] rounded p-4 flex flex-row gap-9">
         <div className="w-1/3">
           <h2 className="text-2xl font-semibold text-[#000000]">
-            Dr Alison Lennox
+            {userData?.name}
           </h2>
           <p className="text-sm text-[#534F4F]">
-            Consultant psychiatrist, Adult Autism
+            {userData?.certification}
           </p>
-          <p className="text-sm text-[#534F4F]">clinicemail@gmail.com</p>
-          <p className="text-sm text-[#534F4F]">07564 327 89</p>
+          <p className="text-sm text-[#534F4F]">{userData?.email}</p>
+          <p className="text-sm text-[#534F4F]">{userData?.phone}</p>
         </div>
 
         <div className="w-2/3 border-l md:border-l border-[#DFDFDF]  pl-6 text-sm text-gray-700">
@@ -86,7 +105,7 @@ const Prescription = () => {
         />
 
         {/* Medication input row */}
-        <div className="mt-6 w-5/6">
+        <div className="mt-6 w-[73%]">
           <p className="font-semibold text-lg text-[#3B3B3B]">
             Prescribed medications
           </p>

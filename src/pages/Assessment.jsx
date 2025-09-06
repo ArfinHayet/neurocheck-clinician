@@ -15,7 +15,7 @@ const Assessment = () => {
   const [selectedId, setSelectedId] = useState(null);
 
 
-const handleSubmitRating = ({ rating}) => {
+const handleSubmitRating = () => {
   setIsRateModalOpen(false);
 };
 
@@ -46,6 +46,7 @@ const handleSubmitRating = ({ rating}) => {
   const fetchSubmissions = async () => {
     const data = await getAllsubmissions();
     const rawData = data.payload?.filter((i) => i.assessment?.type === "premium");
+    // const rawData = data.payload;
     console.log(rawData)
     setSubmission(rawData);
   };
@@ -66,6 +67,7 @@ const handleSubmitRating = ({ rating}) => {
         {submission?.map((item, index) => (
           <AssessmentCard
             key={index}
+            patientId= {item?.id}
             name={item?.patient?.name}
             age={item?.patient?.dateOfBirth}
             timeAgo={item?.createdAt}

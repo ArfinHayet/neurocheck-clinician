@@ -129,7 +129,7 @@ const Leave = () => {
               value={slot.end}
               onChange={(e) => handleSlotChange(index, "end", e.target.value)}
             />
-            {index === timeSlots.length - 1 && (
+            {/* {index === timeSlots.length - 1 && (
               <button
                 type="button"
                 className="px-4 py-2 border border-[#E1E1E1]  rounded bg-gray-100 hover:bg-gray-200"
@@ -137,7 +137,7 @@ const Leave = () => {
               >
                 +
               </button>
-            )}
+            )} */}
           </div>
         ))}
 

@@ -17,7 +17,19 @@ const getAllanswers = async ({ assessmentId }) => {
 
 
 const getAllsubmissions = async () => {
-  const response = await fetch(`${domain}/submissions`, {
+  const response = await fetch(`${domain}/submissions?page=1&limit=100`, {
+    method: "GET",
+    headers: {
+         authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+const getSubmissionByPatientId = async (patientId) => {
+  const response = await fetch(`${domain}/submissions?id=${patientId}`, {
     method: "GET",
     headers: {
          authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -48,4 +60,4 @@ const updateStatus = async (id, obj) => {
 
 
 
-export { getAllanswers , getAllsubmissions, updateStatus};
+export { getAllanswers , getSubmissionByPatientId, getAllsubmissions, updateStatus};

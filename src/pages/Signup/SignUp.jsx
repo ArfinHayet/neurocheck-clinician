@@ -61,7 +61,7 @@ const SignUp = ({otp, identifier}) => {
      localStorage.setItem("accessToken", result.payload.token.access_token);
         const userData = result.payload.user;
      setUserData(userData);
-     router.push("/")
+    router.replace("/");
    }
    
 

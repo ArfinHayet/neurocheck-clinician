@@ -9,7 +9,7 @@ import { getAge } from "../utils/ageConverter";
 import { timeConverter } from "../utils/timeconverter";
 // import  { getAge,timeConverter } from "../utils/ageConverter";
 
-const AssessmentCard = ({
+const SubmissionDetailsCard = ({
   name,
   age,
   timeAgo,
@@ -47,7 +47,7 @@ const AssessmentCard = ({
   const statusClass = colors[statusKey] || colors.pending;
 
   return (
-    <div className="bg-[#FFFFFF] rounded-lg p-4 shadow-sm">
+    <div className="pt-12">
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-4">
           <Image
@@ -141,8 +141,7 @@ const AssessmentCard = ({
         </div>
       </div>
 
-      {/* Content */}
-      <Link className="no-underline" href={`/assessment/${patientId}`}>
+    
         <div className="flex-1 mt-5">
           <div className="flex flex-row gap-2">
             <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">
@@ -161,9 +160,10 @@ const AssessmentCard = ({
           </div>
           <p className="text-[#3C3C4399] text-xs mt-1">{description}</p>
         </div>
-      </Link>
+      
     </div>
   );
 };
 
-export default AssessmentCard;
+export default SubmissionDetailsCard;
+
