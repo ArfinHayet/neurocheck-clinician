@@ -1,15 +1,19 @@
-import { addClinicianAvailabilty } from "@/api/user";
+import { addClinicianAvailabilty, getCinicianAvailabilityById } from "@/api/user";
 import { AuthContext } from "@/Provider.jsx/AuthProvider";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const Availability = () => {
   const { userData } = useContext(AuthContext)
   const [availabilityType, setAvailabilityType] = useState("Select");
+  // const [leaves, setLeaves] = useState([]);
   const [timeSlots, setTimeSlots] = useState([
-    { day: "Saturday", start: "", end: "" },
+    {
+      day: "Saturday",
+      start: "", end: ""
+    },
   ]);
-  const [leaves, setLeaves] = useState([]);
 
+ 
   const availabilityTypes = ["Select", "All day", "Specific day"];
   const days = [
     "Saturday",
@@ -25,8 +29,14 @@ const Availability = () => {
   const to12HourFormat = (time24) => {
   let [hour, minute] = time24.split(":").map(Number);
   const ampm = hour >= 12 ? "PM" : "AM";
-  hour = hour % 12 || 12; // convert 0 => 12
+  hour = hour % 12 || 12; 
   return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")} ${ampm}`;
+  };
+  
+const formatTime = (t) => {
+  // If already has seconds, return as is
+  if (t.length === 8) return t;
+  return t + ":00";
 };
 
  
@@ -40,61 +50,49 @@ const Availability = () => {
     setTimeSlots(newSlots);
   };
 
- const handleAddLeave = async () => {
+const handleAddLeave = async () => {
   if (availabilityType === "Select") return;
 
-  // Filter only valid slots
   const validSlots = timeSlots.filter((slot) => slot.start && slot.end);
 
   if (validSlots.length === 0) return;
 
-  // 1. Prepare days as comma-separated string
-  const dayList =
-    availabilityType === "All day"
-      ? "All day"
-      : validSlots.map((slot) => slot.day).join(", ");
 
-  // 2. Prepare time as array of objects
- const timeList = validSlots?.map((slot) => ({
-  "start-time": slot.start,
-  "end-time": slot.end,
-}));
-
-
-  // 3. Optionally, save to local state
-  setLeaves((prev) => [
-    ...prev,
-    ...validSlots.map((slot) => ({
-      day: slot.day,
-      start: slot.start,
-      end: slot.end,
-    })),
-  ]);
-
-  // 4. Prepare payload
-  const payload = {
+  const payload = validSlots.map((slot) => ({
     availabilityType: availabilityType === "All day" ? "all_day" : "specific_day",
-    day: dayList,
-    time: JSON.stringify(timeList), // convert array to string
-    // time: "09:00:00", // convert array to string
+    day: slot.day,
+    time: formatTime(slot.start),
+    endTime: formatTime(slot.end),
     userId: String(userData?.id),
-   };
-   console.log(payload)
-   const result = await addClinicianAvailabilty(payload)
-  console.log(result);
+  }));
 
-  // Send to API
-  // await api.post("/saveAvailability", payload);
+  console.log("Payload:", payload);
 
-  // reset form
+  const result = await addClinicianAvailabilty(payload);
+  console.log("API Result:", result);
+
+  getAvailability();
+  // setLeaves((prev) => [...prev, ...validSlots]);
   setAvailabilityType("Select");
   setTimeSlots([{ day: "Saturday", start: "", end: "" }]);
-};
+  };
+  
+
+  const [availability, setAvailability] = useState([]);
+  const getAvailability = async () => {
+    const data = await getCinicianAvailabilityById(userData?.id);
+    console.log(data?.payload);
+    setAvailability(data?.payload);
+  }
+
+  useEffect(() => {
+    getAvailability();
+  },[userData?.id])
 
 
   return (
     <div className="w-full flex flex-row gap-6">
-      {/* Left form */}
+      
       <div className="w-3/6 flex flex-col gap-4 mt-10 space-y-4">
         <div>
           <label className="block mb-4 text-[#5A5A5A] font-semibold text-sm">
@@ -117,7 +115,7 @@ const Availability = () => {
           availabilityType === "Specific day") &&
           timeSlots.map((slot, index) => (
             <div key={index} className="flex gap-2">
-              {/* Day selector only for Specific day */}
+             
               {availabilityType === "Specific day" && (
                 <select
                   className="border text-sm text-[#5A5A5A] outline-none border-[#E1E1E1] rounded p-2"
@@ -175,7 +173,7 @@ const Availability = () => {
 
       {/* Right Table */}
       <div className="w-3/6 mt-[4.5rem] flex justify-center">
-        {leaves.length === 0 ? (
+        {availability?.length === 0 ? (
           <p className="text-gray-500">No data available</p>
         ) : (
           <table className="min-w-full border border-[#E1E1E1] text-sm">
@@ -187,11 +185,11 @@ const Availability = () => {
               </tr>
             </thead>
             <tbody>
-              {leaves.map((leave, i) => (
-                <tr key={i} className="border-t border-[#E1E1E1]">
-                  <td className="p-2 border border-[#E1E1E1]">{leave.day}</td>
-                  <td className="p-2 border border-[#E1E1E1]">{leave.start}</td>
-                  <td className="p-2 border border-[#E1E1E1]">{leave.end}</td>
+              {availability?.map((leave) => (
+                <tr key={leave?.id} className="border-t border-[#E1E1E1]">
+                  <td className="p-2 border border-[#E1E1E1]">{leave?.day}</td>
+                  <td className="p-2 border border-[#E1E1E1]">{leave?.time}</td>
+                  <td className="p-2 border border-[#E1E1E1]">{leave?.endTime}</td>
                 </tr>
               ))}
             </tbody>

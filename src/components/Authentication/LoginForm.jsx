@@ -31,12 +31,13 @@ const LoginForm = () => {
     };
 
     console.log("Logging in with:", payload);
-   setLoading(true)
+    setLoading(true)
     const result = await loginuser(payload);
     if (result && result?.payload?.token?.access_token) {
       localStorage.setItem("accessToken", result?.payload?.token?.access_token);
       const userData = result.payload.filteredUser;
       setUserData(userData);
+      localStorage.setItem("userData", JSON.stringify(userData));
        setLoading(false)
      router.replace("/");
     }

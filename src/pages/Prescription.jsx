@@ -81,7 +81,7 @@ const Prescription = () => {
   };
 
   return (
-    <div className="min-h-screen ">
+    <div className="p-6 lg:p-0">
       <Header
         title="Clinician Feedback & Prescription"
         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"
@@ -130,7 +130,7 @@ const Prescription = () => {
         />
 
         {/* Medication input row */}
-        <div className="mt-6 w-[73%]">
+        {/* <div className="mt-6 w-[73%]">
           <p className="font-semibold text-lg text-[#3B3B3B]">
             Prescribed medications
           </p>
@@ -169,7 +169,7 @@ const Prescription = () => {
             </button>
           </div>
 
-          {/* Medications list */}
+       
           <div className="mt-6 w-5/6">
             {meds.length > 0 && (
               <div className=" overflow-hidden">
@@ -210,7 +210,7 @@ const Prescription = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-8">
           <button

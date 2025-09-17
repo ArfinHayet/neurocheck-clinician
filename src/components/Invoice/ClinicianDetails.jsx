@@ -1,15 +1,22 @@
+"use client"
+import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { useContext } from "react";
 import { FaCalendarAlt, FaFileInvoice } from "react-icons/fa";
 
-const ClinicianDetails = () => (
-  <div className=" p-4 rounded-lg  flex justify-between items-start border border-[#DFDFDF] mb-8">
+const ClinicianDetails = () => {
+
+  const { userData } = useContext(AuthContext)
+
+  return (
+    <div className=" p-4 rounded-lg  flex justify-between items-start border border-[#DFDFDF] mb-8">
     <div className="">
-      <h2 className="text-lg font-semibold text-black">Dr Alison Lennox</h2>
-      <p className="text-sm text-gray-600">Consultant psychiatrist, Adult Autism</p>
-      <p className="text-sm text-gray-600">clinicianemail2gmail.com</p>
-      <p className="text-sm text-gray-600">07654 327 89</p>
+      <h2 className="text-lg font-semibold text-black">{userData?.name}</h2>
+      <p className="text-sm text-gray-600">{userData?.certification}</p>
+      <p className="text-sm text-gray-600">{userData?.email}</p>
+      <p className="text-sm text-gray-600">{userData?.phone}</p>
     </div>
 
-    <div className="text-sm text-gray-700 space-y-3">
+    <div className="text-sm text-gray-700 space-y-3"> 
       <div className="flex items-center gap-2">
         <FaFileInvoice />
         <span>INV-JUL-2025-039</span>
@@ -21,6 +28,7 @@ const ClinicianDetails = () => (
       </div>
     </div>
   </div>
-);
+  );
+};
 
 export default ClinicianDetails;

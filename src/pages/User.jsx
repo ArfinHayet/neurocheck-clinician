@@ -34,7 +34,7 @@ const User = () => {
   );
 
   return (
-    <div>
+    <div className="p-6 lg:p-0">
       <UserTab
         tabs={tabs}
         selected={selectedTab}

@@ -39,6 +39,19 @@ const getSubmissionByPatientId = async (patientId) => {
 };
 
 
+const getSubmissionByClinicianId = async (clinicianId) => {
+  const response = await fetch(`${domain}/submissions?clinicianId=${clinicianId}`, {
+    method: "GET",
+    headers: {
+         authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+
 const updateStatus = async (id, obj) => {
  
     const response = await fetch(`${domain}/submissions/${id}`, {
@@ -84,5 +97,6 @@ export {
   getSubmissionByPatientId,
   getAllsubmissions,
   updateStatus,
-  addPrescription
+  addPrescription,
+  getSubmissionByClinicianId
 };

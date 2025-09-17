@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const assessments = [
   { name: "Alfie Thompson", date: "2 August, 2025", category: "Child ADHD Diagnosis", amount: "130.99" },
   { name: "Harry Walker", date: "2 August, 2025", category: "Adult ADHD Diagnosis", amount: "130.99" },
@@ -7,7 +9,10 @@ const assessments = [
   { name: "Freya Clarke", date: "2 August, 2025", category: "Child ADHD Diagnosis", amount: "130.99" },
 ];
 
-const AssessmentTable = () => {
+const AssessmentTable = ({ assessmentId }) => {
+  const [patient, setPatient] = useState([])
+  
+
   const total = assessments.reduce((sum, a) => sum + parseFloat(a.amount), 0).toFixed(2);
 
   return (

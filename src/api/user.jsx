@@ -19,6 +19,19 @@ const addClinicianAvailabilty = async (obj) => {
 };
 
 
+const getCinicianAvailabilityById = async (userId) => {
+  const response = await fetch(`${domain}/availabilities?userId=${userId}`, {
+    method: "GET",
+    headers: {
+         authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+
 const addClinicianLeave = async (obj) => {
   // //console.log("hello series", obj);
 
@@ -51,8 +64,23 @@ const getLeavesById = async (userId) => {
 };
 
 
+const getBillingInfo = async () => {
+  const response = await fetch(`${domain}/payment/products`, {
+    method: "GET",
+    headers: {
+         authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+
 export {
     addClinicianAvailabilty,
     addClinicianLeave,
-    getLeavesById
+    getLeavesById,
+    getBillingInfo,
+    getCinicianAvailabilityById
 };

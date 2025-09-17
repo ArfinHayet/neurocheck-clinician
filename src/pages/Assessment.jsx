@@ -14,7 +14,7 @@ const Assessment = () => {
   const [submission, setSubmission] = useState([]);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
-  const { userData } = useContext(AuthContext)
+   const { userData } = useContext(AuthContext) ?? {};
 
 const handleSubmitRating = () => {
   setIsRateModalOpen(false);
@@ -48,7 +48,7 @@ const handleSubmitRating = () => {
 
   const fetchSubmissions = async () => {
     const data = await getAllsubmissions();
-    const rawData = data.payload?.filter((i) => i.assessment?.type === "premium");
+    const rawData = data.payload?.filter((i) => i?.assessment?.type === "premium");
     // const rawData = data.payload;
     console.log(rawData)
     setSubmission(rawData);
@@ -60,7 +60,7 @@ const handleSubmitRating = () => {
 
 
   return (
-    <div>
+    <div className="p-6 lg:p-0">
       <Header
         title="Assessment queue"
         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"
