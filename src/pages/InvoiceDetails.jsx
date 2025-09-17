@@ -4,7 +4,6 @@ import AssessmentTable from "@/components/Invoice/AssessmentTable";
 import ClinicianDetails from "@/components/Invoice/ClinicianDetails";
 import InvoiceHeader from "@/components/Invoice/InvoiceHeader";
 import { useParams } from "next/navigation";
-import React from "react";
 
 const InvoiceDetails = () => {
   const { assessmentId } = useParams();
@@ -13,8 +12,7 @@ const InvoiceDetails = () => {
       <InvoiceHeader />
       <ClinicianDetails />
       <AssessmentTable
-        assessmentId={assessmentId}
-      
+        assessmentId={assessmentId}     
       />
     </div>
   );
