@@ -2,7 +2,6 @@
 import { updateStatus } from "@/api/assessment";
 import Modal from "@/components/ui-reusable/Modal";
 import { AuthContext } from "@/Provider/AuthProvider";
-// import { AuthContext } from "@/Provider/AuthProvider";
 import React, { useContext, useState } from "react";
 
 const AdditionalInfoModal = ({ isModalOpen, closeModal, patientId, additionalInfo }) => {
