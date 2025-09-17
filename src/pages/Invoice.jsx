@@ -1,8 +1,8 @@
 "use client";
 import { getSubmissionByClinicianId } from "@/api/assessment";
 import InvoiceCard from "@/components/Invoice/InvoiceCard";
-import { AuthContext } from "@/Provider/AuthProvider";
-// import { AuthContext } from "@/Provider/AuthProvider";
+import { AuthContext } from "../Provider/AuthProvider";
+// import { AuthContext } from "../Provider/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 
 const Invoice = () => {

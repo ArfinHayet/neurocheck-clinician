@@ -6,8 +6,8 @@ import { useContext, useEffect, useState } from "react";
 import RatingModal from "./RatingModal";
 import SubmissionDetails from "./SubmissionDetails";
 import { getAllsubmissions, updateStatus } from "@/api/assessment";
-import { AuthContext } from "@/Provider/AuthProvider";
-// import { AuthContext } from "@/Provider/AuthProvider";
+import { AuthContext } from "../Provider/AuthProvider";
+// import { AuthContext } from "../Provider/AuthProvider";
 
 const Assessment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
