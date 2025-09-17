@@ -6,7 +6,7 @@ import p1 from "../../../public/svg/web_logo.svg";
 import { signupuser } from "@/api/signup";
 // import { AuthContext } from "../Provider/AuthProvider";
 import { useRouter } from "next/navigation";
-import { AuthContext } from "../Provider/AuthProvider";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const SignUp = ({otp, identifier}) => {
   const [formData, setFormData] = useState({
