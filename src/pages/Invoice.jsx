@@ -1,7 +1,8 @@
 "use client";
 import { getSubmissionByClinicianId } from "@/api/assessment";
 import InvoiceCard from "@/components/Invoice/InvoiceCard";
-import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { AuthContext } from "@/Provider/AuthProvider";
+// import { AuthContext } from "@/Provider/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 
 const Invoice = () => {
@@ -61,7 +62,7 @@ const Invoice = () => {
           assessmentCount={item.assessmentCount}
           earnings={item.totalPaidAmount}
           status="Pending"
-          invoiceLink={`${item.assessmentId}`}
+          invoiceLink={`${item?.assessmentId}`}
         />
       ))}
     </div>

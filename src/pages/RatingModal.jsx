@@ -1,7 +1,8 @@
 import { updateStatus } from "@/api/assessment";
 import Modal from "@/components/ui-reusable/Modal";
 import { RatingInput } from "@/components/ui-reusable/RatingInput";
-import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { AuthContext } from "@/Provider/AuthProvider";
+// import { AuthContext } from "@/Provider/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 const RatingModal = ({
   isOpen,

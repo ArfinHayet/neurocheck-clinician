@@ -1,5 +1,6 @@
 "use client"
-import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { AuthContext } from "@/Provider/AuthProvider";
+// import { AuthContext } from "@/Provider/AuthProvider";
 import { useContext } from "react";
 import { FaCalendarAlt, FaFileInvoice } from "react-icons/fa";
 

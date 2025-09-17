@@ -6,7 +6,8 @@ import { useContext, useEffect, useState } from "react";
 import RatingModal from "./RatingModal";
 import SubmissionDetails from "./SubmissionDetails";
 import { getAllsubmissions, updateStatus } from "@/api/assessment";
-import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { AuthContext } from "@/Provider/AuthProvider";
+// import { AuthContext } from "@/Provider/AuthProvider";
 
 const Assessment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,7 +15,7 @@ const Assessment = () => {
   const [submission, setSubmission] = useState([]);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
-   const { userData } = useContext(AuthContext) ?? {};
+   const { userData } = useContext(AuthContext);
 
 const handleSubmitRating = () => {
   setIsRateModalOpen(false);

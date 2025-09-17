@@ -1,4 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
+
 import { createContext,useEffect,useState } from "react";
 
 export const AuthContext = createContext();
@@ -7,7 +7,7 @@ const AuthProvider = ({ children }) => {
  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  console.log("333", userData?.name)
+  // console.log("333", userData?.name)
 
     useEffect(() => {
     const storedUser = localStorage.getItem("userData");

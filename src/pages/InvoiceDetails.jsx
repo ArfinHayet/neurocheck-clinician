@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import React from "react";
 
 const InvoiceDetails = () => {
-  const { assessmentId } = useParams()
+  const { assessmentId } = useParams();
   return (
     <div className="p-6 lg:p-0 text-gray-800">
       <InvoiceHeader />

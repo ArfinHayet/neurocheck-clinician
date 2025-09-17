@@ -3,7 +3,8 @@ import { addPrescription, getSubmissionByPatientId } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
 import { getAge } from "@/components/utils/ageConverter";
 import { formatDate } from "@/components/utils/formateDate";
-import { AuthContext } from "@/Provider.jsx/AuthProvider";
+import { AuthContext } from "@/Provider/AuthProvider";
+// import { AuthContext } from "@/Provider/AuthProvider";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 

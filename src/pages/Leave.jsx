@@ -3,8 +3,9 @@
 import { useContext, useEffect, useState } from "react";
 import Modal from "@/components/ui-reusable/Modal";
 import { addClinicianLeave, getLeavesById } from "@/api/user";
-import { AuthContext } from "@/Provider.jsx/AuthProvider";
+// import { AuthContext } from "@/Provider/AuthProvider";
 import { formatDate } from "@/components/utils/formateDate";
+import { AuthContext } from "@/Provider/AuthProvider";
 
 const Leave = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
