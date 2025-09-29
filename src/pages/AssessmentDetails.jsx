@@ -3,7 +3,6 @@ import { getSubmissionByPatientId } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
 import SubmissionDetailsCard from "@/components/ui-reusable/SubmissionDetailsCard";
 import Link from "next/link";
-// import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AdditionalInfoModal from "./AdditionalInfoModal";
 import { useParams } from "next/navigation";

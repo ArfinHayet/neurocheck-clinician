@@ -1,10 +1,11 @@
 import { addClinicianAvailabilty, getCinicianAvailabilityById } from "@/api/user";
-import { AuthContext } from "../Provider/AuthProvider";
+import { AuthContext } from "@/Provider/AuthProvider";
+// import { AuthContext } from "../Provider/AuthProvider";
 // import { AuthContext } from "../Provider/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 
 const Availability = () => {
-  const { userData } = useContext(AuthContext)
+  const { userData } = useContext(AuthContext) || {};
   const [availabilityType, setAvailabilityType] = useState("Select");
   // const [leaves, setLeaves] = useState([]);
   const [timeSlots, setTimeSlots] = useState([

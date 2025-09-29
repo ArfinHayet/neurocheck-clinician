@@ -1,13 +1,13 @@
 "use client"
 import { updateStatus } from "@/api/assessment";
 import Modal from "@/components/ui-reusable/Modal";
-import { AuthContext } from "../Provider/AuthProvider";
-import React, { useContext, useState } from "react";
+import { AuthContext } from "@/Provider/AuthProvider";
+import { useContext, useState } from "react";
 
 const AdditionalInfoModal = ({ isModalOpen, closeModal, patientId, additionalInfo }) => {
   const [medName, setMedName] = useState("");
   const [meds, setMeds] = useState([]);
-  const { userData } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext) || {};;
  
   const addMedication = () => {
     if (!medName.trim()) return;

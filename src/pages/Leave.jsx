@@ -13,7 +13,7 @@ const Leave = () => {
   const [timeSlots, setTimeSlots] = useState([{ start: "", end: "" }]);
   const [leaves, setLeaves] = useState([]);
   const [leaveType, setLeaveType] = useState("Select");
-  const { userData } = useContext(AuthContext)
+  const { userData } = useContext(AuthContext) || {};
   const closeModal = () => {
     setIsModalOpen(false);
   };

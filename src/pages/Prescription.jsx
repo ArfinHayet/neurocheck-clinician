@@ -3,7 +3,7 @@ import { addPrescription, getSubmissionByPatientId } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
 import { getAge } from "@/components/utils/ageConverter";
 import { formatDate } from "@/components/utils/formateDate";
-import { AuthContext } from "../Provider/AuthProvider";
+import { AuthContext } from "@/Provider/AuthProvider";
 // import { AuthContext } from "../Provider/AuthProvider";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -16,7 +16,7 @@ const Prescription = () => {
   const [frequency, setFrequency] = useState("");
   const [duration, setDuration] = useState("");
   const [meds, setMeds] = useState([]);
-  const { userData } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext) || {};;
   // console.log(userData);
   const { id } = useParams();
   // console.log(id);
@@ -250,7 +250,7 @@ export default Prescription;
 //   const [meds, setMeds] = useState([]);
 //   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-//   const { userData } = useContext(AuthContext);
+//   const { userData } = useContext(AuthContext) || {};;
 //   const { id } = useParams();
 
 //   const getSubmissionDetails = async () => {

@@ -15,7 +15,7 @@ const RatingModal = ({
 }) => {
   const [rating, setRating] = useState(initialRating);
   const [comment, setComment] = useState("");
-  const { userData } = useContext(AuthContext)
+  const { userData } = useContext(AuthContext) || {};
 
   useEffect(() => {
     if (isOpen) setRating(initialRating);

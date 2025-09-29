@@ -6,7 +6,7 @@ import { FaCalendarAlt, FaFileInvoice } from "react-icons/fa";
 
 const ClinicianDetails = () => {
 
-  const { userData } = useContext(AuthContext)
+  const { userData } = useContext(AuthContext) || {};
 
   return (
     <div className=" p-4 rounded-lg  flex justify-between items-start border border-[#DFDFDF] mb-8">
