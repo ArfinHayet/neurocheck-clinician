@@ -7,7 +7,7 @@ import { useContext, useState } from "react";
 const AdditionalInfoModal = ({ isModalOpen, closeModal, patientId, additionalInfo }) => {
   const [medName, setMedName] = useState("");
   const [meds, setMeds] = useState([]);
-  const { userData } = useContext(AuthContext) || {};;
+  const { userData } = useContext(AuthContext) || {};
  
   const addMedication = () => {
     if (!medName.trim()) return;

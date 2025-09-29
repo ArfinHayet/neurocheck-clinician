@@ -15,7 +15,7 @@ const Assessment = () => {
   const [submission, setSubmission] = useState([]);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
-   const { userData } = useContext(AuthContext) || {};;
+   const { userData } = useContext(AuthContext) || {};
 
 const handleSubmitRating = () => {
   setIsRateModalOpen(false);

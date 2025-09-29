@@ -16,7 +16,8 @@ const Prescription = () => {
   const [frequency, setFrequency] = useState("");
   const [duration, setDuration] = useState("");
   const [meds, setMeds] = useState([]);
-  const { userData } = useContext(AuthContext) || {};;
+  const { userData } = useContext(AuthContext) || {};
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   // console.log(userData);
   const { id } = useParams();
   // console.log(id);
@@ -76,6 +77,7 @@ const Prescription = () => {
     if (result) {
       setMeds([]);
       setNotes("");
+      setShowSuccessModal(true);
     }
 
     console.log("submit", payload);
@@ -222,6 +224,33 @@ const Prescription = () => {
           </button>
         </div>
       </form>
+       {showSuccessModal && (
+        <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 shadow-lg text-center w-96">
+            <h2 className="text-xl font-semibold -600 mb-4">
+              ✅ Prescription Submitted
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Your prescription has been successfully saved.
+            </p>
+            <div className="flex flex-col gap-2">
+             <button
+              onClick={() => setShowSuccessModal(false)}
+              className=" border-2 border-[#0A4863] text-[#0A4863] px-6 py-2 rounded-xl"
+            >
+            Save appointment Date
+            </button>
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="bg-[#0A4863] text-white px-6 py-2  rounded-xl"
+            >
+             Go to dashboard
+            </button>
+            </div>
+        
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -231,177 +260,3 @@ export default Prescription;
 
 
 
-// "use client";
-// import { addPrescription, getSubmissionByPatientId } from "@/api/assessment";
-// import Header from "@/components/ui-reusable/Header";
-// import { getAge } from "@/components/utils/ageConverter";
-// import { formatDate } from "@/components/utils/formateDate";
-// import { AuthContext } from "../Provider/AuthProvider";
-// import { useParams } from "next/navigation";
-// import { useContext, useEffect, useState } from "react";
-
-// const Prescription = () => {
-//   const [patientDetailsById, setPatientDetailsById] = useState([]);
-//   const [notes, setNotes] = useState("");
-//   const [medName, setMedName] = useState("");
-//   const [dosage, setDosage] = useState("");
-//   const [frequency, setFrequency] = useState("");
-//   const [duration, setDuration] = useState("");
-//   const [meds, setMeds] = useState([]);
-//   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
-//   const { userData } = useContext(AuthContext) || {};;
-//   const { id } = useParams();
-
-//   const getSubmissionDetails = async () => {
-//     const result = await getSubmissionByPatientId(8);
-//     setPatientDetailsById(result?.payload);
-//   };
-
-//   useEffect(() => {
-//     getSubmissionDetails();
-//   }, [id]);
-
-//   const addMedication = () => {
-//     if (!medName) return;
-//     setMeds((prev) => [
-//       ...prev,
-//       {
-//         name: medName,
-//         dosage: dosage || "-",
-//         frequency: frequency || "-",
-//         duration: duration || "-",
-//       },
-//     ]);
-//     setMedName("");
-//     setDosage("");
-//     setFrequency("");
-//     setDuration("");
-//   };
-
-//   const removeMedication = (index) => {
-//     setMeds((prev) => prev.filter((_, i) => i !== index));
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const medicineStr = meds.map((m, i) => `med-${i + 1}:${m.name}`).join(", ");
-//     const dosageStr = meds.map((m) => m.dosage).join(", ");
-//     const frequencyStr = meds.map((m) => m.frequency).join(", ");
-//     const durationStr = meds.map((m) => m.duration).join(", ");
-
-//     const payload = {
-//       assessmentId: patientDetailsById?.[0]?.assessmentId,
-//       userId: userData?.id,
-//       patientId: patientDetailsById?.[0]?.patientId,
-//       observation: notes,
-//       medicine: medicineStr,
-//       dosage: dosageStr,
-//       frequency: frequencyStr,
-//       duration: durationStr,
-//       clinicianId: userData?.id,
-//     };
-
-//     const result = await addPrescription(payload);
-//     if (result) {
-//       setMeds([]);
-//       setNotes("");
-//       setShowSuccessModal(true); // success modal open
-//     }
-//   };
-
-//   return (
-//     <div className="p-6 lg:p-0">
-//       <Header
-//         title="Clinician Feedback & Prescription"
-//         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"
-//       />
-
-//       {/* Patient & Clinician Info */}
-//       <div className="w-full lg:w-4/6 border border-[#DFDFDF] rounded p-4 flex flex-row gap-9">
-//         <div className="w-1/3">
-//           <h2 className="text-2xl font-semibold text-[#000000]">
-//             {userData?.name}
-//           </h2>
-//           <p className="text-sm text-[#534F4F]">{userData?.certification}</p>
-//           <p className="text-sm text-[#534F4F]">{userData?.email}</p>
-//           <p className="text-sm text-[#534F4F]">{userData?.phone}</p>
-//         </div>
-
-//         <div className="w-2/3 border-l md:border-l border-[#DFDFDF] pl-6 text-sm text-gray-700">
-//           {patientDetailsById?.map((item, i) => (
-//             <div key={i} className="grid grid-cols-2 gap-2">
-//               <div>Patient name</div>
-//               <div className="font-medium">: {item?.patient?.name}</div>
-//               <div>Age</div>
-//               <div className="font-medium">
-//                 : {getAge(item?.patient?.dateOfBirth)}
-//               </div>
-//               <div>Sex</div>
-//               <div className="font-medium">: {item?.patient?.gender}</div>
-//               <div>Date</div>
-//               <div className="font-medium">: {formatDate(item?.createdAt)}</div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* Form */}
-//       <form className="mt-8" onSubmit={handleSubmit}>
-//         <label className="block font-medium text-sm text-[#3B3B3B] mb-2">
-//           Clinical observations
-//         </label>
-//         <p className="text-xs text-[#3C3C4399] pb-3">
-//           Write your feedback, observations, suggestions, recommendations,
-//           instructions and follow up information
-//         </p>
-//         <textarea
-//           value={notes}
-//           onChange={(e) => setNotes(e.target.value)}
-//           className="w-full lg:w-4/6 h-56 rounded border border-[#E2E2E2] p-4 bg-gray-50 resize-none outline-none"
-//         />
-
-//         <div className="mt-8">
-//           <button
-//             className="w-4/6 cursor-pointer bg-[#0A4863] text-white rounded-full py-2 shadow"
-//             type="submit"
-//           >
-//             Submit
-//           </button>
-//         </div>
-//       </form>
-
-//       {/* Success Modal */}
-//       {showSuccessModal && (
-//         <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50">
-//           <div className="bg-white rounded-lg p-6 shadow-lg text-center w-96">
-//             <h2 className="text-xl font-semibold -600 mb-4">
-//               ✅ Prescription Submitted
-//             </h2>
-//             <p className="text-gray-600 mb-6">
-//               Your prescription has been successfully saved.
-//             </p>
-//             <div className="flex flex-col gap-2">
-//              <button
-//               onClick={() => setShowSuccessModal(false)}
-//               className=" border-2 border-[#0A4863] text-[#0A4863] px-6 py-2 rounded-xl"
-//             >
-//             Save appointment Date
-//             </button>
-//             <button
-//               onClick={() => setShowSuccessModal(false)}
-//               className="bg-[#0A4863] text-white px-6 py-2  rounded-xl"
-//             >
-//              Go to dashboard
-//             </button>
-//             </div>
-        
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Prescription;
