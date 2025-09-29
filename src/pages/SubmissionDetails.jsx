@@ -7,47 +7,40 @@ import { getAge } from "@/components/utils/ageConverter";
 import Image from "next/image";
 import { timeConverter } from "@/components/utils/timeconverter";
 
-const SubmissionDetails = ({ isModalOpen, closeModal, assessmentId, id, score, time }) => {
-  const [answer, setAnswer] = useState([]);
+const SubmissionDetails = ({
+  isModalOpen,
+  closeModal,
+  patientId,
+  score,
+  time,
+}) => {
+  const [answers, setAnswers] = useState([]);
+  const [patient, setPatient] = useState(null);
 
   const fetchAnswers = async () => {
-    try {
-      const data = await getAllanswers(assessmentId);
-      const rawData = data.payload;
-      console.log(rawData)
-      const grouped = rawData.reduce((acc, curr) => {
-        const userId = curr.userId;
+    const data = await getAllanswers({ patientId });
+    const rawData = data?.payload || [];
 
-        if (!acc[userId]) {
-          acc[userId] = {
-            user: curr.user,
-            patient: curr.patient,
-            assessment: curr.assessment,
-            answers: [],
-          };
-        }
+    if (rawData.length > 0) {
+      // patient info ekbar nibo
+      setPatient(rawData[0].patient);
 
-        acc[userId].answers.push({
-          questionId: curr.questionId,
-          question: curr.question.questions,
-          answerType: curr.question.answerType,
-          options: curr.question.options,
-          answer: curr.answer,
-        });
-
-        return acc;
-      }, {});
-      const result = Object.values(grouped);
-      const submission = result?.filter(i => i.patient?.id === id)
-      setAnswer(submission);
-    } catch (err) {
-      console.error("Error fetching answers:", err);
+      // shudhu question + answer nibo
+      const formatted = rawData.map((item) => ({
+        id: item.id,
+        questionId: item.question.id,
+        question: item.question.questions,
+        answer: item.answer,
+      }));
+      setAnswers(formatted);
     }
   };
 
   useEffect(() => {
-    fetchAnswers();
-  }, []);
+    if (isModalOpen && patientId) {
+      fetchAnswers();
+    }
+  }, [isModalOpen, patientId]);
 
   return (
     <div>
@@ -57,44 +50,48 @@ const SubmissionDetails = ({ isModalOpen, closeModal, assessmentId, id, score, t
         closeModal={closeModal}
         title="Assessment details"
       >
-        {answer.map((submission, idx) => (
-          <div key={idx}>
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex gap-4">
-            <Image
-              src={p1}
-              alt="User"
-              height={40}
-              width={40}
-              className="w-10 h-10 rounded-full"
-              priority
-            />
-            <div key={idx}>
-              <div className="flex items-center gap-2">
-                <h2 className="font-semibold">{submission?.patient?.name}</h2>
-                <span className="px-2 py-0.5 md:block hidden rounded-md text-xs">
-                 Score : {score}
-                </span>
+        {patient && (
+          <div>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex gap-4">
+                <Image
+                  src={p1}
+                  alt="User"
+                  height={40}
+                  width={40}
+                  className="w-10 h-10 rounded-full"
+                  priority
+                />
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="font-semibold">{patient?.name}</h2>
+                    <span className="px-2 py-0.5 md:block hidden rounded-md text-xs">
+                      Score : {score || 0}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    {getAge(patient?.dateOfBirth)} years • {timeConverter(time)}
+                  </p>
+                </div>
               </div>
-              {/* <p className="text-xs text-gray-500">2 years • 3h 43min ago</p> */}
-                  <p className="text-xs text-gray-500">{getAge(submission?.patient?.dateOfBirth)} years • {timeConverter(time)}</p>
             </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[60vh] pr-2">
-              {submission?.answers?.map((ans, i) => (
+
+            {/* Answers List */}
+            <div className="flex flex-col gap-4 mt-4 overflow-y-auto max-h-[60vh] pr-2">
+              {answers.map((ans) => (
                 <TextAns
-                   key={i}
+                  key={ans.id}
                   text={ans.question}
                   answer={ans.answer}
                   score={0}
-                />))}
-       
-        </div></div>  ))}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );
 };
 
 export default SubmissionDetails;
-

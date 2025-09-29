@@ -9,12 +9,13 @@ import AdditionalInfoModal from "./AdditionalInfoModal";
 import { useParams } from "next/navigation";
 
 const AssessmentDetails = () => {
-  const { patientId} = useParams();
+  const { patientId } = useParams();
+  
   const [submission, setSubmission] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const getSubmissionDetails = async () => {
     const result = await getSubmissionByPatientId(patientId);
-    // console.log(result?.payload);
+    console.log(result?.payload);
     setSubmission(result?.payload);
   };
 

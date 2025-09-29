@@ -62,7 +62,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="mt-8">
+          {/* <div className="mt-8">
             <h2 className="text-lg font-bold mb-4">Last Added Assessments</h2>
             <div className="bg-white p-4 rounded shadow space-y-2">
               {[...Array(5)].map((_, i) => (
@@ -80,9 +80,9 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
-          <div className="mt-8">
+          {/* <div className="mt-8">
             <h2 className="text-lg font-bold mb-4">Video Consultation Summary</h2>
             <div className="bg-white p-4 rounded shadow space-y-4">
               {[...Array(3)].map((_, i) => (
@@ -99,7 +99,7 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </main>
         </div>
     );

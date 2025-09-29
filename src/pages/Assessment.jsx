@@ -22,6 +22,7 @@ const handleSubmitRating = () => {
 };
 
   const handleView = (item) => {
+    console.log("33",item)
     setSelectedSubmission(item);
     setIsModalOpen(true);
   };
@@ -32,7 +33,7 @@ const handleSubmitRating = () => {
   };
 
   const handleAccept = async (id) => {
-    console.log(id)
+    // console.log(id)
     const obj = {
       status: "completed",
       clinicianId: userData?.id
@@ -90,7 +91,7 @@ const handleSubmitRating = () => {
         <SubmissionDetails
           isModalOpen={isModalOpen}
           closeModal={closeModal}
-          id={selectedSubmission?.patientId}
+          patientId={selectedSubmission?.patientId}
           time = {selectedSubmission?.createdAt}
           score ={selectedSubmission?.score}
           assessmentId={selectedSubmission?.assessmentId}

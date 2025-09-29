@@ -1,7 +1,8 @@
 import { domain } from "../../secret";
 
-const getAllanswers = async ({ assessmentId }) => {
-  const response = await fetch(`${domain}/answers?assessmentId=${assessmentId}`, {
+const getAllanswers = async ({ patientId }) => {
+  console.log("o",patientId)
+  const response = await fetch(`${domain}/answers?patientId=${Number(patientId)}`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${localStorage.getItem("accessToken")}`
