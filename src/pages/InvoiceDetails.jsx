@@ -6,7 +6,14 @@ import InvoiceHeader from "@/components/Invoice/InvoiceHeader";
 import { useParams } from "next/navigation";
 
 const InvoiceDetails = () => {
-  const { assessmentId } = useParams();
+  // const { assessmentId } = useParams();
+
+  const params = useParams();
+  const assessmentId  = params?.assessmentId  ?? null;
+
+  if (!assessmentId ) {
+    return <div>Loading...</div>; // or handle gracefully
+  }
   return (
     <div className="p-6 lg:p-0 text-gray-800">
       <InvoiceHeader />

@@ -59,7 +59,7 @@ const Invoice = () => {
             key={i}
             month={item.month}
             year={item.year}
-            assessmentid={item.assessmentId}
+            assessmentId={item.assessmentId}
             assessmentCount={item.assessmentCount}
             earnings={item.totalPaidAmount}
             status="Pending"

@@ -66,7 +66,7 @@ const VerifyOtp = ({otp,setOtp ,inputsRef,setStep,identifier}) => {
 
           {/* OTP Input Boxes */}
           <div className="flex justify-center gap-3 mt-6">
-            {otp.map((digit, index) => (
+            {(otp || [])?.map((digit, index) => (
               <input
                 key={index}
                 type="text"

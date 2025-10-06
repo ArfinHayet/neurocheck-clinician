@@ -6,7 +6,7 @@ const InvoiceCard = ({
   assessmentCount,
   earnings,
   status,
-  assessmentid,
+  assessmentId,
   invoiceLink,
 }) => {
   return (
@@ -21,7 +21,7 @@ const InvoiceCard = ({
         </div>
         <div className="mt-3">
           <span className="font-normal text-sm">Assessment-Id : </span>{" "}
-          <span className="text-xs">{assessmentid}</span> 
+          <span className="text-xs">{assessmentId}</span> 
         </div>
         <div className="text-sm text-[#000000] flex gap-5 mt-1">
           <div>

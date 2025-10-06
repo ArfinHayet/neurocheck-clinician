@@ -8,7 +8,14 @@ import AdditionalInfoModal from "./AdditionalInfoModal";
 import { useParams } from "next/navigation";
 
 const AssessmentDetails = () => {
-  const { patientId } = useParams();
+  // const { patientId } = useParams();
+
+  const params = useParams();
+  const patientId = params?.patientId ?? null;
+
+  if (!patientId) {
+    return <div>Loading...</div>; // or handle gracefully
+  }
   
   const [submission, setSubmission] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);

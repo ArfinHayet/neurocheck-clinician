@@ -30,7 +30,7 @@ const AssessmentTable = ({ assessmentId }) => {
             </tr>
           </thead>
           <tbody>
-            {assessments.map((item, idx) => (
+            {assessments?.map((item, idx) => (
               <tr key={idx} className="border-b text-[#606060] border-b-[#DFDFDF]">
                 <td className="py-2">{item.name}</td>
                 <td className="py-2">{item.date}</td>

@@ -1,3 +1,4 @@
+"use client";
 import { loginuser } from "@/api/signup";
 import { AuthContext } from "../../Provider/AuthProvider";
 // import { AuthContext } from "../Provider/AuthProvider";
@@ -10,7 +11,14 @@ import { RiLockPasswordLine } from "react-icons/ri";
 const LoginForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserData, setLoading} = useContext(AuthContext);
+
+const context = useContext(AuthContext);
+  const setUserData = context?.setUserData ?? (() => {});
+
+  
+  
+
+
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",

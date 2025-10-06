@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import Topbar from "@/components/layout/Topbar";
 import { usePathname } from "next/navigation";
 import AuthProvider from "@/Provider/AuthProvider";
+// import AuthProvider from "@/Provider/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

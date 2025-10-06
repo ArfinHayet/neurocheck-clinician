@@ -19,8 +19,16 @@ const Prescription = () => {
   const { userData } = useContext(AuthContext) || {};
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   // console.log(userData);
-  const { id } = useParams();
+  // const { id } = useParams();
   // console.log(id);
+
+
+  const params = useParams();
+  const id = params?.id ?? null;
+
+  if (!id) {
+    return <div>Loading...</div>; // or handle gracefully
+  }
 
   const getSubmissionDetails = async () => {
     const result = await getSubmissionByPatientId(id);
