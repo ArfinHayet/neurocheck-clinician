@@ -14,6 +14,7 @@ const LoginForm = () => {
 
 const context = useContext(AuthContext);
   const setUserData = context?.setUserData ?? (() => {});
+  const setLoading = context?.setLoading ?? (() => {});
 
   
   
