@@ -12,14 +12,9 @@ const LoginForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-const context = useContext(AuthContext);
+  const context = useContext(AuthContext);
   const setUserData = context?.setUserData ?? (() => {});
   const setLoading = context?.setLoading ?? (() => {});
-
-  
-  
-
-
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
