@@ -1,14 +1,16 @@
 import Image from "next/image";
 import React from "react";
 import p1 from "../../../public/svg/mobile_logo.svg";
-import { LuMessageSquareText } from "react-icons/lu";
+import { LuMessageSquareMore} from "react-icons/lu";
+import { BiMessageDetail } from "react-icons/bi";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { RiShutDownLine } from "react-icons/ri";
 
 const Topbar = (
   {
     // title = "N",
     // onNotificationClick,
-    // onMessageClick
+    // onMessageClick 
   },
 ) => {
   return (
@@ -21,18 +23,22 @@ const Topbar = (
 
       <div className="flex gap-2">
         <button>
-          <LuMessageSquareText className="text-xl text-white" />
+       <LuMessageSquareMore className="text-xl text-white " />
         </button>
+        
         <button>
           <IoNotificationsOutline className="text-xl text-white" />
+        </button>
+        <button>
+          <RiShutDownLine className="text-xl text-white" />
         </button>
         {/* <span 
           className="cursor-pointer" 
         //   onClick={onNotificationClick}
         >
-            <LuMessageSquareText className="text-xl text-[#114654]" />
-        </span>
-        <span 
+            <RiShutDownLine className="text-xl text-[#114654]" />
+        </span> */}
+        {/* <span 
           className="cursor-pointer" 
         //   onClick={onMessageClick}
         >

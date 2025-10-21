@@ -69,8 +69,8 @@ const AssessmentDetails = () => {
         </Link>
       </div>
        {submission?.map((item, index) => (
-         <AdditionalInfoModal
-          key={index}
+        <AdditionalInfoModal
+        key={index}
         additionalInfo={item?.additionalInfo}
         patientId={patientId}
         isModalOpen={isModalOpen} closeModal={closeModal} /> ))}

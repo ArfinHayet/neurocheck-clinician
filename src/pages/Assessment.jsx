@@ -50,8 +50,8 @@ const handleSubmitRating = () => {
 
   const fetchSubmissions = async () => {
     const data = await getAllsubmissions();
-    const rawData = data.payload?.filter((i) => i?.assessment?.type === "premium");
-    // const rawData = data.payload;
+    // const rawData = data.payload?.filter((i) => i?.assessment?.type === "premium");
+    const rawData = data.payload;
     console.log(rawData)
     setSubmission(rawData);
   };

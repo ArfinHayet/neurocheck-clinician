@@ -20,12 +20,12 @@ const InvoiceCard = ({
           </p>
         </div>
         <div className="mt-3">
-          <span className="font-normal text-sm">Assessment-Id : </span>{" "}
+          <span className="font-normal text-sm">Assessment-Id : </span>
           <span className="text-xs">{assessmentId}</span> 
         </div>
         <div className="text-sm text-[#000000] flex gap-5 mt-1">
           <div>
-            <span className="font-normal text-sm">Total Assessment</span>{" "}
+            <span className="font-normal text-sm">Total Assessment</span>
             <span className="text-xs">{assessmentCount}</span>
           </div>
           <div>

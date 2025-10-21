@@ -8,6 +8,8 @@ import { CiUser } from "react-icons/ci";
 import { PiClipboardTextThin } from "react-icons/pi";
 import { BsClipboard2Data } from "react-icons/bs";
 import Image from "next/image";
+import { AuthContext } from "@/Provider/AuthProvider";
+import { useContext } from "react";
 const navItems = [
   {
     label: "Dashboard",
@@ -28,16 +30,25 @@ const navItems = [
     label: "User",
     icon: CiUser,
     href: "/user",
-  }
+  },
 ];
 
 export const Navbar = () => {
   const pathname = usePathname();
-
+  
+  const { userData } = useContext(AuthContext);
+  console.log(userData)
   const isActive = (href) => {
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(href + "/");
   };
+
+    const today = new Date();
+    const optionsDay = { weekday: "long" };
+    const optionsDate = { day: "2-digit", month: "short" };
+    const day = today.toLocaleDateString("en-US", optionsDay);
+    const date = today.toLocaleDateString("en-US", optionsDate);
+    const year = today.getFullYear();
 
   return (
     <>
@@ -49,11 +60,17 @@ export const Navbar = () => {
             alt="Dr. Eleanor Hughes"
             className="w-24 h-24 rounded-full mb-4"
           />
-          <h2 className="text-lg font-semibold">Dr. Eleanor Hughes</h2>
+          <h2 className="text-lg font-semibold">{userData?.name}</h2>
           <p className="text-sm text-gray-500">
-            Consultant Neurodevelopmental Specialist
+          {userData?.hcpcTitle}
           </p>
-          <p className="mt-4 text-xl font-bold">25 Apr</p>
+        </div>
+        <div className="px-5 mt-6">
+          <div className="w-full border-y-[1px] border-[#E9E9E9] flex flex-col justify-start items-start gap-1 my-3 py-5">
+            <p className=" text-xs text-[#6C6C6C]">{day}</p>
+            <p className=" text-3xl font-medium text-[#3B3B3B]">{date}</p>
+            <p className=" text-xs text-[#6C6C6C]">{year}</p>
+          </div>
         </div>
 
         <nav className="mt-8 space-y-1">

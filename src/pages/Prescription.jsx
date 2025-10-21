@@ -11,23 +11,20 @@ import { useContext, useEffect, useState } from "react";
 const Prescription = () => {
   const [patientDetailsById, setPatientDetailsById] = useState([]);
   const [notes, setNotes] = useState("");
-  const [medName, setMedName] = useState("");
-  const [dosage, setDosage] = useState("");
-  const [frequency, setFrequency] = useState("");
-  const [duration, setDuration] = useState("");
   const [meds, setMeds] = useState([]);
   const { userData } = useContext(AuthContext) || {};
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [needsAppointment, setNeedsAppointment] = useState(false);
+  const [appointmentDate, setAppointmentDate] = useState("");
   // console.log(userData);
   // const { id } = useParams();
   // console.log(id);
-
 
   const params = useParams();
   const id = params?.id ?? null;
 
   if (!id) {
-    return <div>Loading...</div>; // or handle gracefully
+    return <div>Loading...</div>;
   }
 
   const getSubmissionDetails = async () => {
@@ -39,27 +36,6 @@ const Prescription = () => {
   useEffect(() => {
     getSubmissionDetails();
   }, [id]);
-
-  const addMedication = () => {
-    if (!medName) return;
-    setMeds((prev) => [
-      ...prev,
-      {
-        name: medName,
-        dosage: dosage || "-",
-        frequency: frequency || "-",
-        duration: duration || "-",
-      },
-    ]);
-    setMedName("");
-    setDosage("");
-    setFrequency("");
-    setDuration("");
-  };
-
-  const removeMedication = (index) => {
-    setMeds((prev) => prev.filter((_, i) => i !== index));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,7 +104,7 @@ const Prescription = () => {
       {/* Form */}
       <form className="mt-8" onSubmit={handleSubmit}>
         <label className="block font-medium text-sm text-[#3B3B3B] mb-2">
-          Clinical observations
+          Clinician Diagnosis
         </label>
         <p className="text-xs text-[#3C3C4399] pb-3">
           Write your feedback, observations, suggestions, recommendations,
@@ -137,91 +113,49 @@ const Prescription = () => {
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="w-full lg:w-4/6 h-56 rounded border border-[#E2E2E2] p-4 bg-gray-50 resize-none outline-none"
+          className="w-full lg:w-4/6 h-20 rounded border border-[#E2E2E2] p-4 bg-gray-50 resize-none outline-none"
+        />
+        <label className="block font-medium text-sm text-[#3B3B3B] mb-2">
+          Clinician Notes from Review
+        </label>
+        <p className="text-xs text-[#3C3C4399] pb-3">
+          Write your feedback, observations, suggestions, recommendations,
+          instructions and follow up information
+        </p>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          className="w-full lg:w-4/6 h-36 rounded border border-[#E2E2E2] p-4 bg-gray-50 resize-none outline-none"
         />
 
-        {/* Medication input row */}
-        {/* <div className="mt-6 w-[73%]">
-          <p className="font-semibold text-lg text-[#3B3B3B]">
-            Prescribed medications
+        <div className="mt-6">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={needsAppointment}
+              onChange={(e) => setNeedsAppointment(e.target.checked)}
+              className="form-checkbox h-4 w-4 text-[#0A4863] border-gray-300 rounded"
+            />
+            <span className="text-sm font-medium text-[#3B3B3B]">
+              Need Appointment Schedule
+            </span>
+          </label>
+
+          <p className="text-xs text-[#3C3C4399] mt-2">
+            Select this if you want to schedule a follow-up appointment.
           </p>
-          <div className="flex flex-wrap gap-2 mt-4 items-center">
-            <input
-              className="flex-1 md:flex-none w-2/6 bg-[#FFFFFF] border-[#E1E1E1] rounded border  p-2 text-sm outline-none"
-              placeholder="Medication Name"
-              value={medName}
-              onChange={(e) => setMedName(e.target.value)}
-            />
-            <input
-              className="w-1/6 rounded border bg-[#FFFFFF] border-[#E1E1E1] p-2 text-sm outline-none"
-              placeholder="Dosage"
-              value={dosage}
-              onChange={(e) => setDosage(e.target.value)}
-            />
-            <input
-              className="flex-1 md:flex-none w-1/6 rounded border bg-[#FFFFFF] border-[#E1E1E1] p-2 text-sm outline-none"
-              placeholder="Frequency"
-              value={frequency}
-              onChange={(e) => setFrequency(e.target.value)}
-            />
-            <input
-              className="w-1/6 rounded border bg-[#FFFFFF] border-[#E1E1E1] p-2 text-sm outline-none"
-              placeholder="Duration"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-            />
 
-            <button
-              type="button"
-              onClick={addMedication}
-              className="ml-2 cursor-pointer bg-white border-none rounded px-3 py-2 shadow-sm text-sm"
-            >
-              +
-            </button>
-          </div>
-
-       
-          <div className="mt-6 w-5/6">
-            {meds.length > 0 && (
-              <div className=" overflow-hidden">
-                <table className="min-w-full text-sm">
-                  <thead className="bg-gray-50 text-left font-bold text-[#5A5A5A]">
-                    <tr>
-                      <th className="p-3"></th>
-                      <th className="p-3">Medication Name</th>
-                      <th className="p-3">Dosage</th>
-                      <th className="p-3">Frequency</th>
-                      <th className="p-3">Duration</th>
-                      <th className="p-3"> </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {meds.map((m, i) => (
-                      <tr key={i} className="border-t border-[#E3E3E3]">
-                        <td className="p-3 align-top text-[#5A5A5A]">
-                          {i + 1}.
-                        </td>
-                        <td className="p-3 align-top">{m.name}</td>
-                        <td className="p-3 align-top">{m.dosage}</td>
-                        <td className="p-3 align-top">{m.frequency}</td>
-                        <td className="p-3 align-top">{m.duration}</td>
-                        <td className="p-3 align-top">
-                          <button
-                            type="button"
-                            onClick={() => removeMedication(i)}
-                            className="text-red-500 text-xs"
-                          >
-                            ✕
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </div> */}
+          {needsAppointment && (
+            <div className="relative w-full lg:w-4/6 mt-4">
+              <input
+                type="datetime-local"
+                value={appointmentDate}
+                onChange={(e) => setAppointmentDate(e.target.value)}
+                className="w-full pl-4 pr-10 py-2 border border-[#E2E2E2] rounded bg-[#F9F9F9] text-sm text-gray-700 appearance-none focus:outline-none focus:ring-2 focus:ring-[#0A4863]"
+              />
+            </div>
+          )}
+        </div>
 
         <div className="mt-8">
           <button
@@ -232,7 +166,7 @@ const Prescription = () => {
           </button>
         </div>
       </form>
-       {showSuccessModal && (
+      {showSuccessModal && (
         <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 shadow-lg text-center w-96">
             <h2 className="text-xl font-semibold -600 mb-4">
@@ -242,20 +176,19 @@ const Prescription = () => {
               Your prescription has been successfully saved.
             </p>
             <div className="flex flex-col gap-2">
-             <button
-              onClick={() => setShowSuccessModal(false)}
-              className=" border-2 border-[#0A4863] text-[#0A4863] px-6 py-2 rounded-xl"
-            >
-            Save appointment Date
-            </button>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="bg-[#0A4863] text-white px-6 py-2  rounded-xl"
-            >
-             Go to dashboard
-            </button>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className=" border-2 border-[#0A4863] text-[#0A4863] px-6 py-2 rounded-xl"
+              >
+                Save appointment Date
+              </button>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="bg-[#0A4863] text-white px-6 py-2  rounded-xl"
+              >
+                Go to dashboard
+              </button>
             </div>
-        
           </div>
         </div>
       )}
@@ -264,7 +197,3 @@ const Prescription = () => {
 };
 
 export default Prescription;
-
-
-
-
