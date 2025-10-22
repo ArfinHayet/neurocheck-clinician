@@ -106,7 +106,7 @@ export const Navbar = () => {
             <Link
               key={item.label}
               href={item.href}
-              className={`flex flex-col items-center ${
+              className={`flex flex-col px-4 py-2 items-center ${
                 active
                   ? "bg-[#114654] text-white rounded-2xl p-1.5"
                   : "text-[#3B3B3B]"

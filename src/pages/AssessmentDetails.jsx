@@ -33,7 +33,7 @@ const AssessmentDetails = () => {
     setIsModalOpen(false);
   };
   return (
-    <div className="p-6 lg:p-0">
+    <div className="p-6 lg:p-0 min-h-screen mb-5">
       <Header
         title="Assessment"
         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"

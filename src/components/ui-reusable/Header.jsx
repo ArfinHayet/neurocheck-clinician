@@ -164,26 +164,26 @@ import { RiShutDownLine } from "react-icons/ri";
 import { IoMdNotificationsOutline } from "react-icons/io";
 
 const Header = ({ title, description }) => {
-  const [time, setTime] = useState("");
+  // const [time, setTime] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef(null);
 
   // Set current time and update every minute
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const formatted = now.toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      });
-      setTime(formatted);
-    };
+  // useEffect(() => {
+  //   const updateTime = () => {
+  //     const now = new Date();
+  //     const formatted = now.toLocaleTimeString([], {
+  //       hour: "numeric",
+  //       minute: "2-digit",
+  //       hour12: true,
+  //     });
+  //     setTime(formatted);
+  //   };
 
-    updateTime();
-    const interval = setInterval(updateTime, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  //   updateTime();
+  //   const interval = setInterval(updateTime, 60000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // Close tooltip on outside click
   useEffect(() => {
@@ -253,11 +253,11 @@ const Header = ({ title, description }) => {
       
       <div className="flex flex-col text-[#3B3B3B] font-semibold text-lg md:flex-row md:justify-between">
         <p className="mt-2 text-xs text-[#6C6C6C]">{description}</p>
-        {time && (
+        {/* {time && (
           <p className="text-2xl md:block hidden font-medium text-[#3B3B3B] mt-2 md:mt-0">
             {time}
           </p>
-        )}
+        )} */}
       </div>
     </div>
   );

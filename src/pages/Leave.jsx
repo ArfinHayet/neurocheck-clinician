@@ -73,23 +73,23 @@ const Leave = () => {
       <div className="flex justify-end mb-4">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#0A4863] text-sm cursor-pointer text-white rounded-2xl px-2 py-1"
+          className="bg-[#0A4863] text-xs cursor-pointer text-white rounded-2xl px-4 py-2"
         >
           Add leave
         </button>
       </div>
 
       {/* ✅ Plain table without any package */}
-      <table className="w-full border-collapse border border-gray-300 text-sm">
+      <table className="w-full text-sm">
         <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-3 py-2 text-left">
+          <tr className="border-b border-[#E0E0E0]">
+            <th className=" px-3 py-2 text-left">
               Leave type
             </th>
-            <th className="border border-gray-300 px-3 py-2 text-left">
+            <th className=" px-3 py-2 text-left">
               Start time
             </th>
-            <th className="border border-gray-300 px-3 py-2 text-left">
+            <th className=" px-3 py-2 text-left">
               End time
             </th>
           </tr>
@@ -98,13 +98,13 @@ const Leave = () => {
           {leaves?.length > 0 ? (
             leaves?.map((row, i) => (
               <tr key={i}>
-                <td className="border border-gray-300 px-3 py-2">
+                <td className=" px-3 py-2">
                   {row.leaveType}
                 </td>
-                <td className="border border-gray-300 px-3 py-2">
+                <td className=" px-3 py-2">
                   {formatDate(row.startDate)}
                 </td>
-                <td className="border border-gray-300 px-3 py-2">
+                <td className=" px-3 py-2">
                   {formatDate(row.endDate)}
                 </td>
               </tr>

@@ -16,11 +16,11 @@ const User = () => {
     },
     Availability: {
       title: "Availability",
-      description: "Set working hours and appointment slots.",
+      description: "Set your available days and times so users can book when it works best for you.",
     },
     Leave: {
       title: "Leave",
-      description: "Apply for leave and view history.",
+      description: "Schedule your time off. Let us know when you’ll be unavailable so we can keep things running smoothly.",
     },
     Invoices: {
       title: "Invoices",
@@ -43,7 +43,7 @@ const User = () => {
         description={description}
       />
 
-      <div className="mt-4 h-[50vh]">
+      <div className="mt-4 min-h-screen">
         {selectedTab === "Personal Info" && (
           <div className="grid grid-cols-3 gap-10">
             <p>…content…</p>

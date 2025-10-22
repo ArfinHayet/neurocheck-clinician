@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       <body className={`${inter.variable} antialiased`}>
         <AuthProvider>
           {isAuthPage ? (
-            <div className="lg:p-8 lg:bg-[#F6F7F9]">{children}</div>
+            <div className="flex items-center justify-center lg:bg-[#F6F7F9] min-h-screen">{children}</div>
           ) : (
             <div className="min-h-screen flex">
               <div className="w-[16%] fixed left-0 h-full">

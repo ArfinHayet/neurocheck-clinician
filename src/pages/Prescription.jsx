@@ -68,7 +68,7 @@ const Prescription = () => {
   };
 
   return (
-    <div className="p-6 lg:p-0">
+    <div className="p-6 lg:p-0 min-h-screen ">
       <Header
         title="Clinician Feedback & Prescription"
         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"
@@ -157,7 +157,7 @@ const Prescription = () => {
           )}
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 mb-9">
           <button
             className="w-4/6 cursor-pointer bg-[#0A4863] text-white rounded-full py-2 shadow"
             type="submit"

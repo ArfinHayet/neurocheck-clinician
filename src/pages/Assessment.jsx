@@ -62,7 +62,7 @@ const handleSubmitRating = () => {
 
 
   return (
-    <div className="p-6 lg:p-0">
+    <div className="p-6 lg:p-0 min-h-screen mb-2">
       <Header
         title="Assessment queue"
         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"

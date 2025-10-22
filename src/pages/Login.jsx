@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const Login = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="flex items-center justify-center ">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex items-start justify-start">
           <Image

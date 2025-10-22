@@ -8,7 +8,7 @@ const UserTab = ({ tabs, selected, setSelected, title, description }) => {
         description={description}
         />    
              
-      <div className="flex flex-row justify-center  items-center gap-20  ">
+      <div className="flex flex-row items-center gap-12 border-b  border-[#E0E0E0]">
         {tabs.map((tab) => (
           <button
             key={tab}

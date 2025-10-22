@@ -71,8 +71,8 @@ const SignUp = ({otp, identifier}) => {
 
   return (
     <>
-      <div className="bg-[#114654] w-full py-7 block lg:hidden"></div>
-      <div className="min-h-screen flex items-center justify-center">
+    <div className="bg-[#114654] w-full py-7 block lg:hidden "></div>
+      <div className="flex items-center justify-center p-8">
         <div className="w-full max-w-md lg:bg-white p-8 rounded-lg lg:shadow-md">
           <div className="flex items-start justify-start">
             <Image

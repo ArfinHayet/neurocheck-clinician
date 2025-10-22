@@ -165,10 +165,10 @@ const handleAddLeave = async () => {
         <div className="flex justify-center">
           <button
             type="button"
-            className="bg-[#0A4863] w-full text-white p-2 rounded-2xl"
+            className="bg-[#0A4863] text-sm w-full text-white p-2 rounded-4xl"
             onClick={handleAddLeave}
           >
-            Add leave
+            Add Availability
           </button>
         </div>
       </div>
