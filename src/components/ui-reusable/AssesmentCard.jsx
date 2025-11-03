@@ -8,6 +8,9 @@ import Link from "next/link";
 import { getAge } from "../utils/ageConverter";
 import { timeConverter } from "../utils/timeconverter";
 // import  { getAge,timeConverter } from "../utils/ageConverter";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const AssessmentCard = ({
   name,
@@ -21,7 +24,7 @@ const AssessmentCard = ({
   onBookVideo,
   onAcceptCase,
   ratings,
-  patientId
+  patientId,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -45,6 +48,69 @@ const AssessmentCard = ({
   const statusKey =
     status && status.trim() !== "" ? status.toLowerCase() : "pending";
   const statusClass = colors[statusKey] || colors.pending;
+
+  const generateConsultancyReport = (data) => {
+    const {
+      patientName,
+      age,
+      demographics,
+      clinicianDiagnosis,
+      diagnosisRecommendation,
+      medicalHistorySummary,
+      asrsSummary,
+      weissSummary,
+      divaSummary,
+    } = data;
+
+    const docDefinition = {
+      pageSize: "A4",
+      pageMargins: [40, 60, 40, 60],
+      content: [
+        { text: "Report Structure ADHD Adult", style: "header" },
+        { text: "\n" },
+        {
+          table: {
+            widths: ["auto", "*"],
+            body: [
+              ["Patient Name", patientName],
+              ["Age", age],
+              ["Demographics", demographics],
+              ["Clinician Diagnosis", clinicianDiagnosis],
+              ["Diagnosis Recommendation", diagnosisRecommendation],
+            ],
+          },
+          layout: "lightHorizontalLines",
+        },
+        { text: "\nMedical History Summary", style: "subheader" },
+        { text: medicalHistorySummary, style: "text" },
+        { text: "\nASRS Summary", style: "subheader" },
+        { text: asrsSummary, style: "text" },
+        { text: "\nWeiss Rating Summary", style: "subheader" },
+        { text: weissSummary, style: "text" },
+        { text: "\nDIVA Summary", style: "subheader" },
+        { text: divaSummary, style: "text" },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          alignment: "left",
+          color: "#1a1a1a",
+        },
+        subheader: {
+          fontSize: 13,
+          bold: true,
+          margin: [0, 10, 0, 5],
+        },
+        text: {
+          fontSize: 11,
+          lineHeight: 1.3,
+        },
+      },
+    };
+
+    pdfMake.createPdf(docDefinition).open();
+  };
 
   return (
     <div className="bg-[#FFFFFF] rounded-lg p-4 shadow-sm">
@@ -124,6 +190,26 @@ const AssessmentCard = ({
               >
                 Book video consultancy
               </button>
+              <button
+                onClick={() => {
+                  generateConsultancyReport({
+                    patientName: name,
+                    age,
+                    demographics: "XX",
+                    clinicianDiagnosis: "Exhibits ADHD type XX / YY / ZZ",
+                    diagnosisRecommendation: "Continue evaluation",
+                    medicalHistorySummary: "Lorem ipsum dolor sit amet...",
+                    asrsSummary: "Key areas rated very often...",
+                    weissSummary: "# of items scored 2 or 3...",
+                    divaSummary: "# of childhood/adulthood criteria met...",
+                  });
+                  setMenuOpen(false);
+                }}
+                className="w-full cursor-pointer text-left px-4 py-2 text-sm border-b-2 border-[#F2F2F2] text-[#114654]"
+              >
+                Consultancy Report
+              </button>
+
               {status !== "completed" && (
                 <button
                   onClick={() => {
@@ -153,9 +239,7 @@ const AssessmentCard = ({
             >
               {(status || "").toUpperCase()}
             </p>
-            <p
-              className="px-2 py-0.5 mt-[8px]  rounded-md text-xs "
-            >
+            <p className="px-2 py-0.5 mt-[8px]  rounded-md text-xs ">
               rating:{ratings}
             </p>
           </div>
