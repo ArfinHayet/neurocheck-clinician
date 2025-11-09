@@ -69,23 +69,30 @@ const handleSubmitRating = () => {
       />
 
       <div className="flex flex-col gap-5">
-        {submission?.map((item, index) => (
-          <AssessmentCard
-            key={index}
-            patientId= {item?.id}
-            name={item?.patient?.name}
-            age={item?.patient?.dateOfBirth}
-            timeAgo={item?.createdAt}
-            status={item?.status}
-            ratings={item?.ratings}
-            childCondition={item?.assessment?.category}
-            description={item?.summary}
-            onViewFullAssessment={() => handleView(item)}
-            onRateSummary={()=>handleViewRate(item?.id)}
-            onAcceptCase={() => handleAccept(item?.id)}
-          />
-        ))}
-      </div>
+  {submission?.length > 0 ? (
+    submission.map((item, index) => (
+      <AssessmentCard
+        key={index}
+        patientId={item?.id}
+        name={item?.patient?.name}
+        age={item?.patient?.dateOfBirth}
+        timeAgo={item?.createdAt}
+        status={item?.status}
+        ratings={item?.ratings}
+        childCondition={item?.assessment?.category}
+        description={item?.summary}
+        onViewFullAssessment={() => handleView(item)}
+        onRateSummary={() => handleViewRate(item?.id)}
+        onAcceptCase={() => handleAccept(item?.id)}
+      />
+    ))
+  ) : (
+    <p className="text-center text-gray-500 italic">
+      There is no submission yet.
+    </p>
+  )}
+</div>
+
 
       {selectedSubmission && (
         <SubmissionDetails
