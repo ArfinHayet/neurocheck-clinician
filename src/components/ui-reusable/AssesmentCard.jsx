@@ -26,6 +26,8 @@ const AssessmentCard = ({
   ratings,
   patientId,
 }) => {
+
+  // console.log("answers",item)
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 

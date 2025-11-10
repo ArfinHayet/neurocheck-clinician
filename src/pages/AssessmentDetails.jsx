@@ -14,15 +14,41 @@ const AssessmentDetails = () => {
   const patientId = params?.patientId ?? null;
 
   if (!patientId) {
-    return <div>Loading...</div>; // or handle gracefully
+    return <div>Loading...</div>; 
   }
   
   const [submission, setSubmission] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const getSubmissionDetails = async () => {
     const result = await getSubmissionByPatientId(patientId);
-    console.log(result?.payload);
-    setSubmission(result?.payload);
+    console.log("eeee", result?.payload);
+     const grouped = Object.values(result?.payload?.reduce((acc, item) => {
+        const key = `${item.patientId}-${item.assessmentId}-${item.userId}`;
+
+        if (!acc[key]) {
+          acc[key] = {
+            patientId: item.patientId,
+            assessmentId: item.assessmentId,
+            userId: item.userId,
+            patient: item.patient,
+            assessment: item.assessment,
+            user: item.user,
+            summaries: [],
+          };
+        }
+
+        acc[key].summaries.push({
+          questionType: item.questionType,
+          summary: item.summary,
+        });
+
+        return acc;
+      }, {}),
+    );
+    console.log("grouped details", grouped)
+    // setSubmission(result?.payload);
+    setSubmission(grouped);
   };
 
   useEffect(() => {
@@ -46,9 +72,10 @@ const AssessmentDetails = () => {
           age={item?.patient?.dateOfBirth}
           timeAgo={item?.createdAt}
           status={item?.status}
+          summary = {item?.summaries}
           ratings={item?.ratings}
           childCondition={item?.assessment?.category}
-          description={item?.summary}
+          description={item?.assessment?.description}
           onViewFullAssessment={() => handleView(item)}
           onRateSummary={() => handleViewRate(item?.id)}
           onAcceptCase={() => handleAccept(item?.id)}

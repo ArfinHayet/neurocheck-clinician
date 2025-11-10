@@ -20,6 +20,7 @@ const SubmissionDetails = ({
   const fetchAnswers = async () => {
     const data = await getAllanswers({ patientId });
     const rawData = data?.payload || [];
+    console.log("submission",rawData)
 
     if (rawData.length > 0) {
       // patient info ekbar nibo
@@ -32,6 +33,7 @@ const SubmissionDetails = ({
         question: item.question.questions,
         answer: item.answer,
       }));
+      console.log("formated",formatted)
       setAnswers(formatted);
     }
   };

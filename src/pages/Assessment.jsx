@@ -15,20 +15,20 @@ const Assessment = () => {
   const [submission, setSubmission] = useState([]);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
-   const { userData } = useContext(AuthContext) || {};
+  const { userData } = useContext(AuthContext) || {};
 
-const handleSubmitRating = () => {
-  setIsRateModalOpen(false);
-};
+  const handleSubmitRating = () => {
+    setIsRateModalOpen(false);
+  };
 
   const handleView = (item) => {
-    console.log("33",item)
+    console.log("33", item);
     setSelectedSubmission(item);
     setIsModalOpen(true);
   };
 
   const handleViewRate = (id) => {
-     setSelectedId(id);
+    setSelectedId(id);
     setIsRateModalOpen(true);
   };
 
@@ -36,11 +36,10 @@ const handleSubmitRating = () => {
     // console.log(id)
     const obj = {
       status: "completed",
-      clinicianId: userData?.id
-      
-    }
-    const result = await updateStatus(id,obj)
-    alert("Accepted")
+      clinicianId: userData?.id,
+    };
+    const result = await updateStatus(id, obj);
+    alert("Accepted");
   };
 
   const closeModal = () => {
@@ -49,17 +48,51 @@ const handleSubmitRating = () => {
   };
 
   const fetchSubmissions = async () => {
-    const data = await getAllsubmissions();
-    const rawData = data.payload?.filter((i) => i?.assessment?.type === "premium");
-    // const rawData = data.payload;
-    // console.log(rawData)
-    setSubmission(rawData);
+    const res = await getAllsubmissions();
+
+    // optional filter (uncomment if you want only premium assessments)
+    // const rawData = res.payload?.filter((i) => i?.assessment?.type === "premium");
+    //  const rawData = res.payload || [];
+    const rawData = res?.payload?.filter(
+      (i) => i?.assessment?.type === "premium",
+    );
+    console.log("assessment", rawData);
+
+    // group by patientId, assessmentId, and userId
+    const grouped = Object.values(
+      rawData?.reduce((acc, item) => {
+        const key = `${item.patientId}-${item.assessmentId}-${item.userId}`;
+
+        if (!acc[key]) {
+          acc[key] = {
+            patientId: item.patientId,
+            assessmentId: item.assessmentId,
+            userId: item.userId,
+            patient: item.patient,
+            assessment: item.assessment,
+            user: item.user,
+            summaries: [],
+          };
+        }
+
+        acc[key].summaries.push({
+          questionType: item.questionType,
+          summary: item.summary,
+        });
+
+        return acc;
+      }, {}),
+    );
+
+    console.log("Grouped Data:", grouped);
+
+    // set the grouped result to your state
+    setSubmission(grouped);
   };
 
   useEffect(() => {
     fetchSubmissions();
   }, []);
-
 
   return (
     <div className="p-6 lg:p-0 min-h-screen mb-2">
@@ -69,51 +102,49 @@ const handleSubmitRating = () => {
       />
 
       <div className="flex flex-col gap-5">
-  {submission?.length > 0 ? (
-    submission.map((item, index) => (
-      <AssessmentCard
-        key={index}
-        patientId={item?.id}
-        name={item?.patient?.name}
-        age={item?.patient?.dateOfBirth}
-        timeAgo={item?.createdAt}
-        status={item?.status}
-        ratings={item?.ratings}
-        childCondition={item?.assessment?.category}
-        description={item?.summary}
-        onViewFullAssessment={() => handleView(item)}
-        onRateSummary={() => handleViewRate(item?.id)}
-        onAcceptCase={() => handleAccept(item?.id)}
-      />
-    ))
-  ) : (
-    <p className="text-center text-gray-500 italic">
-      There is no submission yet.
-    </p>
-  )}
-</div>
-
+        {submission?.length > 0 ? (
+          submission.map((item, index) => (
+            <AssessmentCard
+              key={index}
+              patientId={item?.patientId}
+              name={item?.patient?.name}
+              age={item?.patient?.dateOfBirth}
+              timeAgo={item?.createdAt}
+              status={item?.status}
+              ratings={item?.ratings}
+              childCondition={item?.assessment?.category}
+              description={item?.assessment?.description}
+              onViewFullAssessment={() => handleView(item)}
+              onRateSummary={() => handleViewRate(item?.id)}
+              onAcceptCase={() => handleAccept(item?.id)}
+            />
+          ))
+        ) : (
+          <p className="text-center text-gray-500 italic">
+            There is no submission yet.
+          </p>
+        )}
+      </div>
 
       {selectedSubmission && (
         <SubmissionDetails
           isModalOpen={isModalOpen}
           closeModal={closeModal}
           patientId={selectedSubmission?.patientId}
-          time = {selectedSubmission?.createdAt}
-          score ={selectedSubmission?.score}
+          time={selectedSubmission?.createdAt}
+          score={selectedSubmission?.score}
           assessmentId={selectedSubmission?.assessmentId}
-
         />
       )}
 
       <RatingModal
-      isOpen={isRateModalOpen}
-      onClose={() => setIsRateModalOpen(false)}
-      onSubmit={handleSubmitRating}
-      maxStars={5}
-      selectedId={selectedId}
-      initialRating={0}
-    />
+        isOpen={isRateModalOpen}
+        onClose={() => setIsRateModalOpen(false)}
+        onSubmit={handleSubmitRating}
+        maxStars={5}
+        selectedId={selectedId}
+        initialRating={0}
+      />
     </div>
   );
 };

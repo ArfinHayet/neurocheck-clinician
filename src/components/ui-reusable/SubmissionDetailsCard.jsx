@@ -15,14 +15,17 @@ const SubmissionDetailsCard = ({
   timeAgo,
   status,
   childCondition,
+  summary,
   description,
   onViewFullAssessment,
   onRateSummary,
   onBookVideo,
   onAcceptCase,
   ratings,
-  patientId
+  patientId,
 }) => {
+  console.log("summary", summary);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -141,48 +144,40 @@ const SubmissionDetailsCard = ({
         </div>
       </div>
 
-    
-        <div className="flex-1 mt-5">
-          <div className="flex flex-row gap-2">
-            <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">
-              {childCondition}
-            </p>
-            <p
-              className={`px-2 py-0.5 mt-[10px] md:hidden rounded-md text-xs ${statusClass}`}
-            >
-              {(status || "").toUpperCase()}
-            </p>
-            <p
-              className="px-2 py-0.5 mt-[8px]  rounded-md text-xs "
-            >
-              rating:{ratings}
-            </p>
-          </div>
+      <div className="flex-1 mt-5">
+        <div className="flex flex-row gap-2">
+          <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">
+            {childCondition}
+          </p>
+          <p
+            className={`px-2 py-0.5 mt-[10px] md:hidden rounded-md text-xs ${statusClass}`}
+          >
+            {(status || "").toUpperCase()}
+          </p>
+          
+          <p className="px-2 py-0.5 mt-[8px]  rounded-md text-xs ">
+            rating:{ratings}
+          </p>
+        </div>
         <p className="text-[#3C3C4399] text-xs mt-1">{description}</p>
-        <div className="flex flex-col gap-4">
-        <div>
-          <p className="text-[#4B4B4B] text-base font-semibold">Medical History Summary</p>
-          <p className="text-xs font-normal text-[#3C3C4399] text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras libero mi, finibus condimentum aliquam ac, lacinia non felis. Donec porttitor finibus sodales. Curabitur dictum neque a rhoncus interdum. Vestibulum mollis ipsum lacinia euismod molestie. Pellentesque eget turpis et lectus hendrerit tincidunt. Sed eu vulputate sem. Nullam tincidunt, ligula id iaculis maximus, massa enim ornare ipsum, a interdum diam justo ac augue. Aliquam sagittis magna metus, ut semper metus porta vel. Fusce et metus leo. Maecenas nisi elit, porta et orci a, pretium vehicula urna. Phasellus mollis elementum erat at finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a nibh et tellus tempor condimentum non eu diam. Quisque ac pharetra lorem. Suspendisse arcu lorem, facilisis vel augue vitae, dapibus tempus felis.</p>
+        <div className="flex flex-col gap-4 mt-4">
+          {summary.map((item, index) => (
+            <div key={index}>
+              <p className="text-[#4B4B4B] text-base font-semibold">
+                {item?.questionType}
+              </p>
+              <p className="text-xs font-normal text-[#3C3C4399] text-justify whitespace-pre-line mt-1">
+                {item?.summary
+                  ?.replace(/[*#_`>]+/g, "")
+                  ?.replace(/-{3,}/g, "")
+                  ?.trim()}
+              </p>
+            </div>
+          ))}
         </div>
-        <div>
-          <p className="text-[#4B4B4B] text-base font-semibold">ASRS Summar</p>
-          <p className="text-xs font-normal text-[#3C3C4399] text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras libero mi, finibus condimentum aliquam ac, lacinia non felis. Donec porttitor finibus sodales. Curabitur dictum neque a rhoncus interdum. Vestibulum mollis ipsum lacinia euismod molestie. Pellentesque eget turpis et lectus hendrerit tincidunt. Sed eu vulputate sem. Nullam tincidunt, ligula id iaculis maximus, massa enim ornare ipsum, a interdum diam justo ac augue. Aliquam sagittis magna metus, ut semper metus porta vel. Fusce et metus leo. Maecenas nisi elit, porta et orci a, pretium vehicula urna. Phasellus mollis elementum erat at finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a nibh et tellus tempor condimentum non eu diam. Quisque ac pharetra lorem. Suspendisse arcu lorem, facilisis vel augue vitae, dapibus tempus felis.</p>
-        </div>
-        <div>
-          <p className="text-[#4B4B4B] text-base font-semibold">Weiss Rating Summary</p>
-          <p className="text-xs font-normal text-[#3C3C4399] text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras libero mi, finibus condimentum aliquam ac, lacinia non felis. Donec porttitor finibus sodales. Curabitur dictum neque a rhoncus interdum. Vestibulum mollis ipsum lacinia euismod molestie. Pellentesque eget turpis et lectus hendrerit tincidunt. Sed eu vulputate sem. Nullam tincidunt, ligula id iaculis maximus, massa enim ornare ipsum, a interdum diam justo ac augue. Aliquam sagittis magna metus, ut semper metus porta vel. Fusce et metus leo. Maecenas nisi elit, porta et orci a, pretium vehicula urna. Phasellus mollis elementum erat at finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a nibh et tellus tempor condimentum non eu diam. Quisque ac pharetra lorem. Suspendisse arcu lorem, facilisis vel augue vitae, dapibus tempus felis.</p>
-        </div>
-        <div>
-          <p className="text-[#4B4B4B] text-base font-semibold">DIVA Summary</p>
-          <p className="text-xs font-normal text-[#3C3C4399] text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras libero mi, finibus condimentum aliquam ac, lacinia non felis. Donec porttitor finibus sodales. Curabitur dictum neque a rhoncus interdum. Vestibulum mollis ipsum lacinia euismod molestie. Pellentesque eget turpis et lectus hendrerit tincidunt. Sed eu vulputate sem. Nullam tincidunt, ligula id iaculis maximus, massa enim ornare ipsum, a interdum diam justo ac augue. Aliquam sagittis magna metus, ut semper metus porta vel. Fusce et metus leo. Maecenas nisi elit, porta et orci a, pretium vehicula urna. Phasellus mollis elementum erat at finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a nibh et tellus tempor condimentum non eu diam. Quisque ac pharetra lorem. Suspendisse arcu lorem, facilisis vel augue vitae, dapibus tempus felis.</p>
-        </div>
-        </div>
-              
-        </div>
-      
+      </div>
     </div>
   );
 };
 
 export default SubmissionDetailsCard;
-

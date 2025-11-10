@@ -2,7 +2,7 @@ import { domain } from "../../secret";
 
 const getAllanswers = async ({ patientId }) => {
   console.log("o",patientId)
-  const response = await fetch(`${domain}/answers?patientId=${Number(patientId)}`, {
+  const response = await fetch(`${domain}/answers?patientId=${Number(patientId)}&limit=100`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -28,7 +28,7 @@ const getAllsubmissions = async () => {
 };
 
 const getSubmissionByPatientId = async (patientId) => {
-  const response = await fetch(`${domain}/submissions?id=${patientId}`, {
+  const response = await fetch(`${domain}/submissions?patientId=${patientId}`, {
     method: "GET",
     headers: {
          authorization: `Bearer ${localStorage.getItem("accessToken")}`
