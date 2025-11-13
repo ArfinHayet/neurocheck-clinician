@@ -86,7 +86,6 @@ const Assessment = () => {
 
     console.log("Grouped Data:", grouped);
 
-    // set the grouped result to your state
     setSubmission(grouped);
   };
 
@@ -109,7 +108,7 @@ const Assessment = () => {
               patientId={item?.patientId}
               name={item?.patient?.name}
               age={item?.patient?.dateOfBirth}
-              timeAgo={item?.createdAt}
+              timeAgo={item?.assessment?.createdAt}
               status={item?.status}
               ratings={item?.ratings}
               childCondition={item?.assessment?.category}
@@ -131,7 +130,7 @@ const Assessment = () => {
           isModalOpen={isModalOpen}
           closeModal={closeModal}
           patientId={selectedSubmission?.patientId}
-          time={selectedSubmission?.createdAt}
+          time={selectedSubmission?.assessment?.createdAt}
           score={selectedSubmission?.score}
           assessmentId={selectedSubmission?.assessmentId}
         />

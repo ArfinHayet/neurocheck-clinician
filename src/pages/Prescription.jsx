@@ -1,10 +1,9 @@
 "use client";
-import { addPrescription, getSubmissionByPatientId } from "@/api/assessment";
+import { addAppointment, getSubmissionByPatientId } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
 import { getAge } from "@/components/utils/ageConverter";
 import { formatDate } from "@/components/utils/formateDate";
 import { AuthContext } from "@/Provider/AuthProvider";
-// import { AuthContext } from "../Provider/AuthProvider";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
@@ -16,9 +15,6 @@ const Prescription = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [needsAppointment, setNeedsAppointment] = useState(false);
   const [appointmentDate, setAppointmentDate] = useState("");
-  // console.log(userData);
-  // const { id } = useParams();
-  // console.log(id);
 
   const params = useParams();
   const id = params?.id ?? null;
@@ -37,27 +33,52 @@ const Prescription = () => {
     getSubmissionDetails();
   }, [id]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const medicineStr = meds.map((m, i) => `med-${i + 1}:${m.name}`).join(", ");
+  //   const dosageStr = meds.map((m) => m.dosage).join(", ");
+  //   const frequencyStr = meds.map((m) => m.frequency).join(", ");
+  //   const durationStr = meds.map((m) => m.duration).join(", ");
+
+  //   const payload = {
+  //     assessmentId: patientDetailsById?.[0]?.assessmentId,
+  //     userId: userData?.id,
+  //     patientId: patientDetailsById?.[0]?.patientId,
+  //     observation: notes,
+  //     medicine: medicineStr,
+  //     dosage: dosageStr,
+  //     frequency: frequencyStr,
+  //     duration: durationStr,
+  //     clinicianId: userData?.id,
+  //   };
+
+  //   const result = await addPrescription(payload);
+  //   if (result) {
+  //     setMeds([]);
+  //     setNotes("");
+  //     setShowSuccessModal(true);
+  //   }
+
+  //   console.log("submit", payload);
+  // };
+  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const medicineStr = meds.map((m, i) => `med-${i + 1}:${m.name}`).join(", ");
-    const dosageStr = meds.map((m) => m.dosage).join(", ");
-    const frequencyStr = meds.map((m) => m.frequency).join(", ");
-    const durationStr = meds.map((m) => m.duration).join(", ");
-
     const payload = {
-      assessmentId: patientDetailsById?.[0]?.assessmentId,
       userId: userData?.id,
       patientId: patientDetailsById?.[0]?.patientId,
-      observation: notes,
-      medicine: medicineStr,
-      dosage: dosageStr,
-      frequency: frequencyStr,
-      duration: durationStr,
+      time: appointmentDate,
       clinicianId: userData?.id,
     };
 
-    const result = await addPrescription(payload);
+   console.log("apppp",payload)
+
+    const result = await addAppointment(payload);
+
+    console.log("re",result)
     if (result) {
       setMeds([]);
       setNotes("");

@@ -10,7 +10,7 @@ const TextAns = ({ text,i, answer, score}) => {
           <span><GoDotFill className="text-lg text-[#60838C]"  /></span>
           <span className="text-[#606060] text-xs">{answer}</span>
         </p>
-        <p className="text-[#263238] text-sm font-semibold">{score}</p>
+        {/* <p className="text-[#263238] text-sm font-semibold">{score}</p> */}
       </div>
     </div></div>
   );

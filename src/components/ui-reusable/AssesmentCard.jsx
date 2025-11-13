@@ -1,16 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import p1 from "../../../public/svg/user-img.svg";
 import Link from "next/link";
 import { getAge } from "../utils/ageConverter";
 import { timeConverter } from "../utils/timeconverter";
-// import  { getAge,timeConverter } from "../utils/ageConverter";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const AssessmentCard = ({
   name,
@@ -27,7 +23,7 @@ const AssessmentCard = ({
   patientId,
 }) => {
 
-  // console.log("answers",item)
+  // console.log("answers",timeAgo)
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 

@@ -92,6 +92,25 @@ const addPrescription = async (obj) => {
 };
 
 
+const addAppointment = async (obj) => {
+  console.log("hello series", obj);
+
+  const response = await fetch(`${domain}/appointments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    body: JSON.stringify(obj),
+  });
+
+  const data = await response.json();
+  console.log("data", data);
+
+  return data;
+};
+
+
 
 export {
   getAllanswers,
@@ -99,5 +118,6 @@ export {
   getAllsubmissions,
   updateStatus,
   addPrescription,
-  getSubmissionByClinicianId
+  getSubmissionByClinicianId,
+  addAppointment
 };
