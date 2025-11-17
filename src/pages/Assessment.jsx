@@ -17,6 +17,8 @@ const Assessment = () => {
   const [selectedId, setSelectedId] = useState(null);
   const { userData } = useContext(AuthContext) || {};
 
+  // console.log("userdataaaaaaa",userData)
+
   const handleSubmitRating = () => {
     setIsRateModalOpen(false);
   };
@@ -33,12 +35,21 @@ const Assessment = () => {
   };
 
   const handleAccept = async (id) => {
-    // console.log(id)
+    console.log("2222222222",id)
     const obj = {
       status: "completed",
-      clinicianId: userData?.id,
+      clinicianId: Number(userData?.id),   
     };
+   console.log("tttqqqqq",obj)
+//     {
+//   "score": 8,
+//   "status": "completed",
+//   "ratings": 4.5,
+//   "additionalInfo": "Patient needs follow-up in 2 weeks."
+// }
+
     const result = await updateStatus(id, obj);
+    console.log("ttt",result)
     alert("Accepted");
   };
 
@@ -49,22 +60,21 @@ const Assessment = () => {
 
   const fetchSubmissions = async () => {
     const res = await getAllsubmissions();
-
-    // optional filter (uncomment if you want only premium assessments)
-    // const rawData = res.payload?.filter((i) => i?.assessment?.type === "premium");
-    //  const rawData = res.payload || [];
+    
     const rawData = res?.payload?.filter(
       (i) => i?.assessment?.type === "premium",
     );
     console.log("assessment", rawData);
 
     // group by patientId, assessmentId, and userId
-    const grouped = Object.values(
+    const grouped = Object?.values(
       rawData?.reduce((acc, item) => {
         const key = `${item.patientId}-${item.assessmentId}-${item.userId}`;
 
         if (!acc[key]) {
           acc[key] = {
+            id:item?.id,
+            status:item?.status,
             patientId: item.patientId,
             assessmentId: item.assessmentId,
             userId: item.userId,

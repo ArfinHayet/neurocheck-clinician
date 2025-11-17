@@ -22,7 +22,7 @@ const AssessmentDetails = () => {
   
   const getSubmissionDetails = async () => {
     const result = await getSubmissionByPatientId(patientId);
-    console.log("eeee", result?.payload);
+  
      const grouped = Object.values(result?.payload?.reduce((acc, item) => {
         const key = `${item.patientId}-${item.assessmentId}-${item.userId}`;
 
@@ -46,8 +46,7 @@ const AssessmentDetails = () => {
         return acc;
       }, {}),
     );
-    console.log("grouped details", grouped)
-    // setSubmission(result?.payload);
+    
     setSubmission(grouped);
   };
 

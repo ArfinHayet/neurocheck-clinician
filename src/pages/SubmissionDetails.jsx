@@ -135,20 +135,23 @@ const SubmissionDetails = ({
     const data = await getAllanswers({ patientId });
     const rawData = data?.payload || [];
 
+    // console.log("eee",rawData)
+
     if (rawData.length > 0) {
       setPatient(rawData[0].patient);
 
       const formatted = rawData.map((item) => ({
         id: item.id,
         questionId: item?.question?.questionType?.id,
-        questiontypename: item?.question?.questionType.name,
+        questiontypename: item?.question?.questionType?.name,
         question: item.question.questions,
         answer: item.answer,
       }));
 
-      // ✅ Group by questiontypename
+    
       const grouped = formatted.reduce((acc, cur) => {
-        const type = cur.questiontypename || "Others";
+        const type = cur.questiontypename;
+        // console.log("typeeee",type)
         if (!acc[type]) acc[type] = [];
         acc[type].push(cur);
         return acc;
@@ -210,10 +213,10 @@ const SubmissionDetails = ({
                         <button
                           key={type}
                           onClick={() => setActiveTypeTab(type)}
-                          className={`px-2 py-1.5 border cursor-pointer border-gray-200 rounded-4xl transition-all whitespace-nowrap ${
+                          className={`px-2 py-1.5 border cursor-pointer border-gray-200 rounded-2xl transition-all whitespace-nowrap ${
                             activeTypeTab === type
                               ? "text-[9px] font-normal bg-amber-50"
-                              : "bg-gray-100 hover:bg-gray-200"
+                              : "text-[9px] font-normal bg-gray-100 hover:bg-gray-200"
                           }`}
                         >
                           {type}

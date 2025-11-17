@@ -112,6 +112,22 @@ const addAppointment = async (obj) => {
 
 
 
+
+const getAllappointments = async () => {
+  const response = await fetch(`${domain}/appointments?limit=1000`, {
+    method: "GET",
+    headers: {
+         authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+
+
+
 export {
   getAllanswers,
   getSubmissionByPatientId,
@@ -119,5 +135,6 @@ export {
   updateStatus,
   addPrescription,
   getSubmissionByClinicianId,
-  addAppointment
+  addAppointment,
+  getAllappointments
 };

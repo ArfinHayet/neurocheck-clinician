@@ -7,6 +7,7 @@ import p1 from "../../../public/svg/user-img.svg";
 import Link from "next/link";
 import { getAge } from "../utils/ageConverter";
 import { timeConverter } from "../utils/timeconverter";
+import pdfMake from "pdfmake";
 
 const AssessmentCard = ({
   name,
@@ -17,7 +18,6 @@ const AssessmentCard = ({
   description,
   onViewFullAssessment,
   onRateSummary,
-  onBookVideo,
   onAcceptCase,
   ratings,
   patientId,
@@ -107,7 +107,7 @@ const AssessmentCard = ({
       },
     };
 
-    pdfMake.createPdf(docDefinition).open();
+    // pdfMake.createPdf(docDefinition).open();
   };
 
   return (
@@ -178,7 +178,7 @@ const AssessmentCard = ({
                 Rate this summary
               </button>
 
-              <button
+              {/* <button
                 onClick={() => {
                   onBookVideo?.();
                   setMenuOpen(false);
@@ -187,7 +187,7 @@ const AssessmentCard = ({
                 role="menuitem"
               >
                 Book video consultancy
-              </button>
+              </button> */}
               <button
                 onClick={() => {
                   generateConsultancyReport({

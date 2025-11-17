@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from "react";
 const Prescription = () => {
   const [patientDetailsById, setPatientDetailsById] = useState([]);
   const [notes, setNotes] = useState("");
+  const [diagnosis, setDiagnosis] = useState("");
   const [meds, setMeds] = useState([]);
   const { userData } = useContext(AuthContext) || {};
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -25,60 +26,30 @@ const Prescription = () => {
 
   const getSubmissionDetails = async () => {
     const result = await getSubmissionByPatientId(id);
-    console.log(result?.payload);
+    console.log("sss",result?.payload);
     setPatientDetailsById(result?.payload);
   };
 
   useEffect(() => {
     getSubmissionDetails();
   }, [id]);
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const medicineStr = meds.map((m, i) => `med-${i + 1}:${m.name}`).join(", ");
-  //   const dosageStr = meds.map((m) => m.dosage).join(", ");
-  //   const frequencyStr = meds.map((m) => m.frequency).join(", ");
-  //   const durationStr = meds.map((m) => m.duration).join(", ");
-
-  //   const payload = {
-  //     assessmentId: patientDetailsById?.[0]?.assessmentId,
-  //     userId: userData?.id,
-  //     patientId: patientDetailsById?.[0]?.patientId,
-  //     observation: notes,
-  //     medicine: medicineStr,
-  //     dosage: dosageStr,
-  //     frequency: frequencyStr,
-  //     duration: durationStr,
-  //     clinicianId: userData?.id,
-  //   };
-
-  //   const result = await addPrescription(payload);
-  //   if (result) {
-  //     setMeds([]);
-  //     setNotes("");
-  //     setShowSuccessModal(true);
-  //   }
-
-  //   console.log("submit", payload);
-  // };
-  
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const payload = {
-      userId: userData?.id,
+      userId: patientDetailsById?.[0]?.userId,
       patientId: patientDetailsById?.[0]?.patientId,
       time: appointmentDate,
       clinicianId: userData?.id,
+      diagnosis: diagnosis,
+      notes_from_review: notes,
     };
 
-   console.log("apppp",payload)
+    console.log("apppp", payload);
 
     const result = await addAppointment(payload);
 
-    console.log("re",result)
+    console.log("re", result);
     if (result) {
       setMeds([]);
       setNotes("");
@@ -87,6 +58,12 @@ const Prescription = () => {
 
     console.log("submit", payload);
   };
+
+
+const item = patientDetailsById?.[0];
+  
+
+
 
   return (
     <div className="p-6 lg:p-0 min-h-screen ">
@@ -105,8 +82,10 @@ const Prescription = () => {
         </div>
 
         <div className="w-2/3 border-l md:border-l border-[#DFDFDF]  pl-6 text-sm text-gray-700">
-          {patientDetailsById?.map((item, i) => (
-            <div key={i} className="grid grid-cols-2 gap-2">
+          {/* {patientDetailsById?.[0].map((item, i) => ( */}
+          <div
+            // key={i}
+            className="grid grid-cols-2 gap-2">
               <div>Patient name</div>
               <div className="font-medium">: {item?.patient?.name}</div>
               <div>Age</div>
@@ -118,7 +97,7 @@ const Prescription = () => {
               <div>Date</div>
               <div className="font-medium">: {formatDate(item?.createdAt)}</div>
             </div>
-          ))}
+          {/* ))} */}
         </div>
       </div>
 
@@ -132,8 +111,8 @@ const Prescription = () => {
           instructions and follow up information
         </p>
         <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
+          value={diagnosis}
+          onChange={(e) => setDiagnosis(e.target.value)}
           className="w-full lg:w-4/6 h-20 rounded border border-[#E2E2E2] p-4 bg-gray-50 resize-none outline-none"
         />
         <label className="block font-medium text-sm text-[#3B3B3B] mb-2">

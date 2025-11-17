@@ -41,7 +41,7 @@ const Leave = () => {
     startDate: slot.start,
     endDate: slot.end,
     userId: userData?.id,
-    status: "pending", // changed from approved to pending
+    status: "pending",
   };
 
   console.log("Payload to submit:", payload);

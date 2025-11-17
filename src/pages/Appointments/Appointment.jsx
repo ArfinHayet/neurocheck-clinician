@@ -1,40 +1,12 @@
 "use client";
+import { getAllappointments } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
-import { useState } from "react";
-
-const mockAppointments = [
-  {
-    id: 1,
-    patient: "Taimoor Nasir",
-    doctor: "Dr. Abdulmawla Alhasan",
-    specialization: "Specialist Vascular Surgery",
-    status: "Confirmed",
-    date: "Wed 1:00pm",
-    callStatus: "Active",
-    retries: 3,
-  },
-  {
-    id: 2,
-    patient: "Mohsin Ijaz",
-    doctor: "Dr. Israa Mustafa",
-    specialization: "General Practitioner",
-    status: "Rescheduled",
-    date: "Wed 7:20am",
-    callStatus: "Escalated",
-    retries: 2,
-  },
-  {
-    id: 3,
-    patient: "Aya Khamsi",
-    doctor: "Dr. Khairat Al Habbal",
-    specialization: "Specialist Family Medicine",
-    status: "Cancelled",
-    date: "Wed 2:45am",
-    callStatus: "Resolved",
-    retries: 2,
-  },
-];
-
+import { formatDate } from "@/components/utils/formateDate";
+import { AuthContext } from "@/Provider/AuthProvider";
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import { PiDotsThreeBold } from "react-icons/pi";
+import { MdOutlineJoinInner } from "react-icons/md";
 const statusColors = {
   Confirmed: "bg-green-100 text-green-600",
   Rescheduled: "bg-orange-100 text-orange-600",
@@ -52,7 +24,25 @@ const callStatusColors = {
 };
 
 const Appointment = () => {
-  const [selected, setSelected] = useState([]);
+  const { userData } = useContext(AuthContext);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const [appointment, setAppointment] = useState([]);
+
+  const fetchAppointments = async () => {
+    const res = await getAllappointments();
+    const rawData = res?.payload?.filter(
+      (i) => i?.clinicianId === Number(userData?.id),
+    );
+    console.log(rawData);
+    setAppointment(rawData);
+  };
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [userData?.id]);
 
   return (
     <div className=" min-h-screen">
@@ -61,9 +51,9 @@ const Appointment = () => {
         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"
       />
 
-      <div className="overflow-x-auto">
+      <div className="">
         <table className="w-full text-center border-collapse">
-          <thead className="text-[#000000] ">
+          <thead className="text-[#000000]">
             <tr>
               <th className="p-3">Patient Name</th>
               <th className="p-3">Appointment Status</th>
@@ -74,35 +64,115 @@ const Appointment = () => {
             </tr>
           </thead>
           <tbody>
-            {mockAppointments.map((appt) => (
+            {appointment?.map((appt) => (
               <tr
                 key={appt.id}
-                className="border-b text-xs border-[#DFDFDF] hover:bg-gray-50"
+                className="border-b text-center text-xs border-[#DFDFDF] hover:bg-gray-50"
               >
-                <td className="p-3">
-                  {appt.patient} <br /> 
-                  <span className="text-xs text-gray-500">
-                    {"+971563463741"}
-                  </span>
-                </td>
+                <td className="p-3">{appt.displayName}</td>
                 <td
                   className={`text-center text-xs mt-4 px-2 py-1 inline-block rounded-full ${statusColors[appt.status]}`}
                 >
                   {appt.status}
                 </td>
-                <td className="p-3">{appt.date}</td>
-                <td
-                  className={`p-3 ${callStatusColors[appt.callStatus]}`}
-                >
-                  {appt.callStatus}
+                <td className="p-3">{formatDate(appt.time)}</td>
+                <td className={`p-3 ${callStatusColors[appt.callStatus]}`}>
+                  {appt.metting_status}
                 </td>
-                <td className="p-3">{appt.retries}</td>
-                <td className="p-3">...</td>
+                <td className="p-3">{appt.tries}</td>
+                <td><MdOutlineJoinInner /></td>
+                <td className="p-3 text-center relative">
+                  <PiDotsThreeBold
+                    className="cursor-pointer text-xl"
+                    onClick={() =>
+                      setOpenDropdownId(
+                        openDropdownId === appt.id ? null : appt.id,
+                      )
+                    }
+                  />
+
+                  {openDropdownId === appt.id && (
+                    <div className="absolute right-0 mt-2 w-30 bg-white shadow-lg rounded-md  z-50 text-left text-sm">
+                      <button
+                        onClick={() => {
+                          setSelectedAppointment(appt);
+                          setShowModal(true);
+                          setOpenDropdownId(null);
+                        }}
+                        className="block w-full text-left text-sm px-4 py-2 hover:bg-gray-100"
+                      >
+                        View Details
+                      </button>
+                      <Link href={appt.link}>
+                        <button
+                          onClick={() => alert("Join Meeting Clicked")}
+                          className="block text-left text-sm w-full px-4 py-2 hover:bg-gray-100"
+                        >
+                          join Meeting
+                        </button>
+                      </Link>
+                    </div>
+                  )}
+                </td>
+
+                {/* <td className="p-3 text-center"><PiDotsThreeBold/></td> */}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <div>
+        {/* <BasicTable/> */}
+      </div>
+
+      {showModal && selectedAppointment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-black"
+            >
+              ✕
+            </button>
+
+            <h2 className="text-xl font-semibold mb-4">Appointment Details</h2>
+
+            <div className="space-y-2 text-sm">
+              <p>
+                <strong>Patient Name:</strong> {selectedAppointment.displayName}
+              </p>
+              <p>
+                <strong>Status:</strong> {selectedAppointment.status}
+              </p>
+              <p>
+                <strong>Date:</strong> {formatDate(selectedAppointment.time)}
+              </p>
+              <p>
+                <strong>Call Status:</strong>{" "}
+                {selectedAppointment.metting_status}
+              </p>
+              <p>
+                <strong>Retries:</strong> {selectedAppointment.tries}
+              </p>
+              <p>
+                <strong>Diagnosis:</strong>{" "}
+                {selectedAppointment.diagnosis ?? "N/A"}
+              </p>
+              <p>
+                <strong>Notes:</strong>{" "}
+                {selectedAppointment.notes_from_review ?? "N/A"}
+              </p>
+            </div>
+
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
