@@ -24,7 +24,8 @@ const callStatusColors = {
 };
 
 const Appointment = () => {
-  const { userData } = useContext(AuthContext);
+
+const { userData } = useContext(AuthContext) || {};
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -45,7 +46,7 @@ const Appointment = () => {
   }, [userData?.id]);
 
   return (
-    <div className=" min-h-screen">
+    <div className="min-h-screen">
       <Header
         title="Appointment List"
         description="Your central hub for tracking assessments, reviewing patient insights, and managing your schedule"

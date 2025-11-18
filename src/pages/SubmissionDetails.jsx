@@ -234,10 +234,7 @@ const SubmissionDetails = ({
                         />
                       ))}
                     </div>
-                  </>
-                
-
-             
+                  </>                         
               </div>
             </div>
        

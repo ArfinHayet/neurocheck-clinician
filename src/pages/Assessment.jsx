@@ -7,7 +7,6 @@ import RatingModal from "./RatingModal";
 import SubmissionDetails from "./SubmissionDetails";
 import { getAllsubmissions, updateStatus } from "@/api/assessment";
 import { AuthContext } from "../Provider/AuthProvider";
-// import { AuthContext } from "../Provider/AuthProvider";
 
 const Assessment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,12 +74,12 @@ const Assessment = () => {
           acc[key] = {
             id:item?.id,
             status:item?.status,
-            patientId: item.patientId,
-            assessmentId: item.assessmentId,
-            userId: item.userId,
-            patient: item.patient,
-            assessment: item.assessment,
-            user: item.user,
+            patientId: item?.patientId,
+            assessmentId: item?.assessmentId,
+            userId: item?.userId,
+            patient: item?.patient,
+            assessment: item?.assessment,
+            user: item?.user,
             summaries: [],
           };
         }
@@ -112,7 +111,7 @@ const Assessment = () => {
 
       <div className="flex flex-col gap-5">
         {submission?.length > 0 ? (
-          submission.map((item, index) => (
+          submission?.map((item, index) => (
             <AssessmentCard
               key={index}
               patientId={item?.patientId}
