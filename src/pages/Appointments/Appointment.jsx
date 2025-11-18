@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { MdOutlineJoinInner } from "react-icons/md";
+import { IoEyeSharp } from "react-icons/io5";
+
 const statusColors = {
   Confirmed: "bg-green-100 text-green-600",
   Rescheduled: "bg-orange-100 text-orange-600",
@@ -37,7 +39,7 @@ const { userData } = useContext(AuthContext) || {};
     const rawData = res?.payload?.filter(
       (i) => i?.clinicianId === Number(userData?.id),
     );
-    console.log(rawData);
+    console.log("appppp",rawData);
     setAppointment(rawData);
   };
 
@@ -81,8 +83,11 @@ const { userData } = useContext(AuthContext) || {};
                   {appt.metting_status}
                 </td>
                 <td className="p-3">{appt.tries}</td>
-                <td><MdOutlineJoinInner /></td>
-                <td className="p-3 text-center relative">
+                <td><p className="flex justify-center items-center gap-4">
+                  <span><MdOutlineJoinInner size={20}/></span>
+                  <span><IoEyeSharp size={20} /></span>
+                </p></td>
+                {/* <td className="p-3 text-center relative">
                   <PiDotsThreeBold
                     className="cursor-pointer text-xl"
                     onClick={() =>
@@ -114,7 +119,7 @@ const { userData } = useContext(AuthContext) || {};
                       </Link>
                     </div>
                   )}
-                </td>
+                </td> */}
 
                 {/* <td className="p-3 text-center"><PiDotsThreeBold/></td> */}
               </tr>
