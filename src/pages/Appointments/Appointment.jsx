@@ -26,8 +26,7 @@ const callStatusColors = {
 };
 
 const Appointment = () => {
-
-const { userData } = useContext(AuthContext) || {};
+  const { userData } = useContext(AuthContext) || {};
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -39,7 +38,7 @@ const { userData } = useContext(AuthContext) || {};
     const rawData = res?.payload?.filter(
       (i) => i?.clinicianId === Number(userData?.id),
     );
-    console.log("appppp",rawData);
+    console.log("appppp", rawData);
     setAppointment(rawData);
   };
 
@@ -56,7 +55,7 @@ const { userData } = useContext(AuthContext) || {};
 
       <div className="">
         <table className="w-full text-center border-collapse">
-          <thead className="text-[#000000]">
+          <thead className="">
             <tr>
               <th className="p-3">Patient Name</th>
               <th className="p-3">Appointment Status</th>
@@ -83,53 +82,33 @@ const { userData } = useContext(AuthContext) || {};
                   {appt.metting_status}
                 </td>
                 <td className="p-3">{appt.tries}</td>
-                <td><p className="flex justify-center items-center gap-4">
-                  <span><MdOutlineJoinInner size={20}/></span>
-                  <span><IoEyeSharp size={20} /></span>
-                </p></td>
-                {/* <td className="p-3 text-center relative">
-                  <PiDotsThreeBold
-                    className="cursor-pointer text-xl"
-                    onClick={() =>
-                      setOpenDropdownId(
-                        openDropdownId === appt.id ? null : appt.id,
-                      )
-                    }
-                  />
-
-                  {openDropdownId === appt.id && (
-                    <div className="absolute right-0 mt-2 w-30 bg-white shadow-lg rounded-md  z-50 text-left text-sm">
-                      <button
+                <td>
+                  <p className="flex justify-center items-center gap-4">
+                    <Link className=" cursor-pointer" href={appt.link}>
+                      {" "}
+                      <span>
+                        <MdOutlineJoinInner size={20} />
+                      </span>
+                    </Link>
+                    <span>
+                      <IoEyeSharp
+                        className=" cursor-pointer"
+                        size={20}
                         onClick={() => {
                           setSelectedAppointment(appt);
                           setShowModal(true);
                           setOpenDropdownId(null);
                         }}
-                        className="block w-full text-left text-sm px-4 py-2 hover:bg-gray-100"
-                      >
-                        View Details
-                      </button>
-                      <Link href={appt.link}>
-                        <button
-                          onClick={() => alert("Join Meeting Clicked")}
-                          className="block text-left text-sm w-full px-4 py-2 hover:bg-gray-100"
-                        >
-                          join Meeting
-                        </button>
-                      </Link>
-                    </div>
-                  )}
-                </td> */}
-
-                {/* <td className="p-3 text-center"><PiDotsThreeBold/></td> */}
+                      />
+                    </span>
+                  </p>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div>
-        {/* <BasicTable/> */}
-      </div>
+      <div>{/* <BasicTable/> */}</div>
 
       {showModal && selectedAppointment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
