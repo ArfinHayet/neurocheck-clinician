@@ -12,6 +12,7 @@ const AssessmentDetails = () => {
 
   const params = useParams();
   const patientId = params?.patientId ?? null;
+  const assessmentId = params?.assessmentId ?? null;
 
   if (!patientId) {
     return <div>Loading...</div>; 
@@ -21,10 +22,15 @@ const AssessmentDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const getSubmissionDetails = async () => {
-    const result = await getSubmissionByPatientId(patientId);
+    const result = await getSubmissionByPatientId(patientId, assessmentId);
+
+    console.log("details",result)
   
      const grouped = Object.values(result?.payload?.reduce((acc, item) => {
         const key = `${item.patientId}-${item.assessmentId}-${item.userId}`;
+      //  const key = `${item?.assessmentId}`;
+       
+       console.log("keyyyy",key)
 
         if (!acc[key]) {
           acc[key] = {
@@ -46,7 +52,7 @@ const AssessmentDetails = () => {
         return acc;
       }, {}),
     );
-    
+    console.log("%%%",grouped)
     setSubmission(grouped);
   };
 

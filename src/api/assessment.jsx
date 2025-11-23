@@ -27,8 +27,8 @@ const getAllsubmissions = async () => {
   return data;
 };
 
-const getSubmissionByPatientId = async (patientId) => {
-  const response = await fetch(`${domain}/submissions?patientId=${patientId}`, {
+const getSubmissionByPatientId = async (patientId,assessmentId) => {
+  const response = await fetch(`${domain}/submissions?patientId=${patientId}&assessmentId=${assessmentId}`, {
     method: "GET",
     headers: {
          authorization: `Bearer ${localStorage.getItem("accessToken")}`

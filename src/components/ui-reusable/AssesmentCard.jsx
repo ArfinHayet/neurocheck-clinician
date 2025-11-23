@@ -21,6 +21,7 @@ const AssessmentCard = ({
   onAcceptCase,
   ratings,
   patientId,
+  assessmentId
 }) => {
 
   // console.log("answers",timeAgo)
@@ -226,7 +227,7 @@ const AssessmentCard = ({
       </div>
 
       {/* Content */}
-      <Link className="no-underline" href={`/assessment/${patientId}`}>
+      <Link className="no-underline" href={`/assessment/${patientId}/${assessmentId}`}>
         <div className="flex-1 mt-5">
           <div className="flex flex-row gap-2">
             <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">

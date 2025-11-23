@@ -115,6 +115,7 @@ const Assessment = () => {
             <AssessmentCard
               key={index}
               patientId={item?.patientId}
+              assessmentId={item?.assessmentId}
               name={item?.patient?.name}
               age={item?.patient?.dateOfBirth}
               timeAgo={item?.assessment?.createdAt}
