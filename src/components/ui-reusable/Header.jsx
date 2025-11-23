@@ -217,7 +217,9 @@ const Header = ({ title, description }) => {
   const handleLogout = () => {
     console.log("Logging out...");
     setShowTooltip(false);
-    navigation.replace("/login");
+    localStorage.removeItem("accessToken");
+    navigation.replace("/signin");
+   
   
   };
 
@@ -228,9 +230,9 @@ const Header = ({ title, description }) => {
         <h1 className="text-2xl font-bold">{title}</h1>
         <div className="md:block hidden">
           <div className="flex relative">
-            <button>
+            {/* <button>
               <LuMessageSquareMore size={20} className="text-[#114654] cursor-pointer" />
-            </button>
+            </button> */}
             <button>
               <IoMdNotificationsOutline size={23} className="text-[#114654] mx-2 cursor-pointer" />
             </button>
@@ -240,10 +242,10 @@ const Header = ({ title, description }) => {
            
             <div className="relative" ref={tooltipRef}>            
               {showTooltip && (
-                <div className="absolute right-0 mt-8 w-24 bg-white border border-gray-300 rounded shadow-md z-10">
+                <div className="absolute cursor-pointer right-0 mt-8 w-24 bg-white border border-gray-300 rounded shadow-md z-10">
                   <button
                     onClick={handleLogout}
-                    className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100"
+                    className="w-full px-3 py-2 cursor-pointer text-sm text-left hover:bg-gray-100"
                   >
                     Logout
                   </button>

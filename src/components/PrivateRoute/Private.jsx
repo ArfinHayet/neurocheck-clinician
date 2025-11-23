@@ -13,7 +13,7 @@ const Private = ({ children }) => {
     // setIsClient(true);
 
       if (!loading && !isAuthenticated()) {
-        alert("You are not authenticated, Please login first")
+        // alert("You are not authenticated, Please login first")
     //   toast.error("You are not authenticated, Please login first");
       redirect("/signin");
      
