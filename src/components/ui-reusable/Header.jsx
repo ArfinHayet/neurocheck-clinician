@@ -162,11 +162,14 @@ import { useEffect, useRef, useState } from "react";
 import { LuMessageSquareMore } from "react-icons/lu";
 import { RiShutDownLine } from "react-icons/ri";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
 const Header = ({ title, description }) => {
   // const [time, setTime] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef(null);
+
+  const navigation = useRouter();
 
   // Set current time and update every minute
   // useEffect(() => {
@@ -213,8 +216,9 @@ const Header = ({ title, description }) => {
 
   const handleLogout = () => {
     console.log("Logging out...");
-
     setShowTooltip(false);
+    navigation.replace("/login");
+  
   };
 
   return (

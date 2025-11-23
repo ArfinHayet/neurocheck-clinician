@@ -128,6 +128,29 @@ const getAllappointments = async () => {
 
 
 
+const updateSchedule = async (id,obj) => {
+  // console.log("hello update", obj);
+
+  const response = await fetch(`${domain}/appointments/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    body: JSON.stringify(obj),
+  });
+
+  const data = await response.json();
+  // console.log("data", data);
+
+  return data;
+};
+
+
+
+
+
+
 export {
   getAllanswers,
   getSubmissionByPatientId,
@@ -136,5 +159,6 @@ export {
   addPrescription,
   getSubmissionByClinicianId,
   addAppointment,
-  getAllappointments
+  getAllappointments,
+  updateSchedule
 };

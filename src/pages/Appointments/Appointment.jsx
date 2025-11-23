@@ -1,13 +1,15 @@
 "use client";
-import { getAllappointments } from "@/api/assessment";
+import { getAllappointments, updateSchedule } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
 import { formatDate } from "@/components/utils/formateDate";
 import { AuthContext } from "@/Provider/AuthProvider";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { PiDotsThreeBold } from "react-icons/pi";
-import { MdOutlineJoinInner } from "react-icons/md";
+import { MdEditCalendar } from "react-icons/md";
 import { IoEyeSharp } from "react-icons/io5";
+import { FaUserEdit } from "react-icons/fa";
+import { PiVideoCameraBold } from "react-icons/pi";
+import Modal from "@/components/ui-reusable/Modal";
 
 const statusColors = {
   Confirmed: "bg-green-100 text-green-600",
@@ -27,11 +29,13 @@ const callStatusColors = {
 
 const Appointment = () => {
   const { userData } = useContext(AuthContext) || {};
-  const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
+  const [rescheduleModal, setRescheduleModal] = useState(false);
+  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [appointmentDate, setAppointmentDate] = useState("");
   const [appointment, setAppointment] = useState([]);
+  const [notes, setNotes] = useState("");
 
   const fetchAppointments = async () => {
     const res = await getAllappointments();
@@ -45,6 +49,66 @@ const Appointment = () => {
   useEffect(() => {
     fetchAppointments();
   }, [userData?.id]);
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const closeRescheduleModal = () => {
+    setRescheduleModal(false);
+  };
+  const closeFeedBackModal = () => {
+    setFeedbackModal(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log("reschedule", selectedAppointment);
+
+    if (selectedAppointment?.tries >= 3) {
+      alert(
+        "This patient has already reached the maximum number of reschedules (3).",
+      );
+      return;
+    }
+
+    const payload = {
+      userId: selectedAppointment?.userId,
+      patientId: selectedAppointment?.patientId,
+      time: appointmentDate,
+      clinicianId: selectedAppointment?.clinicianId,
+      status: "Rescheduled",
+      metting_status: "Scheduled",
+      tries: (selectedAppointment?.tries || 0) + 1,
+    };
+
+    console.log("apppp", payload);
+
+    const result = await updateSchedule(selectedAppointment?.id, payload);
+
+    setRescheduleModal(false);
+    fetchAppointments();
+  };
+
+
+  const handleSubmitFeedback = async (e) => {
+    e.preventDefault();
+
+    console.log("reschedulefedd", selectedAppointment);
+
+
+    // const payload = {
+    //   diagnosis: diagnosis,
+    //   notes_from_review: notes,
+    // };
+
+    // console.log("appppfeed", payload);
+
+    // const result = await updateSchedule(selectedAppointment?.id, payload);
+
+    setFeedbackModal(false);
+    fetchAppointments();
+  };
 
   return (
     <div className="min-h-screen">
@@ -69,7 +133,7 @@ const Appointment = () => {
             {appointment?.map((appt) => (
               <tr
                 key={appt.id}
-                className="border-b text-center text-xs border-[#DFDFDF] hover:bg-gray-50"
+                className="border-b text-center text-gray-600 text-xs border-[#DFDFDF] hover:bg-gray-50"
               >
                 <td className="p-3">{appt.displayName}</td>
                 <td
@@ -78,7 +142,7 @@ const Appointment = () => {
                   {appt.status}
                 </td>
                 <td className="p-3">{formatDate(appt.time)}</td>
-                <td className={`p-3 ${callStatusColors[appt.callStatus]}`}>
+                <td className={`p-3 ${callStatusColors[appt.metting_status]}`}>
                   {appt.metting_status}
                 </td>
                 <td className="p-3">{appt.tries}</td>
@@ -87,17 +151,36 @@ const Appointment = () => {
                     <Link className=" cursor-pointer" href={appt.link}>
                       {" "}
                       <span>
-                        <MdOutlineJoinInner size={20} />
+                        <PiVideoCameraBold size={16} />
                       </span>
                     </Link>
                     <span>
                       <IoEyeSharp
-                        className=" cursor-pointer"
-                        size={20}
+                        className="cursor-pointer"
+                        size={16}
                         onClick={() => {
                           setSelectedAppointment(appt);
                           setShowModal(true);
-                          setOpenDropdownId(null);
+                        }}
+                      />
+                    </span>
+                    <span>
+                      <FaUserEdit
+                        size={16}
+                        className=" cursor-pointer"
+                        onClick={() => {
+                          setSelectedAppointment(appt);
+                          setFeedbackModal(true);
+                        }}
+                      />
+                    </span>
+                    <span>
+                      <MdEditCalendar
+                        size={16}
+                        className=" cursor-pointer"
+                        onClick={() => {
+                          setSelectedAppointment(appt);
+                          setRescheduleModal(true);
                         }}
                       />
                     </span>
@@ -110,53 +193,95 @@ const Appointment = () => {
       </div>
       <div>{/* <BasicTable/> */}</div>
 
-      {showModal && selectedAppointment && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-black"
-            >
-              ✕
-            </button>
-
-            <h2 className="text-xl font-semibold mb-4">Appointment Details</h2>
-
-            <div className="space-y-2 text-sm">
-              <p>
-                <strong>Patient Name:</strong> {selectedAppointment.displayName}
-              </p>
-              <p>
-                <strong>Status:</strong> {selectedAppointment.status}
-              </p>
-              <p>
-                <strong>Date:</strong> {formatDate(selectedAppointment.time)}
-              </p>
-              <p>
-                <strong>Call Status:</strong>{" "}
-                {selectedAppointment.metting_status}
-              </p>
-              <p>
-                <strong>Retries:</strong> {selectedAppointment.tries}
-              </p>
-              <p>
-                <strong>Diagnosis:</strong>{" "}
-                {selectedAppointment.diagnosis ?? "N/A"}
-              </p>
-              <p>
-                <strong>Notes:</strong>{" "}
-                {selectedAppointment.notes_from_review ?? "N/A"}
-              </p>
-            </div>
-
-            <button
-              onClick={() => setShowModal(false)}
-              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md"
-            >
-              Close
-            </button>
+      {selectedAppointment && (
+        <Modal
+          classname="w-[65vw] lg:w-[34vw] h-auto"
+          isOpen={showModal}
+          closeModal={closeModal}
+          title="Appointment Details"
+        >
+          <div className="space-y-2 text-sm">
+            <p>
+              <strong>Patient Name:</strong> {selectedAppointment.displayName}
+            </p>
+            <p>
+              <strong>Status:</strong> {selectedAppointment.status}
+            </p>
+            <p>
+              <strong>Date:</strong> {formatDate(selectedAppointment.time)}
+            </p>
+            <p>
+              <strong>Call Status:</strong> {selectedAppointment.metting_status}
+            </p>
+            <p>
+              <strong>Tries:</strong> {selectedAppointment.tries}
+            </p>
+            <p>
+              <strong>Diagnosis:</strong>{" "}
+              {selectedAppointment.diagnosis ?? "N/A"}
+            </p>
+            <p>
+              <strong>Notes:</strong>{" "}
+              {selectedAppointment.notes_from_review ?? "N/A"}
+            </p>
           </div>
-        </div>
+        </Modal>
+      )}
+
+      {selectedAppointment && (
+        <Modal
+          classname="w-[65vw] lg:w-[34vw] h-auto"
+          isOpen={rescheduleModal}
+          closeModal={closeRescheduleModal}
+          title="Reschedule Appointment"
+        >
+          <form onSubmit={handleSubmit} className="space-y-2 text-sm">
+            <input
+              type="datetime-local"
+              value={appointmentDate}
+              onChange={(e) => setAppointmentDate(e.target.value)}
+              className="w-full pl-4 pr-10 py-2 border border-[#E2E2E2] rounded bg-[#F9F9F9] text-sm text-gray-700 appearance-none focus:outline-none focus:ring-2 focus:ring-[#0A4863]"
+            />
+            <button
+              className="w-full cursor-pointer bg-[#0A4863] text-white rounded-lg py-2 shadow"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        </Modal>
+      )}
+
+      {selectedAppointment && (
+        <Modal
+          classname="w-[65vw] lg:w-[34vw] h-auto"
+          isOpen={feedbackModal}
+          closeModal={closeFeedBackModal}
+          title="Post Appointment Feedback"
+        >
+          <form onSubmit={handleSubmitFeedback}>
+            
+
+            <label className="block font-medium text-sm text-[#3B3B3B] mb-2">
+             Clinician Notes Post Consultation
+            </label>
+
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="w-full h-36 rounded border border-[#E2E2E2] p-4 bg-gray-50 resize-none outline-none"
+            />
+
+            <div className="mt-2 mb-9">
+              <button
+                className="w-full cursor-pointer bg-[#0A4863] text-white rounded-lg py-2 shadow"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </Modal>
       )}
     </div>
   );

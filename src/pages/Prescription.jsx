@@ -33,6 +33,7 @@ const Prescription = () => {
   useEffect(() => {
     getSubmissionDetails();
   }, [id]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -43,6 +44,9 @@ const Prescription = () => {
       clinicianId: userData?.id,
       diagnosis: diagnosis,
       notes_from_review: notes,
+      status: "Confirmed",
+      metting_status: "Scheduled",
+      tries:1
     };
 
     console.log("apppp", payload);
