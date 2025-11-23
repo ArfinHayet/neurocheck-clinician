@@ -74,6 +74,7 @@ const Assessment = () => {
           acc[key] = {
             id:item?.id,
             status:item?.status,
+            ratings:item?.ratings,
             patientId: item?.patientId,
             assessmentId: item?.assessmentId,
             userId: item?.userId,

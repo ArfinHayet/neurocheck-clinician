@@ -56,7 +56,7 @@ const RatingModal = ({
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-6">
+      {/* <form onSubmit={handleSubmit} className="mt-6">
         <label className="text-sm text-gray-700 text-center items-center">
           Write down your thoughts (optional)
         </label>
@@ -73,7 +73,7 @@ const RatingModal = ({
         >
           Submit this review
         </button>
-      </form>
+      </form> */}
     </Modal>
   );
 };
