@@ -39,6 +39,18 @@ const getSubmissionByPatientId = async (patientId,assessmentId) => {
   return data;
 };
 
+const getSubmissionById = async (patientId) => {
+  const response = await fetch(`${domain}/submissions?patientId=${patientId}`, {
+    method: "GET",
+    headers: {
+         authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
 
 const getSubmissionByClinicianId = async (clinicianId) => {
   const response = await fetch(`${domain}/submissions?clinicianId=${clinicianId}`, {
@@ -160,5 +172,6 @@ export {
   getSubmissionByClinicianId,
   addAppointment,
   getAllappointments,
-  updateSchedule
+  updateSchedule,
+  getSubmissionById 
 };

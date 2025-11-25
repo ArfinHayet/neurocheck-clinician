@@ -1,5 +1,5 @@
 "use client";
-import { addAppointment, getSubmissionByPatientId } from "@/api/assessment";
+import { addAppointment, getSubmissionById } from "@/api/assessment";
 import Header from "@/components/ui-reusable/Header";
 import { getAge } from "@/components/utils/ageConverter";
 import { formatDate } from "@/components/utils/formateDate";
@@ -20,12 +20,14 @@ const Prescription = () => {
   const params = useParams();
   const id = params?.id ?? null;
 
+  console.log("ppppp",id)
+
   if (!id) {
     return <div>Loading...</div>;
   }
 
   const getSubmissionDetails = async () => {
-    const result = await getSubmissionByPatientId(id);
+    const result = await getSubmissionById(id);
     console.log("sss",result?.payload);
     setPatientDetailsById(result?.payload);
   };
