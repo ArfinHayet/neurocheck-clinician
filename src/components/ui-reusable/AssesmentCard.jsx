@@ -21,9 +21,8 @@ const AssessmentCard = ({
   onAcceptCase,
   ratings,
   patientId,
-  assessmentId
+  assessmentId,
 }) => {
-
   // console.log("answers",timeAgo)
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -48,84 +47,79 @@ const AssessmentCard = ({
     status && status.trim() !== "" ? status.toLowerCase() : "pending";
   const statusClass = colors[statusKey] || colors.pending;
 
+  const generateConsultancyReport = () => {
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
 
+    let y = 40;
 
-
-const generateConsultancyReport = () => {
-  const doc = new jsPDF({ unit: "pt", format: "a4" });
-
-  let y = 40; 
-
-  // ------------------- TITLE -------------------
-  doc.setFontSize(18);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor("#171717");
-  doc.text("Report Structure ADHD Adult", 40, y);
-
-  y += 25;
-
-  // ------------------- TABLE DATA -------------------
-  const tableData = [
-    ["Patient Name", "XX YY"],
-    ["Age", "YY"],
-    ["Demographics", "XX"],
-    ["Clinician Diagnosis", ""],
-    ["Clinician Notes from Review", ""],
-    ["Clinician Notes Post Consultation", ""],
-    ["Diagnosis Recommendation", "Exhibits ADHD type XX / YY / ZZ"],
-  ];
-
-  autoTable(doc, {
-    startY: y,
-    head: [],
-    body: tableData,
-    theme: "grid",
-
-    styles: {
-      fontSize: 11,
-      cellPadding: 10,
-      valign: "middle",
-    },
-
-    columnStyles: {
-      0: { cellWidth: 150, fontStyle: "bold" },
-      1: { cellWidth: 350 },
-    },
-
-    tableWidth: 500,
-  });
-
-  // After table ends
-  y = doc.lastAutoTable.finalY + 30;
-
-  // ------------------- NORMAL SECTIONS -------------------
-  const leftX = 40;
-
-  const writeSection = (title, text) => {
-    doc.setFontSize(13);
+    // ------------------- TITLE -------------------
+    doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
-    doc.text(title, leftX, y);
-    y += 15;
+    doc.setTextColor("#171717");
+    doc.text("Report Structure ADHD Adult", 40, y);
 
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
+    y += 25;
 
-    const wrapped = doc.splitTextToSize(text, 500);
-    doc.text(wrapped, leftX, y);
-    y += wrapped.length * 12 + 15;
+    // ------------------- TABLE DATA -------------------
+    const tableData = [
+      ["Patient Name", "XX YY"],
+      ["Age", "YY"],
+      ["Demographics", "XX"],
+      ["Clinician Diagnosis", ""],
+      ["Clinician Notes from Review", ""],
+      ["Clinician Notes Post Consultation", ""],
+      ["Diagnosis Recommendation", "Exhibits ADHD type XX / YY / ZZ"],
+    ];
+
+    autoTable(doc, {
+      startY: y,
+      head: [],
+      body: tableData,
+      theme: "grid",
+
+      styles: {
+        fontSize: 11,
+        cellPadding: 10,
+        valign: "middle",
+      },
+
+      columnStyles: {
+        0: { cellWidth: 150, fontStyle: "bold" },
+        1: { cellWidth: 350 },
+      },
+
+      tableWidth: 500,
+    });
+
+    // After table ends
+    y = doc.lastAutoTable.finalY + 30;
+
+    // ------------------- NORMAL SECTIONS -------------------
+    const leftX = 40;
+
+    const writeSection = (title, text) => {
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "bold");
+      doc.text(title, leftX, y);
+      y += 15;
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+
+      const wrapped = doc.splitTextToSize(text, 500);
+      doc.text(wrapped, leftX, y);
+      y += wrapped.length * 12 + 15;
+    };
+
+    writeSection("Medical History Summary", "Lorem ipsum dolor sit amet...");
+    writeSection("ASRS Summary", "Key areas rated very often...");
+    writeSection("Weiss Rating Summary", "# of items scored 2 or 3...");
+    writeSection("DIVA Summary", "# of childhood/adulthood criteria met...");
+
+    // ------------------- SAVE PDF -------------------
+    doc.save("consultancy-report.pdf");
   };
 
-  writeSection("Medical History Summary", "Lorem ipsum dolor sit amet...");
-  writeSection("ASRS Summary", "Key areas rated very often...");
-  writeSection("Weiss Rating Summary", "# of items scored 2 or 3...");
-  writeSection("DIVA Summary", "# of childhood/adulthood criteria met...");
-
-  // ------------------- SAVE PDF -------------------
-  doc.save("consultancy-report.pdf");
-};
-
-
-  
   return (
     <div className="bg-[#FFFFFF] rounded-lg p-4 shadow-sm">
       <div className="flex items-start justify-between gap-4">
@@ -205,20 +199,19 @@ const generateConsultancyReport = () => {
                 Book video consultancy
               </button> */}
               <button
-                 onClick={() => 
-    generateConsultancyReport({
-      patientName: "John Doe",
-      age: "30",
-      demographics: "Male, Adult",
-      clinicianDiagnosis: "ADHD Combined Type",
-      diagnosisRecommendation: "Continue evaluation",
-      medicalHistorySummary: "Lorem ipsum dolor sit amet...",
-      asrsSummary: "Key areas rated very often...",
-      weissSummary: "# of items scored 2 or 3...",
-      divaSummary: "# of childhood/adulthood criteria met..."
-    })
-  }
-               
+                onClick={() =>
+                  generateConsultancyReport({
+                    patientName: "John Doe",
+                    age: "30",
+                    demographics: "Male, Adult",
+                    clinicianDiagnosis: "ADHD Combined Type",
+                    diagnosisRecommendation: "Continue evaluation",
+                    medicalHistorySummary: "Lorem ipsum dolor sit amet...",
+                    asrsSummary: "Key areas rated very often...",
+                    weissSummary: "# of items scored 2 or 3...",
+                    divaSummary: "# of childhood/adulthood criteria met...",
+                  })
+                }
                 className="w-full cursor-pointer text-left px-4 py-2 text-sm border-b-2 border-[#F2F2F2] text-[#114654]"
               >
                 Consultancy Report
@@ -242,7 +235,10 @@ const generateConsultancyReport = () => {
       </div>
 
       {/* Content */}
-      <Link className="no-underline" href={`/assessment/${patientId}/${assessmentId}`}>
+      <Link
+        className="no-underline"
+        href={`/assessment/${patientId}/${assessmentId}`}
+      >
         <div className="flex-1 mt-5">
           <div className="flex flex-row gap-2">
             <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">

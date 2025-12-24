@@ -649,6 +649,21 @@ const AssessmentDetails = () => {
   const isFirst = index === 0;
   const isLast = index === tabs.length - 1;
 
+
+
+  const submissionPatientId = data?.patient?.id;
+
+// appointment exists for this patient
+const hasAppointmentForPatient = appointment?.some(
+  (a) => a?.patientId === submissionPatientId
+);
+
+// assume backend থেকে flag আসছে
+// example: item.reportUrl OR item.isReportGenerated
+const isReportGenerated = data?.isReportGenerated; 
+// or: Boolean(data?.reportUrl)
+
+
   const generateConsultancyReport = () => {
     const doc = new jsPDF({ unit: "pt", format: "a4" });
 
@@ -801,7 +816,7 @@ const AssessmentDetails = () => {
       )}
 
       {/* NAVIGATION */}
-      <div className="flex justify-end items-end gap-2 pt-6">
+      {/* <div className="flex justify-end items-end gap-2 pt-6">
         {!isFirst && (
           <button
             onClick={() => setActiveTab(tabs[index - 1])}
@@ -846,7 +861,66 @@ const AssessmentDetails = () => {
             
           )}
         </div>
-      </div>
+      </div> */}
+
+
+      <div className="flex justify-between items-center gap-2 pt-6">
+  {/* PREVIOUS */}
+  {!isFirst && (
+    <button
+      onClick={() => setActiveTab(tabs[index - 1])}
+      className="border border-[#114654] text-[#114654] px-5 py-2 text-xs rounded-full"
+    >
+      Previous
+    </button>
+  )}
+
+  {/* RIGHT SIDE ACTION */}
+  <div className="flex gap-3 items-center">
+    {/* NEXT */}
+    {!isLast && (
+      <button
+        onClick={() => setActiveTab(tabs[index + 1])}
+        className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full"
+      >
+        Next
+      </button>
+    )}
+
+    {/* LAST TAB */}
+    {isLast && (
+      <>
+        {/* Report generated → DOWNLOAD */}
+        {isReportGenerated && (
+          <a
+            href={data?.reportUrl}
+            download
+            className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full"
+          >
+            Download Report
+          </a>
+        )}
+
+        {/* Appointment exists but not generated */}
+        {!isReportGenerated && hasAppointmentForPatient && (
+          <span className="text-xs text-gray-500 italic">
+            Consultancy report is not generated yet
+          </span>
+        )}
+
+        {/* No appointment → allow generate */}
+        {!isReportGenerated && !hasAppointmentForPatient && (
+          <Link href={`/prescription/${patientId}`}>
+            <button className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full">
+              Make diagnosis report
+            </button>
+          </Link>
+        )}
+      </>
+    )}
+  </div>
+</div>
+
     </div>
   );
 };
