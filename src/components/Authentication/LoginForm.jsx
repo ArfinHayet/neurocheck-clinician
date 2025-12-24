@@ -9,9 +9,7 @@ import { CiUser } from "react-icons/ci";
 import { PiEyeLight } from "react-icons/pi";
 import { RiLockPasswordLine } from "react-icons/ri";
 const LoginForm = () => {
-
   const [showPassword, setShowPassword] = useState(false);
-
   const context = useContext(AuthContext);
   const setUserData = context?.setUserData ?? (() => {});
   const setLoading = context?.setLoading ?? (() => {});
@@ -20,7 +18,6 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,15 +33,15 @@ const LoginForm = () => {
     };
 
     // console.log("Logging in with:", payload);
-    setLoading(true)
+    setLoading(true);
     const result = await loginuser(payload);
     if (result && result?.payload?.token?.access_token) {
       localStorage.setItem("accessToken", result?.payload?.token?.access_token);
       const userData = result.payload.filteredUser;
       setUserData(userData);
       localStorage.setItem("userData", JSON.stringify(userData));
-       setLoading(false)
-     router.replace("/");
+      setLoading(false);
+      router.replace("/");
     }
   };
   return (
@@ -99,12 +96,12 @@ const LoginForm = () => {
       >
         Sign In
       </button>
-        <div className="flex justify-center items-center mt-2">
-              <Link className="text-xs font-normal text-center" href="/signup">
-            <span className=" text-[#3C3C4399] ">Don’t have account?</span>
-            <span className="text-[#114654]">Sign Up</span>
-          </Link>
-          </div>
+      <div className="flex justify-center items-center mt-2">
+        <Link className="text-xs font-normal text-center" href="/signup">
+          <span className=" text-[#3C3C4399] ">Don’t have account?</span>
+          <span className="text-[#114654]">Sign Up</span>
+        </Link>
+      </div>
     </form>
   );
 };

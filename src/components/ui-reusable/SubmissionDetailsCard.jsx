@@ -50,8 +50,8 @@ const SubmissionDetailsCard = ({
   const statusClass = colors[statusKey] || colors.pending;
 
   return (
-    <div className="pt-12">
-      <div className="flex items-start justify-between gap-4">
+    <div className="">
+      {/* <div className="flex items-start justify-between gap-4">
         <div className="flex gap-4">
           <Image
             src={p1}
@@ -67,7 +67,6 @@ const SubmissionDetailsCard = ({
               <span
                 className={`px-2 py-0.5 md:block hidden rounded-md text-xs ${statusClass}`}
               >
-                {/* {(status || "").toUpperCase()} */}
                 {status && status.trim() !== ""
                   ? status.toUpperCase()
                   : "PENDING"}
@@ -79,7 +78,7 @@ const SubmissionDetailsCard = ({
           </div>
         </div>
 
-        {/* Three-dot menu */}
+       
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen((v) => !v)}
@@ -142,9 +141,9 @@ const SubmissionDetailsCard = ({
             </div>
           )}
         </div>
-      </div>
+      </div> */}
 
-      <div className="flex-1 mt-5">
+      <div className="flex-1">
         <div className="flex flex-row gap-2">
           <p className="font-semibold text-sm mt-2 text-[#4B4B4B]">
             {childCondition}

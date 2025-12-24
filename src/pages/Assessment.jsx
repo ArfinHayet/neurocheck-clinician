@@ -40,12 +40,6 @@ const Assessment = () => {
       clinicianId: Number(userData?.id),   
     };
    console.log("tttqqqqq",obj)
-//     {
-//   "score": 8,
-//   "status": "completed",
-//   "ratings": 4.5,
-//   "additionalInfo": "Patient needs follow-up in 2 weeks."
-// }
 
     const result = await updateStatus(id, obj);
     console.log("ttt",result)
@@ -63,7 +57,8 @@ const Assessment = () => {
     const rawData = res?.payload?.filter(
       (i) => i?.assessment?.type === "premium",
     );
-    console.log("assessment", rawData);
+    // const rawData = res?.payload
+    // console.log("assessment", rawData);
 
     // group by patientId, assessmentId, and userId
     const grouped = Object?.values(
