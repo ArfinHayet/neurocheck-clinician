@@ -575,7 +575,7 @@
 
 // "use client";
 
-import { getAllappointments, getSubmissionByPatientId } from "@/api/assessment";
+import { getAllappointments, getSubmissionByPatientId, updateSchedule } from "@/api/assessment";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -585,35 +585,48 @@ import SubmissionDetails from "./SubmissionDetails";
 import { getAge } from "@/components/utils/ageConverter";
 import { AuthContext } from "@/Provider/AuthProvider";
 import ReportStructure from "./ReportStructure";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import Modal from "@/components/ui-reusable/Modal";
 
 const tabs = ["AI Summary", "View Assessment details", "Consultancy Report"];
 
 const AssessmentDetails = () => {
   const { patientId, assessmentId } = useParams();
 
-  const [submission, setSubmission] = useState([]);
-  const [activeTab, setActiveTab] = useState(tabs[0]);
-  const [appointment, setAppointment] = useState([]);
+  console.log("w12",assessmentId)
   const { userData } = useContext(AuthContext) || {};
 
+  const [submission, setSubmission] = useState([]);
+  const [appointment, setAppointment] = useState([]);
+  const [activeTab, setActiveTab] = useState(tabs[0]);
+
+  // 🔹 Feedback modal states
+  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+  /* ---------------- FETCH APPOINTMENTS ---------------- */
   const fetchAppointments = async () => {
     const res = await getAllappointments();
     const rawData = res?.payload?.filter(
-      (i) => i?.clinicianId === Number(userData?.id),
+      (i) => i?.clinicianId === Number(userData?.id)
     );
-    console.log("appppp", rawData);
-    setAppointment(rawData);
+    setAppointment(rawData || []);
   };
 
-  useEffect(() => {
-    fetchAppointments();
-  }, [userData?.id]);
-  useEffect(() => {
-    if (patientId) fetchSubmission();
-  }, [patientId]);
 
+  console.log("appp",appointment)
+
+  useEffect(() => {
+    if (userData?.id) fetchAppointments();
+  }, [userData?.id]);
+
+  /* ---------------- FETCH SUBMISSION ---------------- */
   const fetchSubmission = async () => {
     const result = await getSubmissionByPatientId(patientId, assessmentId);
+
+    console.log("111",result)
 
     const grouped = Object.values(
       result?.payload?.reduce((acc, item) => {
@@ -623,6 +636,7 @@ const AssessmentDetails = () => {
           acc[key] = {
             patient: item.patient,
             assessment: item.assessment,
+            assessmentId: item.assessmentId,
             status: item.status,
             createdAt: item.createdAt,
             summaries: [],
@@ -636,107 +650,99 @@ const AssessmentDetails = () => {
         });
 
         return acc;
-      }, {}),
+      }, {})
     );
 
-    setSubmission(grouped);
+    console.log("submission group", grouped);
+
+    setSubmission(grouped || []);
   };
+
+  useEffect(() => {
+    if (patientId) fetchSubmission();
+  }, [patientId]);
 
   const data = submission[0];
   if (!data) return <div className="p-6">Loading...</div>;
 
+  /* ---------------- TAB UTILS ---------------- */
   const index = tabs.indexOf(activeTab);
   const isFirst = index === 0;
   const isLast = index === tabs.length - 1;
 
-
-
+  /* ---------------- APPOINTMENT LOGIC ---------------- */
   const submissionPatientId = data?.patient?.id;
 
-// appointment exists for this patient
-const hasAppointmentForPatient = appointment?.some(
-  (a) => a?.patientId === submissionPatientId
-);
+  const patientAppointment = appointment?.find(
+    (a) => a?.patientId === submissionPatientId
+  );
 
-// assume backend থেকে flag আসছে
-// example: item.reportUrl OR item.isReportGenerated
-const isReportGenerated = data?.isReportGenerated; 
-// or: Boolean(data?.reportUrl)
+console.log("aaaaaaaaaaaa",patientAppointment)
 
 
+  const hasAppointmentForPatient = Boolean(patientAppointment);
+
+  const isReportGenerated =
+    patientAppointment?.status
+      ?.toString()
+      .trim()
+      .toLowerCase() === "confirmed";
+
+  const hasFeedback = patientAppointment?.feedback !== null;
+  console.log("feeeeee",hasFeedback)
+
+
+  /* ---------------- PDF GENERATE ---------------- */
   const generateConsultancyReport = () => {
     const doc = new jsPDF({ unit: "pt", format: "a4" });
 
     let y = 40;
-
-    // ------------------- TITLE -------------------
     doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
-    doc.setTextColor("#171717");
-    doc.text("Report Structure ADHD Adult", 40, y);
+    doc.text("Consultancy Report", 40, y);
 
     y += 25;
 
-    // ------------------- TABLE DATA -------------------
-    const tableData = [
-      ["Patient Name", "XX YY"],
-      ["Age", "YY"],
-      ["Demographics", "XX"],
-      ["Clinician Diagnosis", ""],
-      ["Clinician Notes from Review", ""],
-      ["Clinician Notes Post Consultation", ""],
-      ["Diagnosis Recommendation", "Exhibits ADHD type XX / YY / ZZ"],
-    ];
-
     autoTable(doc, {
       startY: y,
-      head: [],
-      body: tableData,
+      body: [
+        ["Patient Name", data.patient.name],
+        ["Age", `${getAge(data.patient.dateOfBirth)} years`],
+        ["Assessment", data.assessment.category],
+      ],
       theme: "grid",
-
-      styles: {
-        fontSize: 11,
-        cellPadding: 10,
-        valign: "middle",
-      },
-
+      styles: { fontSize: 11, cellPadding: 8 },
       columnStyles: {
         0: { cellWidth: 150, fontStyle: "bold" },
         1: { cellWidth: 350 },
       },
-
-      tableWidth: 500,
     });
 
-    // After table ends
-    y = doc.lastAutoTable.finalY + 30;
-
-    // ------------------- NORMAL SECTIONS -------------------
-    const leftX = 40;
-
-    const writeSection = (title, text) => {
-      doc.setFontSize(13);
-      doc.setFont("helvetica", "bold");
-      doc.text(title, leftX, y);
-      y += 15;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(12);
-
-      const wrapped = doc.splitTextToSize(text, 500);
-      doc.text(wrapped, leftX, y);
-      y += wrapped.length * 12 + 15;
-    };
-
-    writeSection("Medical History Summary", "Lorem ipsum dolor sit amet...");
-    writeSection("ASRS Summary", "Key areas rated very often...");
-    writeSection("Weiss Rating Summary", "# of items scored 2 or 3...");
-    writeSection("DIVA Summary", "# of childhood/adulthood criteria met...");
-
-    // ------------------- SAVE PDF -------------------
     doc.save("consultancy-report.pdf");
   };
 
+  /* ---------------- FEEDBACK SUBMIT ---------------- */
+  const closeFeedBackModal = () => {
+    setFeedbackModal(false);
+    setNotes("");
+    setSelectedAppointment(null);
+  };
+
+  const handleSubmitFeedback = async (e) => {
+    e.preventDefault();
+    if (!selectedAppointment) return;
+
+    const payload = {
+      feedback: notes,
+    };
+    console.log("payload", payload);
+    await updateSchedule(selectedAppointment.id, payload);
+
+    closeFeedBackModal();
+    fetchAppointments();
+  };
+
+  /* ======================= UI ======================= */
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
       <Header title="Assessment" />
@@ -746,10 +752,7 @@ const isReportGenerated = data?.isReportGenerated;
         <h1 className="text-2xl font-semibold">{data.patient.name}</h1>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 text-sm">
-          <Info
-            label="Age"
-            value={`${getAge(data.patient.dateOfBirth)} years`}
-          />
+          <Info label="Age" value={`${getAge(data.patient.dateOfBirth)} years`} />
           <Info label="Assessment" value={data.assessment.category} />
           <Info label="Status" value={data.status} />
           <Info label="Type" value="Patient Assessment" />
@@ -764,8 +767,8 @@ const isReportGenerated = data?.isReportGenerated;
             onClick={() => setActiveTab(tab)}
             className={`pb-3 ${
               activeTab === tab
-                ? "border-b-2 border-[#114654] text-[#114654] cursor-pointer"
-                : "text-gray-500"
+                ? "border-b-2  cursor-pointer border-[#114654] text-[#114654]"
+                : "text-gray-500 cursor-pointer"
             }`}
           >
             {tab}
@@ -790,33 +793,25 @@ const isReportGenerated = data?.isReportGenerated;
           <SubmissionDetails
             key={i}
             patientId={item.patient.id}
+            assessmentId={item?.assessmentId}
             time={item.createdAt}
             score={item.score}
           />
         ))}
 
       {activeTab === "Consultancy Report" && (
-        <div className="p-6  rounded-xl">
-          <ReportStructure
-            data={{
-              patientName: "John Doe",
-              age: 32,
-              demographics: "Male, Urban",
-              clinicianDiagnosis: "ADHD – Combined Type",
-              reviewNotes: "Symptoms consistent with ASRS results",
-              postConsultNotes: "Medication and CBT recommended",
-              recommendation: "Exhibits ADHD type Combined",
-              medicalHistory: "No significant medical history",
-              asrsSummary: "High in inattention domain",
-              weissSummary: "6 items scored ≥ 2",
-              divaSummary: "Meets childhood & adulthood criteria",
-            }}
-          />
-        </div>
+        <ReportStructure data={{
+          patientName: data.patient.name,
+          age: getAge(data.patient.dateOfBirth),
+          demographics: data.patient.demographics,
+          clinicianDiagnosis: patientAppointment?.diagnosis || "",
+          reviewNotes: patientAppointment?.notes_from_review || "",
+          postConsultNotes: patientAppointment?.feedback || "",
+         }} />
       )}
 
-      {/* NAVIGATION */}
-      {/* <div className="flex justify-end items-end gap-2 pt-6">
+      {/* FOOTER ACTIONS */}
+      <div className="flex justify-end gap-3 pt-6">
         {!isFirst && (
           <button
             onClick={() => setActiveTab(tabs[index - 1])}
@@ -826,101 +821,76 @@ const isReportGenerated = data?.isReportGenerated;
           </button>
         )}
 
-        
-
-        <div className="flex gap-3">
-          {!isLast ? (
-            <button
-              onClick={() => setActiveTab(tabs[index + 1])}
-              className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full"
-            >
-              Next
-            </button>
-          ) : (<Link href={`/prescription/${patientId}`}>
-              <button className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full">
-                Make diagnosis report
-              </button>
-            </Link>
-            
-          )}
-        </div>
-
-        <div className="flex gap-3">
-          {!isLast ? (
-            <button
-              onClick={() => setActiveTab(tabs[index + 1])}
-              className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full"
-            >
-              Next
-            </button>
-          ) : (<Link href={`/prescription/${patientId}`}>
-              <button className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full">
-                Make diagnosis report
-              </button>
-            </Link>
-            
-          )}
-        </div>
-      </div> */}
-
-
-      <div className="flex justify-between items-center gap-2 pt-6">
-  {/* PREVIOUS */}
-  {!isFirst && (
-    <button
-      onClick={() => setActiveTab(tabs[index - 1])}
-      className="border border-[#114654] text-[#114654] px-5 py-2 text-xs rounded-full"
-    >
-      Previous
-    </button>
-  )}
-
-  {/* RIGHT SIDE ACTION */}
-  <div className="flex gap-3 items-center">
-    {/* NEXT */}
-    {!isLast && (
-      <button
-        onClick={() => setActiveTab(tabs[index + 1])}
-        className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full"
-      >
-        Next
-      </button>
-    )}
-
-    {/* LAST TAB */}
-    {isLast && (
-      <>
-        {/* Report generated → DOWNLOAD */}
-        {isReportGenerated && (
-          <a
-            href={data?.reportUrl}
-            download
+        {!isLast && (
+          <button
+            onClick={() => setActiveTab(tabs[index + 1])}
             className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full"
           >
-            Download Report
-          </a>
+            Next
+          </button>
         )}
 
-        {/* Appointment exists but not generated */}
-        {!isReportGenerated && hasAppointmentForPatient && (
-          <span className="text-xs text-gray-500 italic">
-            Consultancy report is not generated yet
-          </span>
-        )}
+        {isLast && (
+          <>
+            {isReportGenerated && (
+              <button
+                onClick={generateConsultancyReport}
+                className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full"
+              >
+                Download Report
+              </button>
+            )}
 
-        {/* No appointment → allow generate */}
-        {!isReportGenerated && !hasAppointmentForPatient && (
-          <Link href={`/prescription/${patientId}`}>
-            <button className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full">
-              Make diagnosis report
-            </button>
-          </Link>
-        )}
-      </>
-    )}
-  </div>
-</div>
+            {isReportGenerated && !hasFeedback && (
+              <button
+                onClick={() => {
+                  setSelectedAppointment(patientAppointment);
+                  setFeedbackModal(true);
+                }}
+                className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full"
+              >
+                Add Feedback
+              </button>
+            )}
 
+            {!hasAppointmentForPatient && (
+              <Link href={`/prescription/${patientId}`}>
+                <button className="bg-[#114654] text-white px-5 py-2 text-xs rounded-full">
+                  Make diagnosis report
+                </button>
+              </Link>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* FEEDBACK MODAL */}
+      <Modal
+        classname="w-[65vw] lg:w-[34vw]"
+        isOpen={feedbackModal}
+        closeModal={closeFeedBackModal}
+        title="Post Appointment Feedback"
+      >
+        <form onSubmit={handleSubmitFeedback}>
+          <label className="block font-medium text-sm mb-2">
+            Clinician Notes Post Consultation
+          </label>
+
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="w-full h-36 rounded border p-4"
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full mt-4 bg-[#0A4863] text-white py-2 rounded-lg"
+          >
+            Submit
+          </button>
+        </form>
+      </Modal>
     </div>
   );
 };
@@ -933,4 +903,3 @@ const Info = ({ label, value }) => (
     <p className="font-medium mt-1">{value}</p>
   </div>
 );
-

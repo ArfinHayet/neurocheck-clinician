@@ -64,14 +64,7 @@ const ReportStructure = ({ data }) => {
             </td>
           </tr>
 
-          <tr>
-            <td className="border border-gray-300 p-3 font-medium bg-gray-50">
-              Diagnosis Recommendation
-            </td>
-            <td className="border border-gray-300 p-3">
-              {data?.recommendation || "Exhibits ADHD type XX / YY / ZZ"}
-            </td>
-          </tr>
+        
         </tbody>
       </table>
 

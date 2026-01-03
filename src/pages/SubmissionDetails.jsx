@@ -264,7 +264,7 @@ import TextAns from "@/components/ui-reusable/TextAns";
 // import { getAge } from "@/components/utils/ageConverter";
 // import { timeConverter } from "@/components/utils/timeconverter";
 
-const SubmissionDetails = ({ patientId, score, time }) => {
+const SubmissionDetails = ({ patientId,assessmentId, score, time }) => {
   const [answers, setAnswers] = useState({});
   const [patient, setPatient] = useState(null);
   const [activeType, setActiveType] = useState("");
@@ -273,8 +273,10 @@ const SubmissionDetails = ({ patientId, score, time }) => {
     if (!patientId) return;
 
     const fetch = async () => {
-      const data = await getAllanswers({ patientId });
+      const data = await getAllanswers({ patientId, assessmentId });
       const raw = data?.payload || [];
+
+      console.log("ppp",raw)
 
       if (!raw.length) return;
 
