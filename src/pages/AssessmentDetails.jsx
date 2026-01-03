@@ -17,7 +17,10 @@ import Modal from "@/components/ui-reusable/Modal";
 const tabs = ["AI Summary", "View Assessment details", "Consultancy Report"];
 
 const AssessmentDetails = () => {
-  const { patientId, assessmentId } = useParams();
+  // const { patientId, assessmentId } = useParams();
+    const params = useParams();
+  const patientId  = params?.patientId  ?? null;
+  const assessmentId  = params?.assessmentId  ?? null;
 
   console.log("w12",assessmentId)
   const { userData } = useContext(AuthContext) || {};

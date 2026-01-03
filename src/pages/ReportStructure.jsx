@@ -1,5 +1,4 @@
-const ReportStructure = ({ data, submission }) => {
-  console.log("reportssss",submission)
+const ReportStructure = ({ data = {}, submission = [] }) => {
   return (
     <div className="w-full text-gray-900 font-sans">
 
