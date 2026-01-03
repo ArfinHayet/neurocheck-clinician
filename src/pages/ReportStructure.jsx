@@ -1,4 +1,5 @@
-const ReportStructure = ({ data }) => {
+const ReportStructure = ({ data, submission }) => {
+  console.log("reportssss",submission)
   return (
     <div className="w-full text-gray-900 font-sans">
 
@@ -67,27 +68,30 @@ const ReportStructure = ({ data }) => {
         
         </tbody>
       </table>
-
-      {/* TEXT SECTIONS */}
-      <Section
-        title="Medical History Summary"
-        text={data?.medicalHistory || "Lorem ipsum dolor sit amet..."}
+      {submission.map((item, i) => (
+        <div key={i}>
+          <p className="text-sm text-gray-800">
+            {item.summaries?.map((summary, j) => (
+              <div key={j}>
+                 <Section
+        title={summary?.questionType}
+        text={summary?.summary || ""}
       />
-
-      <Section
-        title="ASRS Summary"
-        text={data?.asrsSummary || "Key areas rated very often..."}
-      />
-
-      <Section
-        title="Weiss Rating Summary"
-        text={data?.weissSummary || "# of items scored 2 or 3..."}
-      />
-
-      <Section
-        title="DIVA Summary"
-        text={data?.divaSummary || "# of childhood/adulthood criteria met..."}
-      />
+              {/* <p className="text-[#4B4B4B] text-base font-semibold">
+                {summary?.questionType}
+              </p>
+              <p className="text-xs font-normal text-[#3C3C4399] text-justify whitespace-pre-line mt-1">
+                {summary?.summary
+                  ?.replace(/[*#_`>]+/g, "")
+                  ?.replace(/-{3,}/g, "")
+                  ?.trim()}
+              </p> */}
+            </div>
+            ))}
+          </p>
+        </div>
+      ))}
+     
     </div>
   );
 };

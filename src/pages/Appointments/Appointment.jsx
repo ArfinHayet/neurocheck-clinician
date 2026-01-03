@@ -135,7 +135,7 @@ const Appointment = () => {
                 key={appt.id}
                 className="border-b text-center text-gray-600 text-xs border-[#DFDFDF] hover:bg-gray-50"
               >
-                <td className="p-3">{appt.displayName}</td>
+                <td className="p-3">{appt.patient?.name}</td>
                 <td
                   className={`text-center text-xs mt-4 px-2 py-1 inline-block rounded-full ${statusColors[appt.status]}`}
                 >
@@ -148,7 +148,11 @@ const Appointment = () => {
                 <td className="p-3">{appt.tries}</td>
                 <td>
                   <p className="flex justify-center items-center gap-4">
-                    <Link className=" cursor-pointer" href={appt.link}>
+                    <Link className=" cursor-pointer"
+                      href={appt.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {" "}
                       <span>
                         <PiVideoCameraBold size={16} />
