@@ -2,6 +2,7 @@
 import Input from "../ui-reusable/Input";
 
 const Signup = ({
+  identifier,
   formData,
   handleChange,
   handleSubmit,
@@ -12,7 +13,6 @@ const Signup = ({
 }) => {
   const formFields = [
     ["name", "Your Name", "Full Name"],
-    ["email", "Email", "Email Address"],
     ["phone", "Phone", "Phone Number"],
     ["hcpcTitle", "HCPC Title", "HCPC Title"],
     ["regNo", "Reg No.", "Registration Number"],
@@ -35,6 +35,21 @@ const Signup = ({
         />
       ))}
 
+        <div className="flex flex-col gap-3">     
+        <label className="text-xs font-normal text-[#868686]">
+          Email Address
+        </label>
+      
+      <input
+         id="emaail"
+          type="email"
+          // placeholder="choose file"
+          name="certifications"
+          value={identifier}
+          // onChange={handleChange}
+          className="w-full px-4 py-2  text-xs  border border-[#E2E2E2] rounded-3xl outline-none"
+      />
+    </div>
       <div className="flex flex-col gap-2">
         <label
           htmlFor="certifications"

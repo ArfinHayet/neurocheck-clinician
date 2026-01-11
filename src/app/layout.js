@@ -7,6 +7,7 @@ import Topbar from "@/components/layout/Topbar";
 import { usePathname } from "next/navigation";
 import AuthProvider from "@/Provider/AuthProvider";
 import Private from "@/components/PrivateRoute/Private";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
           {isAuthPage ? (
             // Auth pages center layout
             <div className="flex items-center justify-center lg:bg-[#F6F7F9] min-h-screen">
+              <Toaster />
               {children}
             </div>
           ) : (
@@ -41,7 +43,8 @@ export default function RootLayout({ children }) {
                 </div>
 
                 <div className="lg:flex-1 lg:ml-[16%] bg-[#F6F7F9] lg:p-8 min-h-screen w-full lg:w-0">
-                  <Topbar />
+                    <Topbar />
+                     <Toaster />
                   {children}
                 </div>
               </div>

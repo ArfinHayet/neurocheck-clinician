@@ -16,6 +16,8 @@ const Assessment = () => {
   const [selectedId, setSelectedId] = useState(null);
   const { userData } = useContext(AuthContext) || {};
 
+  console.log("clinic",userData)
+
   // console.log("userdataaaaaaa",userData)
 
   const handleSubmitRating = () => {
@@ -55,10 +57,10 @@ const Assessment = () => {
     const res = await getAllsubmissions();
     
     const rawData = res?.payload?.filter(
-      (i) => i?.assessment?.type === "premium",
+      (i) => i?.assessment?.type === "premium" && i?.clinicianId=== Number(userData?.id)
     );
     // const rawData = res?.payload
-    // console.log("assessment", rawData);
+    console.log("assessment", rawData);
 
     // group by patientId, assessmentId, and userId
     const grouped = Object?.values(

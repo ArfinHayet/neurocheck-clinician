@@ -12,10 +12,8 @@ const SendOtp = ({ identifier, setIdentifier, setStep }) => {
     const payload = {
       identifier: identifier
     };
-    console.log(payload);
 
     const result = await sendOtp(payload);
-    console.log("OTP sent:", result);
     
     if (result) {
       alert(result?.message);
@@ -41,7 +39,7 @@ const SendOtp = ({ identifier, setIdentifier, setStep }) => {
           </div>
 
           <h2 className="text-xl font-semibold text-[#000000] text-start my-4">
-            Enter Your Phone Number
+            Enter Your Email or Phone to Get Started
           </h2>
           <p className="text-start text-xs font-normal text-[#3C3C4399] mb-6">
             Join NeuroCheckPro to begin your journey toward clarity and expert
@@ -52,7 +50,7 @@ const SendOtp = ({ identifier, setIdentifier, setStep }) => {
             type="text"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
-            placeholder="Enter Phone Number"
+            placeholder="Enter Email or Phone Number"
             className="w-full px-4 py-2 placeholder:text-xs border bg-[#FFFFFF] border-[#E2E2E2] rounded-3xl outline-none"
           />
 

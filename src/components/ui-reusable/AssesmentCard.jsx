@@ -188,16 +188,7 @@ const AssessmentCard = ({
                 Rate this summary
               </button>
 
-              {/* <button
-                onClick={() => {
-                  onBookVideo?.();
-                  setMenuOpen(false);
-                }}
-                className="w-full cursor-pointer text-left px-4 py-2 text-sm border-b-2 border-[#F2F2F2] text-[#114654]"
-                role="menuitem"
-              >
-                Book video consultancy
-              </button> */}
+             
               <button
                 onClick={() =>
                   generateConsultancyReport({

@@ -8,6 +8,7 @@ import { useContext, useState } from "react";
 import { CiUser } from "react-icons/ci";
 import { PiEyeLight } from "react-icons/pi";
 import { RiLockPasswordLine } from "react-icons/ri";
+import toast from "react-hot-toast";
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const context = useContext(AuthContext);
@@ -35,13 +36,19 @@ const LoginForm = () => {
     // console.log("Logging in with:", payload);
     setLoading(true);
     const result = await loginuser(payload);
+
     if (result && result?.payload?.token?.access_token) {
       localStorage.setItem("accessToken", result?.payload?.token?.access_token);
       const userData = result.payload.filteredUser;
       setUserData(userData);
       localStorage.setItem("userData", JSON.stringify(userData));
       setLoading(false);
+      toast.success("Login successful");
       router.replace("/");
+    }
+    else {
+      toast.error(result?.message || "Login failed");
+      setLoading(false);
     }
   };
   return (
@@ -49,7 +56,7 @@ const LoginForm = () => {
       {/* Email / Phone */}
       <div className="relative">
         <input
-          type="text"
+          type="email"
           name="email"
           placeholder="Your E-mail or Phone"
           value={formData?.email}
@@ -77,7 +84,7 @@ const LoginForm = () => {
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600"
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 cursor-pointer"
           tabIndex={-1}
         >
           <PiEyeLight />

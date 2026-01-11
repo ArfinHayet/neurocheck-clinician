@@ -90,6 +90,7 @@ const SignUp = ({otp, identifier}) => {
             guidance. It only takes a minute!
           </p>
           <Signup
+            identifier={identifier}
             formData={formData}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
