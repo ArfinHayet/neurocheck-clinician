@@ -22,7 +22,6 @@ const AssessmentDetails = () => {
   const patientId  = params?.patientId  ?? null;
   const assessmentId  = params?.assessmentId  ?? null;
 
-  console.log("w12",assessmentId)
   const { userData } = useContext(AuthContext) || {};
 
   const [submission, setSubmission] = useState([]);
@@ -44,7 +43,6 @@ const AssessmentDetails = () => {
   };
 
 
-  console.log("appp",appointment)
 
   useEffect(() => {
     if (userData?.id) fetchAppointments();
@@ -81,8 +79,6 @@ const AssessmentDetails = () => {
       }, {})
     );
 
-    console.log("submission group", grouped);
-
     setSubmission(grouped || []);
   };
 
@@ -105,8 +101,6 @@ const AssessmentDetails = () => {
     (a) => a?.patientId === submissionPatientId
   );
 
-console.log("aaaaaaaaaaaa",patientAppointment)
-
 
   const hasAppointmentForPatient = Boolean(patientAppointment);
 
@@ -117,7 +111,6 @@ console.log("aaaaaaaaaaaa",patientAppointment)
       .toLowerCase() === "confirmed";
 
   const hasFeedback = patientAppointment?.feedback !== null;
-  console.log("feeeeee",hasFeedback)
 
 
   /* ---------------- PDF GENERATE ---------------- */

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import p1 from "../../../public/svg/web_logo.svg";
 import { verift_otp } from "@/api/signup";
+import toast from "react-hot-toast";
 
 const VerifyOtp = ({otp,setOtp ,inputsRef,setStep,identifier}) => {
 
@@ -29,15 +30,18 @@ const VerifyOtp = ({otp,setOtp ,inputsRef,setStep,identifier}) => {
   const verifyOtp = async () => {
 
     const payload = {
-           identifier,
+          identifier,
           otp: otp.join(""),
     }
     
     const result = await verift_otp(payload)
     if (result) {
+      toast.success(result?.message);
       setStep(3)
     }
-    console.log("📩 OTP sent:", result);
+    else {
+      toast.error(result?.message);
+   }
     
   };
 

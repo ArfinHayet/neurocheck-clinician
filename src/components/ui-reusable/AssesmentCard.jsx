@@ -167,7 +167,7 @@ const AssessmentCard = ({
               role="menu"
               className="absolute right-0 mt-2 w-48 bg-white rounded shadow-md z-10"
             >
-              <button
+              {/* <button
                 onClick={() => {
                   onViewFullAssessment?.();
                   setMenuOpen(false);
@@ -176,8 +176,8 @@ const AssessmentCard = ({
                 role="menuitem"
               >
                 View full assessment
-              </button>
-              <button
+              </button> */}
+              {/* <button
                 onClick={() => {
                   onRateSummary?.();
                   setMenuOpen(false);
@@ -186,9 +186,9 @@ const AssessmentCard = ({
                 role="menuitem"
               >
                 Rate this summary
-              </button>
+              </button> */}
 
-             
+{/*              
               <button
                 onClick={() =>
                   generateConsultancyReport({
@@ -206,7 +206,7 @@ const AssessmentCard = ({
                 className="w-full cursor-pointer text-left px-4 py-2 text-sm border-b-2 border-[#F2F2F2] text-[#114654]"
               >
                 Consultancy Report
-              </button>
+              </button> */}
 
               {status !== "completed" && (
                 <button

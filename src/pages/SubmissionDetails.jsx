@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { getAllanswers } from "@/api/assessment";
 import TextAns from "@/components/ui-reusable/TextAns";
-const SubmissionDetails = ({ patientId,assessmentId, score, time }) => {
+const SubmissionDetails = ({ patientId, assessmentId, score, time }) => {
   const [answers, setAnswers] = useState({});
   const [patient, setPatient] = useState(null);
   const [activeType, setActiveType] = useState("");
@@ -15,16 +15,31 @@ const SubmissionDetails = ({ patientId,assessmentId, score, time }) => {
       const data = await getAllanswers({ patientId, assessmentId });
       const raw = data?.payload || [];
 
-      console.log("ppp",raw)
+      console.log("ppp", raw);
 
       if (!raw.length) return;
 
       setPatient(raw[0].patient);
 
+      // const grouped = raw.reduce((acc, item) => {
+      //   const type = item.question?.questionType?.name;
+      //   if (!acc[type]) acc[type] = [];
+      //   acc[type].push(item);
+      //   return acc;
+      // }, {});
+
       const grouped = raw.reduce((acc, item) => {
-        const type = item.question?.questionType?.name;
+        const variant = item.question?.variant;
+
+        // 👇 tab name decide
+        const type =
+          variant === "external"
+            ? `${item.question?.questionType?.name} - External`
+            : item.question?.questionType?.name;
+
         if (!acc[type]) acc[type] = [];
         acc[type].push(item);
+
         return acc;
       }, {});
 
@@ -50,7 +65,7 @@ const SubmissionDetails = ({ patientId,assessmentId, score, time }) => {
       </div> */}
 
       <div className="flex gap-2 mt-4 overflow-x-auto">
-        {Object.keys(answers).map(type => (
+        {Object.keys(answers).map((type) => (
           <button
             key={type}
             onClick={() => setActiveType(type)}
@@ -66,7 +81,7 @@ const SubmissionDetails = ({ patientId,assessmentId, score, time }) => {
       </div>
 
       <div className="mt-4 space-y-4 max-h-[50vh] overflow-y-auto">
-        {answers[activeType]?.map(ans => (
+        {answers[activeType]?.map((ans) => (
           <TextAns
             key={ans.id}
             text={ans.question.questions}

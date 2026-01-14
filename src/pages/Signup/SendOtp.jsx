@@ -4,24 +4,62 @@ import Image from "next/image";
 import p1 from "../../../public/svg/web_logo.svg";
 import { sendOtp } from "@/api/signup";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 const SendOtp = ({ identifier, setIdentifier, setStep }) => {
 
-  const handleSubmitOtp = async () => {
 
-    const payload = {
-      identifier: identifier
-    };
+   const isValidEmail = (value) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+};
 
-    const result = await sendOtp(payload);
+  // const handleSubmitOtp = async () => {
+
+  //   const payload = {
+  //     identifier: identifier
+  //   };
+
+  //   const result = await sendOtp(payload);
     
-    if (result) {
-      alert(result?.message);
-      setStep(2);
-    } else {
-      alert(result?.message);
-    }
+  //   if (result) {
+  //     toast.success(result?.message);
+  //     setStep(2);
+  //   } else {
+  //     toast.error(result?.message);
+  //   }
+  // };
+
+
+
+
+const handleSubmitOtp = async () => {
+  if (!identifier) {
+    toast.error("Email or phone number is required");
+    return;
+  }
+
+  const isEmail = isValidEmail(identifier);
+
+  if (!isEmail) {
+    toast.error("Please enter a valid email");
+    return;
+  }
+
+  const payload = {
+    identifier: identifier,
   };
+
+  const result = await sendOtp(payload);
+
+  if (result?.success) {
+    toast.success(result.message);
+    setStep(2);
+  } else {
+    toast.error(result?.message || "Failed to send OTP");
+  }
+};
+
+
 
   return (
     <div>
@@ -47,7 +85,7 @@ const SendOtp = ({ identifier, setIdentifier, setStep }) => {
           </p>
 
           <input
-            type="text"
+             type="text"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             placeholder="Enter Email or Phone Number"

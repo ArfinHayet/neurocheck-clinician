@@ -16,9 +16,6 @@ const Assessment = () => {
   const [selectedId, setSelectedId] = useState(null);
   const { userData } = useContext(AuthContext) || {};
 
-  console.log("clinic",userData)
-
-  // console.log("userdataaaaaaa",userData)
 
   const handleSubmitRating = () => {
     setIsRateModalOpen(false);

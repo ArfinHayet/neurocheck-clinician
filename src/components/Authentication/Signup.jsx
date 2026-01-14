@@ -41,7 +41,7 @@ const Signup = ({
         </label>
       
       <input
-         id="emaail"
+         id="email"
           type="email"
           // placeholder="choose file"
           name="certifications"
@@ -81,7 +81,7 @@ const Signup = ({
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-600"
+          className="absolute right-3 top-11 cursor-pointer transform -translate-y-1/2 text-gray-600"
         >
           👁
         </button>
@@ -100,7 +100,7 @@ const Signup = ({
         <button
           type="button"
           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-600"
+          className="absolute right-3 top-11 cursor-pointer transform -translate-y-1/2 text-gray-600"
         >
           👁
         </button>
@@ -108,7 +108,7 @@ const Signup = ({
 
       <button
         type="submit"
-        className="w-full bg-[#0A4863] text-white py-2 rounded-3xl font-semibold"
+        className="w-full bg-[#0A4863] cursor-pointer text-white py-2 rounded-3xl font-semibold"
       >
         Sign up
       </button>
