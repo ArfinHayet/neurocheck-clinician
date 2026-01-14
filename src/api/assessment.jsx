@@ -1,7 +1,7 @@
 import { domain } from "../../secret";
 
 const getAllanswers = async ({ patientId, assessmentId }) => {
-  console.log("o",patientId)
+  //console.log("o",patientId)
   const response = await fetch(`${domain}/answers?patientId=${Number(patientId)}&assessmentId=${assessmentId}&limit=100`, {
     method: "GET",
     headers: {
@@ -77,7 +77,7 @@ const updateStatus = async (id, obj) => {
     });
   
     const data = await response.json();
-    console.log("Update response:", data);
+    //console.log("Update response:", data);
     return data;
 
 };
@@ -86,7 +86,7 @@ const updateStatus = async (id, obj) => {
 ////// prescription /////////////
 
 const addPrescription = async (obj) => {
-  // //console.log("hello series", obj);
+  // ////console.log("hello series", obj);
 
   const response = await fetch(`${domain}/prescriptions`, {
     method: "POST",
@@ -98,14 +98,14 @@ const addPrescription = async (obj) => {
   });
 
   const data = await response.json();
-  console.log("data", data);
+  //console.log("data", data);
 
   return data;
 };
 
 
 const addAppointment = async (obj) => {
-  console.log("hello series", obj);
+  //console.log("hello series", obj);
 
   const response = await fetch(`${domain}/appointments`, {
     method: "POST",
@@ -117,7 +117,7 @@ const addAppointment = async (obj) => {
   });
 
   const data = await response.json();
-  console.log("data", data);
+  //console.log("data", data);
 
   return data;
 };
@@ -141,7 +141,7 @@ const getAllappointments = async () => {
 
 
 const updateSchedule = async (id,obj) => {
-  // console.log("hello update", obj);
+  // //console.log("hello update", obj);
 
   const response = await fetch(`${domain}/appointments/${id}`, {
     method: "PUT",
@@ -153,7 +153,7 @@ const updateSchedule = async (id,obj) => {
   });
 
   const data = await response.json();
-  // console.log("data", data);
+  // //console.log("data", data);
 
   return data;
 };

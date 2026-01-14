@@ -68,10 +68,10 @@ const handleAddLeave = async () => {
     userId: String(userData?.id),
   }));
 
-  console.log("Payload:", payload);
+  //console.log("Payload:", payload);
 
   const result = await addClinicianAvailabilty(payload);
-  console.log("API Result:", result);
+  //console.log("API Result:", result);
 
   getAvailability();
   // setLeaves((prev) => [...prev, ...validSlots]);
@@ -83,7 +83,7 @@ const handleAddLeave = async () => {
   const [availability, setAvailability] = useState([]);
   const getAvailability = async () => {
     const data = await getCinicianAvailabilityById(userData?.id);
-    console.log(data?.payload);
+    //console.log(data?.payload);
     setAvailability(data?.payload);
   }
 

@@ -102,7 +102,7 @@
 //   };
 
 //   const handleLogout = () => {
-//     console.log("Logging out...");
+//     //console.log("Logging out...");
    
 //     setShowTooltip(false);
 //   };
@@ -215,7 +215,7 @@ const Header = ({ title, description }) => {
   };
 
   const handleLogout = () => {
-    console.log("Logging out...");
+    //console.log("Logging out...");
     setShowTooltip(false);
     localStorage.removeItem("accessToken");
     navigation.replace("/signin");

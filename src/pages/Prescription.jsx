@@ -20,7 +20,7 @@ const Prescription = () => {
   const params = useParams();
   const id = params?.id ?? null;
 
-  console.log("ppppp",id)
+  //console.log("ppppp",id)
 
   if (!id) {
     return <div>Loading...</div>;
@@ -28,7 +28,7 @@ const Prescription = () => {
 
   const getSubmissionDetails = async () => {
     const result = await getSubmissionById(id);
-    console.log("sss",result?.payload);
+    //console.log("sss",result?.payload);
     setPatientDetailsById(result?.payload);
   };
 
@@ -51,18 +51,18 @@ const Prescription = () => {
       tries:1
     };
 
-    console.log("apppp", payload);
+    //console.log("apppp", payload);
 
     const result = await addAppointment(payload);
 
-    console.log("re", result);
+    //console.log("re", result);
     if (result) {
       setMeds([]);
       setNotes("");
       setShowSuccessModal(true);
     }
 
-    console.log("submit", payload);
+    //console.log("submit", payload);
   };
 
 

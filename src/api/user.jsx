@@ -1,7 +1,7 @@
 const { domain } = require("../../secret");
 
 const addClinicianAvailabilty = async (obj) => {
-  // //console.log("hello series", obj);
+  // ////console.log("hello series", obj);
 
   const response = await fetch(`${domain}/availabilities`, {
     method: "POST",
@@ -13,7 +13,7 @@ const addClinicianAvailabilty = async (obj) => {
   });
 
   const data = await response.json();
-  console.log("data", data);
+  //console.log("data", data);
 
   return data;
 };
@@ -33,7 +33,7 @@ const getCinicianAvailabilityById = async (userId) => {
 
 
 const addClinicianLeave = async (obj) => {
-  // //console.log("hello series", obj);
+  // ////console.log("hello series", obj);
 
   const response = await fetch(`${domain}/leaves`, {
     method: "POST",
@@ -45,7 +45,7 @@ const addClinicianLeave = async (obj) => {
   });
 
   const data = await response.json();
-  console.log("data", data);
+  //console.log("data", data);
 
   return data;
 };

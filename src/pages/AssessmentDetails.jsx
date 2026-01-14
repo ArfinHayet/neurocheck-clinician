@@ -52,7 +52,7 @@ const AssessmentDetails = () => {
   const fetchSubmission = async () => {
     const result = await getSubmissionByPatientId(patientId, assessmentId);
 
-    console.log("111",result)
+    //console.log("111",result)
 
     const grouped = Object.values(
       result?.payload?.reduce((acc, item) => {
@@ -203,7 +203,7 @@ const AssessmentDetails = () => {
     const payload = {
       feedback: notes,
     };
-    console.log("payload", payload);
+    //console.log("payload", payload);
     await updateSchedule(selectedAppointment.id, payload);
 
     closeFeedBackModal();

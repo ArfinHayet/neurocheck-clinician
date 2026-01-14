@@ -22,7 +22,7 @@ const Assessment = () => {
   };
 
   const handleView = (item) => {
-    console.log("33", item);
+    //console.log("33", item);
     setSelectedSubmission(item);
     setIsModalOpen(true);
   };
@@ -33,15 +33,15 @@ const Assessment = () => {
   };
 
   const handleAccept = async (id) => {
-    console.log("2222222222",id)
+    //console.log("2222222222",id)
     const obj = {
       status: "completed",
       clinicianId: Number(userData?.id),   
     };
-   console.log("tttqqqqq",obj)
+   //console.log("tttqqqqq",obj)
 
     const result = await updateStatus(id, obj);
-    console.log("ttt",result)
+    //console.log("ttt",result)
     alert("Accepted");
   };
 
@@ -57,7 +57,7 @@ const Assessment = () => {
       (i) => i?.assessment?.type === "premium" && i?.clinicianId=== Number(userData?.id)
     );
     // const rawData = res?.payload
-    console.log("assessment", rawData);
+    //console.log("assessment", rawData);
 
     // group by patientId, assessmentId, and userId
     const grouped = Object?.values(
@@ -88,7 +88,7 @@ const Assessment = () => {
       }, {}),
     );
 
-    console.log("Grouped Data:", grouped);
+    //console.log("Grouped Data:", grouped);
 
     setSubmission(grouped);
   };

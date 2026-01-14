@@ -37,7 +37,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   
   const { userData } = useContext(AuthContext);
-  // console.log(userData)
+  // //console.log(userData)
   const isActive = (href) => {
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(href + "/");

@@ -47,7 +47,7 @@ const AdditionalInfoModal = ({ isModalOpen, closeModal, patientId, additionalInf
 
    
       const result = await updateStatus(patientId, obj);
-      console.log("API response:", result);
+      //console.log("API response:", result);
 
       if (result) {
         setMeds([]);

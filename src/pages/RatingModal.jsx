@@ -30,9 +30,9 @@ const RatingModal = ({
       ratings: rating,
       clinicianId : userData?.id
     };
-    console.log(obj);
+    //console.log(obj);
     const result = await updateStatus(selectedId, obj);
-    console.log("Updated submission:", result);
+    //console.log("Updated submission:", result);
     onSubmit?.({ rating, comment });
   };
 

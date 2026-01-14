@@ -42,7 +42,7 @@ const Appointment = () => {
     const rawData = res?.payload?.filter(
       (i) => i?.clinicianId === Number(userData?.id),
     );
-    console.log("appppp", rawData);
+    //console.log("appppp", rawData);
     setAppointment(rawData);
   };
 
@@ -63,7 +63,7 @@ const Appointment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("reschedule", selectedAppointment);
+    //console.log("reschedule", selectedAppointment);
 
     if (selectedAppointment?.tries >= 3) {
       alert(
@@ -82,7 +82,7 @@ const Appointment = () => {
       tries: (selectedAppointment?.tries || 0) + 1,
     };
 
-    console.log("apppp", payload);
+    //console.log("apppp", payload);
 
     const result = await updateSchedule(selectedAppointment?.id, payload);
 
@@ -94,7 +94,7 @@ const Appointment = () => {
   const handleSubmitFeedback = async (e) => {
     e.preventDefault();
 
-    console.log("reschedulefedd", selectedAppointment);
+    //console.log("reschedulefedd", selectedAppointment);
 
 
     // const payload = {
@@ -102,7 +102,7 @@ const Appointment = () => {
     //   notes_from_review: notes,
     // };
 
-    // console.log("appppfeed", payload);
+    // //console.log("appppfeed", payload);
 
     // const result = await updateSchedule(selectedAppointment?.id, payload);
 

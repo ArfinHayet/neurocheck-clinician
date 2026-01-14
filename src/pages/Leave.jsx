@@ -44,7 +44,7 @@ const Leave = () => {
     status: "pending",
   };
 
-  console.log("Payload to submit:", payload);
+  //console.log("Payload to submit:", payload);
 
   const result = await addClinicianLeave(payload);
   if (result) {

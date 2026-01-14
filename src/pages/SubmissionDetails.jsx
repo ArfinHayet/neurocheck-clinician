@@ -15,7 +15,7 @@ const SubmissionDetails = ({ patientId, assessmentId, score, time }) => {
       const data = await getAllanswers({ patientId, assessmentId });
       const raw = data?.payload || [];
 
-      console.log("ppp", raw);
+      //console.log("ppp", raw);
 
       if (!raw.length) return;
 

@@ -2,7 +2,7 @@
 import { domain } from "../../secret";
 
 const sendOtp = async (obj) => {
-  // //console.log("hello series", obj);
+  // ////console.log("hello series", obj);
 
   const response = await fetch(`${domain}/auth/send-otp`, {
     method: "POST",
@@ -14,7 +14,7 @@ const sendOtp = async (obj) => {
   });
 
   const data = await response.json();
-  console.log("data", data);
+  //console.log("data", data);
 
   return data;
 };
@@ -22,7 +22,7 @@ const sendOtp = async (obj) => {
 
 
 const verift_otp = async (obj) => {
-  // //console.log("hello series", obj);
+  // ////console.log("hello series", obj);
 
   const response = await fetch(`${domain}/auth/verify-otp`, {
     method: "POST",
@@ -34,14 +34,14 @@ const verift_otp = async (obj) => {
   });
 
   const data = await response.json();
-  console.log("data", data);
+  //console.log("data", data);
 
   return data;
 };
 
 
 const signupuser = async (obj) => {
-  // //console.log("hello series", obj);
+  // ////console.log("hello series", obj);
 
   const response = await fetch(`${domain}/auth/signup`, {
     method: "POST",
@@ -53,12 +53,12 @@ const signupuser = async (obj) => {
   });
 
   const data = await response.json();
-  console.log("data", data);
+  //console.log("data", data);
 
   return data;
 };
 const loginuser = async (obj) => {
-  // //console.log("hello series", obj);
+  // ////console.log("hello series", obj);
 
   const response = await fetch(`${domain}/auth/login`, {
     method: "POST",
@@ -70,7 +70,7 @@ const loginuser = async (obj) => {
   });
 
   const data = await response.json();
-  console.log("data", data);
+  //console.log("data", data);
 
   return data;
 };
