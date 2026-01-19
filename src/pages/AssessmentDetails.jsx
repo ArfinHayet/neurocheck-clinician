@@ -18,7 +18,7 @@ const tabs = ["AI Summary", "View Assessment details", "Consultancy Report"];
 
 const AssessmentDetails = () => {
   // const { patientId, assessmentId } = useParams();
-    const params = useParams();
+  const params = useParams();
   const patientId  = params?.patientId  ?? null;
   const assessmentId  = params?.assessmentId  ?? null;
 
@@ -27,8 +27,6 @@ const AssessmentDetails = () => {
   const [submission, setSubmission] = useState([]);
   const [appointment, setAppointment] = useState([]);
   const [activeTab, setActiveTab] = useState(tabs[0]);
-
-  // 🔹 Feedback modal states
   const [feedbackModal, setFeedbackModal] = useState(false);
   const [notes, setNotes] = useState("");
   const [selectedAppointment, setSelectedAppointment] = useState(null);

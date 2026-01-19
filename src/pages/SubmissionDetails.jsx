@@ -15,7 +15,7 @@ const SubmissionDetails = ({ patientId, assessmentId, score, time }) => {
       const data = await getAllanswers({ patientId, assessmentId });
       const raw = data?.payload || [];
 
-      //console.log("ppp", raw);
+      console.log("ppp", raw);
 
       if (!raw.length) return;
 
@@ -29,7 +29,7 @@ const SubmissionDetails = ({ patientId, assessmentId, score, time }) => {
       // }, {});
 
       const grouped = raw.reduce((acc, item) => {
-        const variant = item.question?.variant;
+      const variant = item.question?.variant;
 
         // 👇 tab name decide
         const type =
@@ -51,6 +51,9 @@ const SubmissionDetails = ({ patientId, assessmentId, score, time }) => {
   }, [patientId]);
 
   if (!patient) return null;
+
+  const activeAnswers = answers[activeType] || [];
+  
 
   return (
     <div className="p-4">
@@ -80,15 +83,50 @@ const SubmissionDetails = ({ patientId, assessmentId, score, time }) => {
         ))}
       </div>
 
-      <div className="mt-4 space-y-4 max-h-[50vh] overflow-y-auto">
-        {answers[activeType]?.map((ans) => (
-          <TextAns
-            key={ans.id}
-            text={ans.question.questions}
-            answer={ans.answer}
-          />
-        ))}
-      </div>
+     <div className="mt-4 space-y-4 max-h-[50vh] overflow-y-auto">
+    {activeAnswers.map((ans) => {
+    const isExternal = ans.question?.variant === "external";
+
+    if (isExternal) {
+      return (
+        <div
+          key={ans.id}
+          className="p-3 border rounded-md bg-blue-50 space-y-1"
+        >
+          <p className="text-sm font-medium">
+            {ans.question?.questions}
+          </p>
+
+          <p className="text-sm">
+            <span className="font-semibold">Answer:</span>{" "}
+            {ans.answer}
+          </p>
+
+          <p className="text-xs text-gray-600">
+            <span className="font-semibold">Source:</span>{" "}
+            {ans.extraInfo?.source || "N/A"}
+          </p>
+
+          <p className="text-xs text-gray-600">
+            <span className="font-semibold">Remarks:</span>{" "}
+            {ans.extraInfo?.remarks || "N/A"}
+          </p>
+        </div>
+      );
+    }
+
+    // ✅ Normal question
+    return (
+      <TextAns
+        key={ans.id}
+        text={ans.question?.questions}
+        answer={ans.answer}
+      />
+    );
+  })}
+</div>
+
+
     </div>
   );
 };
