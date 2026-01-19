@@ -7,11 +7,9 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 
 const SendOtp = ({ identifier, setIdentifier, setStep }) => {
-
-
-   const isValidEmail = (value) => {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-};
+  const isValidEmail = (value) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  };
 
   // const handleSubmitOtp = async () => {
 
@@ -20,7 +18,7 @@ const SendOtp = ({ identifier, setIdentifier, setStep }) => {
   //   };
 
   //   const result = await sendOtp(payload);
-    
+
   //   if (result) {
   //     toast.success(result?.message);
   //     setStep(2);
@@ -29,37 +27,31 @@ const SendOtp = ({ identifier, setIdentifier, setStep }) => {
   //   }
   // };
 
+  const handleSubmitOtp = async () => {
+    if (!identifier) {
+      toast.error("Email or phone number is required");
+      return;
+    }
 
+    const isEmail = isValidEmail(identifier);
 
+    if (!isEmail) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+    const payload = {
+      identifier: identifier,
+    };
 
-const handleSubmitOtp = async () => {
-  if (!identifier) {
-    toast.error("Email or phone number is required");
-    return;
-  }
-
-  const isEmail = isValidEmail(identifier);
-
-  if (!isEmail) {
-    toast.error("Please enter a valid email");
-    return;
-  }
-
-  const payload = {
-    identifier: identifier,
+    const result = await sendOtp(payload);
+    
+    if (result) {
+      toast.success(result.message);
+      setStep(2);
+    } else {
+      toast.error(result?.message || "Failed to send OTP");
+    }
   };
-
-  const result = await sendOtp(payload);
-
-  if (result?.success) {
-    toast.success(result.message);
-    setStep(2);
-  } else {
-    toast.error(result?.message || "Failed to send OTP");
-  }
-};
-
-
 
   return (
     <div>
@@ -85,7 +77,7 @@ const handleSubmitOtp = async () => {
           </p>
 
           <input
-             type="text"
+            type="text"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             placeholder="Enter Email or Phone Number"
@@ -99,12 +91,11 @@ const handleSubmitOtp = async () => {
             Send OTP
           </button>
           <div className="flex justify-center items-center mt-2">
-              <Link className="text-xs font-normal text-center" href="/signin">
-            <span className=" text-[#3C3C4399] ">Do you have account?</span>
-            <span className="text-[#114654]">Sign In</span>
-          </Link>
+            <Link className="text-xs font-normal text-center" href="/signin">
+              <span className=" text-[#3C3C4399] ">Do you have account?</span>
+              <span className="text-[#114654]">Sign In</span>
+            </Link>
           </div>
-        
         </div>
       </div>
     </div>
