@@ -11,6 +11,12 @@ const SendOtp = ({ identifier, setIdentifier, setStep }) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   };
 
+
+const isValidPhone = (value) => {
+  // Bangladesh phone number: 01XXXXXXXXX
+  return /^01[3-9]\d{8}$/.test(value);
+};
+
   // const handleSubmitOtp = async () => {
 
   //   const payload = {
@@ -34,11 +40,12 @@ const SendOtp = ({ identifier, setIdentifier, setStep }) => {
     }
 
     const isEmail = isValidEmail(identifier);
+     const isPhone = isValidPhone(identifier);
 
-    if (!isEmail) {
-      toast.error("Please enter a valid email");
-      return;
-    }
+   if (!isEmail && !isPhone) {
+    toast.error("Please enter a valid email or phone number");
+    return;
+  }
     const payload = {
       identifier: identifier,
     };
